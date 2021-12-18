@@ -7,10 +7,13 @@ Not a whole lot at the moment (but hopefully a lot soon).
 
 ## Immediately on the List to be Implemented
 - Complete parser
+- Implement Type-Checking (probably a sub problem of parser)
 - Implement basic control structures (if, while, etc.)
 	- Implement in Eval
 	- Make Symbol Table Entries
 - Integrate matrix math library functionality
 - Infix function notation
 - Make Symbol Table Stack (i.e. allow language to have stack frames)
+- Make some command line flags work
+- Make UI nicer (for REPL)
 - Assembly translation for GAS 
