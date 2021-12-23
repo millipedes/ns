@@ -6,7 +6,12 @@
 
 symbol_table_t * init_symbol_table(void) {
 	symbol_table_t * st = NULL;
-	init_null_st_entry(st, "if");
+	init_null_st_entry(st, "+");
+	init_null_st_entry(st, "-");
+	init_null_st_entry(st, "/");
+	init_null_st_entry(st, "(");
+	init_null_st_entry(st, ")");
+	init_null_st_entry(st, "(");
 	return NULL;
 }
 
@@ -19,9 +24,11 @@ void init_null_st_entry(symbol_table_t * st, char * entry) {
 	if (st) {
 		deep_copy_string(st->keys[st->no_symbols], "if");
 		st->values[st->no_symbols] = NULL;
+		st->no_symbols++;
 	} else {
 		st = calloc(1, sizeof(struct SYMBOL_TABLE_T));
 		st->keys = calloc(SIZE_INIT_ST, sizeof(char *));
+		st->no_symbols = 1;
 		deep_copy_string(st->keys[0], "if");
 		st->values[st->no_symbols] = NULL;
 	}
