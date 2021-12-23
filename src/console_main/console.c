@@ -38,8 +38,8 @@ int exit_check(char user_input_buffer[]) {
 void execute_line(char user_input_buffer[]) {
     lexer_T * lexer = init_lexer(user_input_buffer);
     token_stack_T * token_stack = init_token_stack(lexer_next_token(lexer));
-	//symbol_table_t * st = init_symbol_table();
-	//ast_t * ast;
+	symbol_table_t * st = init_symbol_table();
+	ast_t * ast;
 
     while(token_stack->current->type != TOKEN_EOL) {
         token_stack = push_token(token_stack, lexer_next_token(lexer));
@@ -51,6 +51,7 @@ void execute_line(char user_input_buffer[]) {
 	pop_print_stack(token_stack);
 	//free_tree(ast);
     free_lexer(lexer);
+	free_symbol_table(st);
 }
 
 /**

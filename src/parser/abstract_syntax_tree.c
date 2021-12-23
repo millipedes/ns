@@ -23,7 +23,7 @@
 ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st) {
 	ast_t * ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
 
-	while(token_stack->current->type == TOKEN_EOL || token_stack->current->type == TOKEN_INITIAL) {
+	while(token_stack->current->type == TOKEN_EOL) {
 		token_stack = pop_token(token_stack);
 	}
 
