@@ -21,6 +21,7 @@
  * @return The ast
  */
 ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * symbol_table) {
-
+	if(token_stack->previous == NULL) {
+	}
 	return NULL;
 }

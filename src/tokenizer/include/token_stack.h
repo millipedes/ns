@@ -1,3 +1,12 @@
+/**
+ * @file token_stack.h
+ * @brief This file contains the function defintions for those functions in
+ * token_stack.c
+ * @author Matthew C. Lindeman
+ * @date 12/22/21
+ * @bug None known
+ * @todo Nothing atm
+ */
 #ifndef TOK_ST_H
 #define TOK_ST_H
 
