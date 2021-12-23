@@ -35,6 +35,11 @@ void print_token_list(token_T ** token_list) {
     }
 }
 
+/**
+ * This function takes a token and converts it to a character pointer form
+ * @param The token to be stringified
+ * @return the character pointer of the token type
+ */
 char * token_to_str(token_T * token) {
     switch(token->type) {
         case TOKEN_INITIAL:
@@ -76,6 +81,11 @@ char * token_to_str(token_T * token) {
     return 0;
 }
 
+/**
+ * This function determines if the token is an operator
+ * @param The token
+ * @return 0 if not op, 1 if op, -1 if error
+ */
 int is_operator(token_T * token) {
 	switch(token->type) {
         case TOKEN_INITIAL:
@@ -101,6 +111,11 @@ int is_operator(token_T * token) {
 	return -1;
 }
 
+/**
+ * This function determines the degree of an operator
+ * @param The token of the operator
+ * @return the degree of the operator (i.e. how many arguments does it have)
+ */
 int operator_degree(token_T * token) {
     switch(token->type) {
         case TOKEN_INITIAL:
@@ -129,6 +144,11 @@ int operator_degree(token_T * token) {
     return 0;
 }
 
+/**
+ * This function frees a token
+ * @param The token to be freed
+ * @return N/a
+ */
 void free_token(token_T * token) {
     if(token->id && (token->type == TOKEN_WORD || token->type == TOKEN_INT)) {
         free(token->id);

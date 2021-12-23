@@ -1,3 +1,12 @@
+/**
+ * @file This file contains the function definitions of functions used for the
+ * abstract syntax tree nodes
+ * @brief N/a
+ * @author Matthew C. Lindeman
+ * @date 12/22/21
+ * @bug None known
+ * @todo Nothing atm
+ */
 #ifndef ASTN_H
 #define ASNT_H
 

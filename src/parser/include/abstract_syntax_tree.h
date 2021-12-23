@@ -1,3 +1,12 @@
+/**
+ * @file This file contains the definitions of the functions in 
+ * abstract_syntax_tree.c
+ * @brief N/a
+ * @author Matthew C. Lindeman
+ * @date 12/22/21
+ * @bug None known
+ * @todo Nothing atm
+ */
 #ifndef AST_H
 #define AST_H
 

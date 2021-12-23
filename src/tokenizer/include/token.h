@@ -1,3 +1,11 @@
+/**
+ * @file This file contains the fucntion definitions for the functions of token.c
+ * @brief N/a
+ * @author Matthew C. Lindeman
+ * @date 12/22/21
+ * @bug None known
+ * @todo Nothing atm
+ */
 #ifndef TOK_H
 #define TOK_H
 #include"token_types.h"

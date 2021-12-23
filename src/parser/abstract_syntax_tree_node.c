@@ -46,19 +46,19 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 				int * tmp = calloc(1, sizeof(int));
 				*tmp = atoi(token->id);
 				node->value = tmp;
-				return node;  
+				return node; 
 			case TOKEN_WORD:
 				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
 				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
 					*((char *)node->value + i) = token->id[i];
 				}
-				return node;  
+				return node; 
 			case TOKEN_L_PAREN:
 				node->value = init_operator("(");
-				return node;  
+				return node;
 			case TOKEN_R_PAREN:
 				node->value = init_operator(")");
-				return node;  
+				return node;
 			case TOKEN_CARROT_POW:
 				node->value = init_operator("^");
 				return node;  
@@ -104,10 +104,20 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 	return node;
 }
 
+/**
+ * This function prints the name of a node and whether it is an operator
+ * @param The node
+ * @return N/a
+ */
 void print_node(ast_node_t * node) {
 	printf("[NODE NAME]: %s\t[IS_OP]: %s\n", node->name, (node->is_op == 1 ? "TRUE" : "FALSE"));
 }
 
+/**
+ * This function frees a node
+ * @param The node
+ * @return N/a
+ */
 void free_node(ast_node_t * node) {
 	if (node->name) {
 		free(node->name);
