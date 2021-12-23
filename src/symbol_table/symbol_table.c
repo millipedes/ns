@@ -77,7 +77,9 @@ symbol_table_t * add_symbol(char * key, void * value) {
 void free_symbol_table(symbol_table_t * st) {
 	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);
-		free((char *)st->values + i);
+		if((char *)st->values + i) {
+			free((char *)st->values + i);
+		}
 	}
 	free(st->keys);
 	free(st->values);
