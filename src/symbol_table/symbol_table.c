@@ -1,18 +1,33 @@
+/**
+ * @file symbol_table.c
+ * @brief This file contains functions relating to the symbol table
+ * @author Matthew C. Lindeman
+ * @date 12/22/21
+ * @bug None known
+ * @todo Nothing atm
+ */
 #include<stdlib.h>
 #include<string.h>
 #include <ctype.h>
 #include"include/symbol_table.h"
 #include"../constants_macros/include/constants.h"
 
+/**
+ * This function initializes the symbol_table with all of the reserved symbols
+ * @param N/a
+ * @return N/a
+ */
 symbol_table_t * init_symbol_table(void) {
-	symbol_table_t * st = NULL;
+	symbol_table_t * st = calloc(1, sizeof(struct SYMBOL_TABLE_T));
+	st->keys = calloc(ST_PRESET_SIZE, sizeof(char *));
+	st->values = calloc(ST_PRESET_SIZE, sizeof(char *));
+	st->no_symbols = 0;
 	init_null_st_entry(st, "+");
 	init_null_st_entry(st, "-");
 	init_null_st_entry(st, "/");
 	init_null_st_entry(st, "(");
 	init_null_st_entry(st, ")");
-	init_null_st_entry(st, "(");
-	return NULL;
+	return st;
 }
 
 /**
@@ -21,23 +36,15 @@ symbol_table_t * init_symbol_table(void) {
  * @return N/a
  */
 void init_null_st_entry(symbol_table_t * st, char * entry) {
-	if (st) {
-		deep_copy_string(st->keys[st->no_symbols], "if");
-		st->values[st->no_symbols] = NULL;
-		st->no_symbols++;
-	} else {
-		st = calloc(1, sizeof(struct SYMBOL_TABLE_T));
-		st->keys = calloc(SIZE_INIT_ST, sizeof(char *));
-		st->no_symbols = 1;
-		deep_copy_string(st->keys[0], "if");
-		st->values[st->no_symbols] = NULL;
-	}
+	deep_copy_string(st->keys[st->no_symbols], entry);
+	st->values[st->no_symbols] = NULL;
+	st->no_symbols++;
 }
 
-void deep_copy_string(char * src, char * dest) {
+void deep_copy_string(char * dest, char * src) {
 	dest = calloc(strnlen(src, MAX_LEN), sizeof(char));
 	for(int i = 0; i < strnlen(src, MAX_LEN); i++) {
-		*(src + i) = *(dest + i);
+		*(dest + i) = *(src + i);
 	}
 }
 
@@ -51,7 +58,7 @@ int find_symbol(symbol_table_t * st, char * key_to_check) {
 			}
 		}
 	}
-	if(flag) {
+	if(!flag) {
 		return atoi(key_to_check);
 	}
 

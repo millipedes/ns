@@ -14,6 +14,8 @@
 #include"../lexical_analyzer/include/lexer.h"
 #include"../tokenizer/include/token.h"
 #include"../tokenizer/include/token_stack.h"
+#include"../symbol_table/include/symbol_table.h"
+#include"../parser/include/abstract_syntax_tree.h"
 
 /**
  * This function
@@ -28,15 +30,24 @@ int exit_check(char user_input_buffer[]) {
     return 1;
 }
 
+/**
+ * This function executes a line of code written by the user
+ * @param the inputted line
+ * @return N/a 
+ */
 void execute_line(char user_input_buffer[]) {
     lexer_T * lexer = init_lexer(user_input_buffer);
     token_stack_T * token_stack = init_token_stack(lexer_next_token(lexer));
+	symbol_table_t * st = init_symbol_table();
+	ast_t * ast;
 
     while(token_stack->current->type != TOKEN_EOL) {
         token_stack = push_token(token_stack, lexer_next_token(lexer));
     }
 
-    pop_print_stack(token_stack);
+    //pop_print_stack(token_stack);
+	ast = generate_tree(token_stack, st);
+	print_tree(ast);
     free_lexer(lexer);
 }
 

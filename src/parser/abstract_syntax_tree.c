@@ -13,6 +13,7 @@
 #include"include/abstract_syntax_tree.h"
 #include"../tokenizer/include/token_stack.h"
 #include"../symbol_table/include/symbol_table.h"
+#include"../tokenizer/include/token_types.h"
 
 /**
  * This function generates an ast from a token stack
@@ -21,6 +22,10 @@
  */
 ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st) {
 	ast_t * ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
+
+	if(token_stack->current->type == TOKEN_EOL) {
+		token_stack = pop_token(token_stack);
+	}
 
 	if(token_stack->previous == NULL) {
 		ast->node = init_node(token_stack->current, st);
