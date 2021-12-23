@@ -28,7 +28,6 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 	node->name = calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
 
 	for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
-		// Set up name/if it is an operator
 		node->name[i] = token->id[i];
 	}
 
@@ -42,13 +41,17 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 		switch(token->type) {
 			case TOKEN_INITIAL:
 				fprintf(stderr, "[ERROR]: TOKEN_INITIAL passed to parse tree!");
-				return node;  
+				exit(1);
 			case TOKEN_INT:
 				int * tmp = calloc(1, sizeof(int));
 				*tmp = atoi(token->id);
 				node->value = tmp;
 				return node;  
 			case TOKEN_WORD:
+				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
+				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
+					*((char *)node->value + i) = token->id[i];
+				}
 				return node;  
 			case TOKEN_L_PAREN:
 				node->value = init_operator("(");
@@ -57,8 +60,11 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 				node->value = init_operator(")");
 				return node;  
 			case TOKEN_CARROT_POW:
+				node->value = init_operator("^");
 				return node;  
 			case TOKEN_SPACE:
+				fprintf(stderr, "[ERROR]: TOKEN_SPACE passed to parse tree!");
+				exit(1);
 				return node;  
 			case TOKEN_PLUS:
 				node->value = init_operator("+");
@@ -70,18 +76,26 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 				node->value = init_operator("*");
 				return node;  
 			case TOKEN_FS_DIVIDE:
+				node->value = init_operator("/");
 				return node;  
 			case TOKEN_LESS_THAN:
+				node->value = init_operator("<");
 				return node;  
 			case TOKEN_GREATER_THAN:
+				node->value = init_operator(">");
 				return node;  
 			case TOKEN_L_BRACKET:
+				node->value = init_operator("[");
 				return node;  
 			case TOKEN_R_BRACKET:
+				node->value = init_operator("]");
 				return node;  
 			case TOKEN_SEMICOLON:
+				node->value = init_operator(";");
 				return node;  
 			case TOKEN_EOL:
+				fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
+				exit(1);
 				return node;
 		}
 	} else {
