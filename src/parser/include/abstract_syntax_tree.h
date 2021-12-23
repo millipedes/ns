@@ -20,6 +20,7 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 	int no_children;
 } ast_t;
 
-ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * symbol_table);
+ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st);
+void print_tree(ast_t * ast);
 
 #endif

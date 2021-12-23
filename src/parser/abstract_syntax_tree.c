@@ -1,8 +1,7 @@
 /**
- * @file This file contains the functions relating to making an abstract parse
+ * @file abstract_syntax_tree.c
+ * @brief This file contains the functions relating to making an abstract parse 
  * tree from a token stack
- * @brief The functions in this file generate an asbstract syntax tree from a
- * token stack
  * @author Matthew C. Lindeman
  * @date 12/22/21
  * @bug None known
@@ -20,8 +19,27 @@
  * @param The token stack, and the symbol table
  * @return The ast
  */
-ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * symbol_table) {
+ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st) {
+	ast_t * ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
+
 	if(token_stack->previous == NULL) {
+		ast->node = init_node(token_stack->current, st);
+		ast->no_children = 0;
+		ast->children = NULL;
+		return ast;
+	} else {
+
 	}
-	return NULL;
+	return ast;
+}
+
+void print_tree(ast_t * ast) {
+	if(ast->children == NULL) {
+		printf("%s\n", ast->node->name);
+	} else if(ast->children != NULL) {
+		printf("%s\n", ast->node->name);
+		for(int i = 0; i < ast->no_children; i++) {
+			print_tree(ast->children[i]);
+		}
+	}
 }
