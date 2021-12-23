@@ -26,43 +26,66 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 	int symbol_index = find_symbol(st, token->id);
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
 	node->name = calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
+
 	for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
 		// Set up name/if it is an operator
 		node->name[i] = token->id[i];
-		if(is_operator(token)) {
-			node->is_op = 1;
-		} else {
-			node->is_op = 0;
-		}
+	}
 
-		// Each case as to what the language recognizes
-		if(token->type == TOKEN_INT) {
-			int * tmp = calloc(1, sizeof(int));
-			*tmp = atoi(token->id);
-			node->value = tmp;
-			return node;
-		}
+	if(is_operator(token)) {
+		node->is_op = 1;
+	} else {
+		node->is_op = 0;
+	}
 
-		if(symbol_index != -1) {
-			if(!strncmp(node->name, "+", MAX_OPERATOR)) {
+	if(symbol_index != -1) {
+		switch(token->type) {
+			case TOKEN_INITIAL:
+				fprintf(stderr, "[ERROR]: TOKEN_INITIAL passed to parse tree!");
+				return node;  
+			case TOKEN_INT:
+				int * tmp = calloc(1, sizeof(int));
+				*tmp = atoi(token->id);
+				node->value = tmp;
+				return node;  
+			case TOKEN_WORD:
+				return node;  
+			case TOKEN_L_PAREN:
+				node->value = init_operator("(");
+				return node;  
+			case TOKEN_R_PAREN:
+				node->value = init_operator(")");
+				return node;  
+			case TOKEN_CARROT_POW:
+				return node;  
+			case TOKEN_SPACE:
+				return node;  
+			case TOKEN_PLUS:
 				node->value = init_operator("+");
-				return node;
-			}
-			if(!strncmp(node->name, "-", MAX_OPERATOR)) {
+				return node;  
+			case TOKEN_MINUS:
 				node->value = init_operator("-");
-				return node;
-			}  
-			if(!strncmp(node->name, "*", MAX_OPERATOR)) {
+				return node;  
+			case TOKEN_STAR_MULT:
 				node->value = init_operator("*");
+				return node;  
+			case TOKEN_FS_DIVIDE:
+				return node;  
+			case TOKEN_LESS_THAN:
+				return node;  
+			case TOKEN_GREATER_THAN:
+				return node;  
+			case TOKEN_L_BRACKET:
+				return node;  
+			case TOKEN_R_BRACKET:
+				return node;  
+			case TOKEN_SEMICOLON:
+				return node;  
+			case TOKEN_EOL:
 				return node;
-			}  
-			if(!strncmp(node->name, "/", MAX_OPERATOR)) {
-				node->value = init_operator("/");
-				return node;
-			}
-		} else {
-			printf("[ERROR]: `%s` is undefined", token->id);
 		}
+	} else {
+		printf("[ERROR]: `%s` is undefined", token->id);
 	}
 	return node;
 }
