@@ -23,7 +23,7 @@
 ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st) {
 	ast_t * ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
 
-	if(token_stack->current->type == TOKEN_EOL) {
+	while(token_stack->current->type == TOKEN_EOL || token_stack->current->type == TOKEN_INITIAL) {
 		token_stack = pop_token(token_stack);
 	}
 
@@ -46,5 +46,18 @@ void print_tree(ast_t * ast) {
 		for(int i = 0; i < ast->no_children; i++) {
 			print_tree(ast->children[i]);
 		}
+	}
+}
+
+void free_tree(ast_t * ast) {
+	if(ast->children == NULL) {
+		free_node(ast->node);
+		free(ast);
+	} else if(ast->children != NULL) {
+		for(int i = 0; i < ast->no_children; i++) {
+			free_tree(ast);
+		}
+		free_node(ast->node);
+		free(ast);
 	}
 }

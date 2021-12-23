@@ -22,5 +22,6 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 
 ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st);
 void print_tree(ast_t * ast);
+void free_tree(ast_t * ast);
 
 #endif

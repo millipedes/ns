@@ -48,6 +48,8 @@ void execute_line(char user_input_buffer[]) {
     //pop_print_stack(token_stack);
 	ast = generate_tree(token_stack, st);
 	print_tree(ast);
+	//pop_print_stack(token_stack);
+	free_tree(ast);
     free_lexer(lexer);
 }
 

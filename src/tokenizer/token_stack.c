@@ -55,11 +55,11 @@ token_stack_T * pop_token(token_stack_T * token_stack) {
  * @return N/a 
  */
 void pop_print_stack(token_stack_T * token_stack) {
-    while(token_stack->current != NULL && token_stack->previous != NULL) {
+    while(token_stack->current != NULL && token_stack->previous != NULL && token_stack->current->type != TOKEN_INITIAL) {
         printf("[TOKEN ID]: %s, [TOKEN]: %s\n", token_stack->current->id, token_to_str(token_stack->current));
         token_stack = pop_token(token_stack);
     }
-    if(token_stack) {
+    if(token_stack && token_stack->current->type == TOKEN_INITIAL) {
         printf("[TOKEN ID]: %s, [TOKEN]: %s\n", token_stack->current->id, token_to_str(token_stack->current));
         pop_token(token_stack);
     }
