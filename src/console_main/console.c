@@ -38,18 +38,18 @@ int exit_check(char user_input_buffer[]) {
 void execute_line(char user_input_buffer[]) {
     lexer_T * lexer = init_lexer(user_input_buffer);
     token_stack_T * token_stack = init_token_stack(lexer_next_token(lexer));
-	symbol_table_t * st = init_symbol_table();
-	ast_t * ast;
+	//symbol_table_t * st = init_symbol_table();
+	//ast_t * ast;
 
     while(token_stack->current->type != TOKEN_EOL) {
         token_stack = push_token(token_stack, lexer_next_token(lexer));
     }
 
     //pop_print_stack(token_stack);
-	ast = generate_tree(token_stack, st);
-	print_tree(ast);
-	//pop_print_stack(token_stack);
-	free_tree(ast);
+	//ast = generate_tree(token_stack, st);
+	//print_tree(ast);
+	pop_print_stack(token_stack);
+	//free_tree(ast);
     free_lexer(lexer);
 }
 
@@ -62,7 +62,7 @@ void console_start(void) {
 
     print_welcome_screen();
     while(exit_check(user_input_buffer)) {
-        printf(">");
+        printf("|>");
         fgets(user_input_buffer, MAX_LINE, stdin);
         execute_line(user_input_buffer);
     }
