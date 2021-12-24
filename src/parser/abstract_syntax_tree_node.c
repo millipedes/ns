@@ -122,6 +122,10 @@ void free_node(ast_node_t * node) {
 	if (node->name) {
 		free(node->name);
 	}
+	// Since all values/pointers have size 8 bytes, just cast to char *
+	if((char *)node->value) {
+		free((char *)node->value);
+	}
 	free(node);
 }	
 

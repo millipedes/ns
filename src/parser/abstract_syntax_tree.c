@@ -31,6 +31,7 @@ ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st) {
 		ast->node = init_node(token_stack->current, st);
 		ast->no_children = 0;
 		ast->children = NULL;
+		pop_print_stack(token_stack);
 		return ast;
 	} else {
 
