@@ -1,6 +1,9 @@
 # ns Programming Language
+## Project Description
 Currently, ns is an interpreted language.  The ultimate goal of the language is
 to make a language which has native math libraries.
+
+## Installation
 
 ## Currently Offered Features
 Not a whole lot at the moment (but hopefully a lot soon).
