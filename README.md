@@ -4,7 +4,7 @@ ns is meant to be a fast relatively powerful programming language.  Currently
 it is interpreted, but soon I will likely write an assembly translation for
 GNU assembler.
 
-## :floppt_disk: Installation
+## :floppy_disk: Installation
 
 ## :star2: Currently Offered Features
 Not a whole lot at the moment (but hopefully a lot soon).
