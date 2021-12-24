@@ -4,7 +4,8 @@
  * @author Matthew C. Lindeman
  * @date 12/22/21
  * @bug None known
- * @todo Nothing atm
+ * @todo Add operator_t/variable_t support for free using typename in 
+ * constants.h
  */
 #include<stdio.h>
 #include<stdlib.h>
@@ -21,7 +22,7 @@
 symbol_table_t * init_symbol_table(void) {
 	symbol_table_t * st = calloc(1, sizeof(struct SYMBOL_TABLE_T));
 	st->keys = calloc(ST_PRESET_SIZE, sizeof(char *));
-	st->values = calloc(1, sizeof(char *));
+	st->values = calloc(ST_PRESET_SIZE, sizeof(char *));
 	st->no_symbols = 0;
 	init_null_st_entry(st, "+");
 	init_null_st_entry(st, "-");
@@ -38,6 +39,7 @@ symbol_table_t * init_symbol_table(void) {
  */
 void init_null_st_entry(symbol_table_t * st, char * entry) {
 	st->keys[st->no_symbols] = deep_copy_string(st->keys[st->no_symbols], entry);
+	st->values[st->no_symbols] = NULL;
 	st->no_symbols++;
 }
 
@@ -76,10 +78,15 @@ symbol_table_t * add_symbol(char * key, void * value) {
 }
 
 void free_symbol_table(symbol_table_t * st) {
-//	printf("%d\n", st->no_symbols);
 	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);
+		if(*((char *)st->values + i)) {
+			free((char *)st->values + i);
+		}
 	}
+	/** All pointers have the same size of 8 bytes i.e. as long as the
+	 *  value is of a type pointer
+	 */
 	free((char **)st->values);
 	free(st->keys);
 	free(st);
