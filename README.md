@@ -1,14 +1,15 @@
 # ns Programming Language
-## Project Description/Goal :dart:
-Currently, ns is an interpreted language.  The ultimate goal of the language is
-to make a language which has native math libraries.
+## :dard: Project Description/Goal
+ns is meant to be a fast relatively powerful programming language.  Currently
+it is interpreted, but soon I will likely write an assembly translation for
+GNU assembler.
 
-## Installation
+## :floppt_disk: Installation
 
-## Currently Offered Features
+## :star2: Currently Offered Features
 Not a whole lot at the moment (but hopefully a lot soon).
 
-## Immediately on the List to be Implemented
+## :scroll: Immediately on the List to be Implemented
 - Complete parser
 - Implement Type-Checking (probably a sub problem of parser)
 - Implement basic control structures (if, while, etc.)
