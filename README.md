@@ -1,7 +1,4 @@
 # :mountain_snow: ns Programming Language
-## Table of Contents
-1) [Project Description] (https://github.com/millipedes/ns#dart-project-descriptiongoal)
-
 ## :dart: Project Description/Goal
 ns is meant to be a fast relatively powerful programming language.  Currently
 it is interpreted, but soon I will likely write an assembly translation for
