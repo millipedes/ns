@@ -1,5 +1,5 @@
 # ns Programming Language
-## Project Description
+## Project Description/Goal :dart:
 Currently, ns is an interpreted language.  The ultimate goal of the language is
 to make a language which has native math libraries.
 
