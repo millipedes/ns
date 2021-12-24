@@ -6,6 +6,7 @@
  * @bug None known
  * @todo Nothing atm
  */
+#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include <ctype.h>
@@ -20,7 +21,7 @@
 symbol_table_t * init_symbol_table(void) {
 	symbol_table_t * st = calloc(1, sizeof(struct SYMBOL_TABLE_T));
 	st->keys = calloc(ST_PRESET_SIZE, sizeof(char *));
-	st->values = calloc(ST_PRESET_SIZE, sizeof(char *));
+	st->values = calloc(1, sizeof(char *));
 	st->no_symbols = 0;
 	init_null_st_entry(st, "+");
 	init_null_st_entry(st, "-");
@@ -36,16 +37,16 @@ symbol_table_t * init_symbol_table(void) {
  * @return N/a
  */
 void init_null_st_entry(symbol_table_t * st, char * entry) {
-	deep_copy_string(st->keys[st->no_symbols], entry);
-	st->values[st->no_symbols] = NULL;
+	st->keys[st->no_symbols] = deep_copy_string(st->keys[st->no_symbols], entry);
 	st->no_symbols++;
 }
 
-void deep_copy_string(char * dest, char * src) {
+char * deep_copy_string(char * dest, char * src) {
 	dest = calloc(strnlen(src, MAX_LEN), sizeof(char));
 	for(int i = 0; i < strnlen(src, MAX_LEN); i++) {
 		*(dest + i) = *(src + i);
 	}
+	return dest;
 }
 
 int find_symbol(symbol_table_t * st, char * key_to_check) {
@@ -75,13 +76,11 @@ symbol_table_t * add_symbol(char * key, void * value) {
 }
 
 void free_symbol_table(symbol_table_t * st) {
+//	printf("%d\n", st->no_symbols);
 	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);
-		if((char *)st->values + i) {
-			free((char *)st->values + i);
-		}
 	}
+	free((char **)st->values);
 	free(st->keys);
-	free(st->values);
 	free(st);
 }	
