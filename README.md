@@ -1,10 +1,15 @@
 # :mountain_snow: ns Programming Language
 
 ███╗   ██╗███████╗
+
 ████╗  ██║██╔════╝
+
 ██╔██╗ ██║███████╗
+
 ██║╚██╗██║╚════██║
+
 ██║ ╚████║███████║
+
 ╚═╝  ╚═══╝╚══════╝
 
 ## :dart: Project Description/Goal
