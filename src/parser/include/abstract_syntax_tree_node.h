@@ -9,9 +9,15 @@
  */
 #ifndef ASTN_H
 #define ASNT_H
-
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include"../../tokenizer/include/token.h"
 #include"../../symbol_table/include/symbol_table.h"
+#include"../../tokenizer/include/token_stack.h"
+#include"../../tokenizer/include/token_types.h"
+#include"../../constants_macros/include/constants.h"
+#include"../../symbol_table/include/operator.h"
 
 typedef struct AST_NODE_T {
 	char * name;

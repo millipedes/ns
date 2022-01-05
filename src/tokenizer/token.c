@@ -7,10 +7,8 @@
 * @bug None currently
 * @todo None currently
 */
-#include<stdio.h>
-#include<stdlib.h>
 #include"include/token.h"
-#include"include/token_types.h"
+
 /**
  * This function makes a pointer to a token ``object" with given identifier and
  * type.

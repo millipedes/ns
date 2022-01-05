@@ -1,8 +1,12 @@
-#include<stdlib.h>
-#include<string.h>
-#include<ctype.h>
+/**
+ * @file lexer.c
+ * @brief This file contains functions relacent to the 
+ * @author Matthew C. Lindeman
+ * @date
+ * @bug None known
+ * @todo Nothing atm
+ */
 #include"include/lexer.h"
-#include"../constants_macros/include/constants.h"
 
 lexer_T * init_lexer(char * source) {
     lexer_T * lexer = calloc(1, sizeof(struct LEXER_STRUCT *));
@@ -99,6 +103,30 @@ token_T * lexer_parse_word(lexer_T * lexer) {
     }
     free(tmp);
     return init_token(keyword, TOKEN_WORD);
+}
+
+token_T ** generate_token_list(lexer_T * lexer) {
+	int max = 1;
+	int count = 0;
+	token_T ** token_list = calloc(max, sizeof(token_T *));
+
+	while(lexer->c != '\n' && lexer->c != '\r' && lexer->i < lexer->src_size) {
+		if(count == max) {
+			max *= 2;
+			token_list = realloc(token_list, max * sizeof(token_T *));
+		}
+		token_list[count] = lexer_next_token(lexer);
+		count++;
+	}
+	// For the EOL_TOKEN
+	if(count == max) {
+		max *= 2;
+		token_list = realloc(token_list, max * sizeof(token_T *));
+	}
+	token_list[count] = lexer_next_token(lexer);
+	count++;
+
+	return token_list;
 }
 
 void lexer_advance(lexer_T * lexer) {

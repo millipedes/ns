@@ -37,18 +37,20 @@ int exit_check(char user_input_buffer[]) {
  */
 void execute_line(char user_input_buffer[], symbol_table_t * st) {
     lexer_T * lexer = init_lexer(user_input_buffer);
-    token_stack_T * token_stack = init_token_stack(lexer_next_token(lexer));
-	ast_t * ast;
+    token_T ** token_list = generate_token_list(lexer);
 
-    while(token_stack->current->type != TOKEN_EOL) {
-        token_stack = push_token(token_stack, lexer_next_token(lexer));
-    }
+	print_token_list(token_list);
 
-    //pop_print_stack(token_stack);
-	ast = generate_tree(token_stack, st);
-	print_tree(ast);
-	//pop_print_stack(token_stack);
-	free_tree(ast);
+
+	// Free token list, maybe make unique function (looping headers lexer.c)
+	for (int i = 0; token_list[i]->type != TOKEN_EOL; i++) {
+		free_token(token_list[i]);
+		if(token_list[i + 1]->type == TOKEN_EOL) {
+			free_token(token_list[i + 1]);
+			break;
+		}
+	}
+	free(token_list);
     free_lexer(lexer);
 }
 

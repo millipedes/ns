@@ -7,15 +7,7 @@
  * @bug None known
  * @todo Nothing atm
  */
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
 #include"include/abstract_syntax_tree_node.h"
-#include"../tokenizer/include/token_stack.h"
-#include"../tokenizer/include/token_types.h"
-#include"../constants_macros/include/constants.h"
-#include"../symbol_table/include/symbol_table.h"
-#include"../symbol_table/include/operator.h"
 
 /**
  * This function initializes a node

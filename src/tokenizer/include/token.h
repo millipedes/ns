@@ -8,6 +8,8 @@
  */
 #ifndef TOK_H
 #define TOK_H
+#include<stdio.h>
+#include<stdlib.h>
 #include"token_types.h"
 
 typedef struct TOKEN_STRUCT {

@@ -1,7 +1,11 @@
 #ifndef CMM_LEX_H
 #define CMM_LEX_H
-#include "../../tokenizer/include/token.h"
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+#include "../../tokenizer/include/token.h"
+#include"../../constants_macros/include/constants.h"
 
 typedef struct LEXER_STRUCT {
     char * source;
@@ -14,6 +18,7 @@ lexer_T * init_lexer(char * source);
 token_T * lexer_next_token(lexer_T * lexer);
 token_T * lexer_parse_digit(lexer_T * lexer);
 token_T * lexer_parse_word(lexer_T * lexer);
+token_T ** generate_token_list(lexer_T * lexer);
 void lexer_advance(lexer_T * lexer);
 void lexer_skip_whitespace(lexer_T * lexer);
 void free_lexer(lexer_T * lexer);
