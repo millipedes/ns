@@ -1,4 +1,12 @@
 # :mountain_snow: ns Programming Language
+
+███╗   ██╗███████╗
+████╗  ██║██╔════╝
+██╔██╗ ██║███████╗
+██║╚██╗██║╚════██║
+██║ ╚████║███████║
+╚═╝  ╚═══╝╚══════╝
+
 ## :dart: Project Description/Goal
 ns is meant to be a fast relatively powerful programming language.  Currently
 it is interpreted, but soon I will likely write an assembly translation for
