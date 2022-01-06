@@ -144,13 +144,15 @@ void free_tree(ast_t * ast) {
 		if(ast->node) {
 			free_node(ast->node);
 		}
-
 		if(ast) {
 			free(ast);
 		}
 	} else if(ast->children != NULL) {
 		for(int i = 0; i < ast->no_children; i++) {
 			free_tree(ast->children[i]);
+		}
+		if(ast->children) {
+			free(ast->children);
 		}
 		if(ast->node) {
 			free_node(ast->node);
