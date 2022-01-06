@@ -40,7 +40,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
     token_T ** token_list = generate_token_list(lexer);
 	ast_t * ast = init_ast();
 
-	print_token_list(token_list);
+	//print_token_list(token_list);
 	ast = generate_tree(token_list, st, ast);
 	print_tree(ast);
 
