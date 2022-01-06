@@ -92,6 +92,14 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 }
 
 token_T ** get_sub_list(token_T ** list, int start, int end) {
+	if(start > end) {
+		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d` END `%d`\nExiting", start, end);
+		exit(1);
+	}
+	token_T ** sub_list = calloc(end - start, sizeof(struct TOKEN_T *));
+	for(int i = start; i < end; i++) {
+		//sub_list = 
+	}
 	return NULL;
 }
 
