@@ -75,25 +75,30 @@ token_T * lexer_next_token(lexer_T * lexer) {
                 break;
         }
     }
-    return init_token('\0', TOKEN_EOL);
+	// The id doesn't matter since they are all deep copied/freed
+    return init_token((char *)"0", TOKEN_EOL);
 }
 
 token_T * lexer_parse_digit(lexer_T * lexer) {
     char * integer = (char *)calloc(1, sizeof(char));
     char * digit = (char *)calloc(1, sizeof(char));
+	token_T * token;
     while(isdigit(lexer->c)) {
-        integer = (char *)realloc(integer, (strlen(integer) + 2) * sizeof(char));
+        integer = (char *)realloc(integer, (strnlen(integer, MAX_LEN) + 1) * sizeof(char));
         *(digit + 0) = lexer->c;
         strncat(integer, digit, MAX_LINE);
         lexer_advance(lexer);
     }
+	token = init_token(integer, TOKEN_INT);
     free(digit);
-    return init_token(integer, TOKEN_INT);
+	free(integer);
+    return token;
 }
 
 token_T * lexer_parse_word(lexer_T * lexer) {
     char * keyword = (char *)calloc(1, sizeof(char));
     char * tmp = (char *)calloc(1, sizeof(char));
+	token_T * token;
     // As long as current char is a character in the alphabet advance
     while(isalpha(lexer->c)) {
         keyword = (char *)realloc(keyword, (strnlen(keyword, MAX_LINE) + 1) * sizeof(char));
@@ -101,8 +106,10 @@ token_T * lexer_parse_word(lexer_T * lexer) {
         strncat(keyword, tmp, MAX_LINE);
         lexer_advance(lexer);
     }
+	token = init_token(keyword, TOKEN_WORD);
     free(tmp);
-    return init_token(keyword, TOKEN_WORD);
+	free(keyword);
+    return token;
 }
 
 token_T ** generate_token_list(lexer_T * lexer) {

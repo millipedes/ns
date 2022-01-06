@@ -18,7 +18,10 @@
  */
 token_T * init_token(char * id, int type) {
     token_T * token = calloc(1, sizeof(struct TOKEN_STRUCT *));
-    token->id = id;
+	token->id = calloc(strnlen(id, MAX_LINE), sizeof(char));
+	for (int i = 0; i < strnlen(id, MAX_LINE); i++) {
+		token->id[i] = id[i];
+	}
     token->type = type;
     return token;
 }
@@ -148,7 +151,7 @@ int operator_degree(token_T * token) {
  * @return N/a
  */
 void free_token(token_T * token) {
-    if(token->id && (token->type == TOKEN_WORD || token->type == TOKEN_INT)) {
+    if(token->id) {
         free(token->id);
     }
     if(token) {

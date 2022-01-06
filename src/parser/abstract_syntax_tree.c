@@ -98,7 +98,7 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 	}
 	token_T ** sub_list = calloc(end - start, sizeof(struct TOKEN_T *));
 	for(int i = start; i < end; i++) {
-		//sub_list = 
+		//sub_list[i - start] = list[
 	}
 	return NULL;
 }

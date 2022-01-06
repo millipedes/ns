@@ -10,6 +10,8 @@
 #define TOK_H
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include"../../constants_macros/include/constants.h"
 #include"token_types.h"
 
 typedef struct TOKEN_STRUCT {
