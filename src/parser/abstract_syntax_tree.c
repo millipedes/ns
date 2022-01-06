@@ -74,7 +74,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 					free(operand1);
 					free(operand2);
 					return ast;
-				} else if((token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) || (token_list[1]->type == TOKEN_WORD && token_list[2]->type == TOKEN_L_PAREN)) {
+				} else if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) {
 					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 2), st, ast->children[0]);
 					ast->children[1] = generate_tree(get_sub_list(token_list, 1, 2), st, ast->children[1]);
 					return ast;
