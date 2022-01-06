@@ -9,10 +9,14 @@
  */
 #ifndef AST_H
 #define AST_H
-
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include"abstract_syntax_tree_node.h"
-#include"../../tokenizer/include/token_stack.h"
 #include"../../symbol_table/include/symbol_table.h"
+#include"../../symbol_table/include/symbol_table.h"
+#include"../../tokenizer/include/token_types.h"
+#include"../../tokenizer/include/token.h"
 
 typedef struct ABSTRACT_SYNTAX_TREE {
 	struct ABSTRACT_SYNTAX_TREE ** children;
@@ -20,7 +24,10 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 	int no_children;
 } ast_t;
 
-ast_t * generate_tree(token_stack_T * token_stack, symbol_table_t * st);
+ast_t * init_ast(ast_t * ast);
+ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
+token_T ** get_sub_list(token_T ** list, int start, int end);
+int get_list_size(token_T ** list);
 void print_tree(ast_t * ast);
 void free_tree(ast_t * ast);
 
