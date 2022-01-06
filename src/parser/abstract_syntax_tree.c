@@ -24,6 +24,9 @@ ast_t * init_ast(void) {
  */
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	int flag = 0;
+	token_T ** operand1;
+	token_T ** operand2;
+
 	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD) {
 		ast->node = init_node(token_list[0], st);
 		ast->children = NULL;
@@ -62,8 +65,14 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				 * || + INT EXPT || + EXPR EXPR
 				 */
 				if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_INT) {
-					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 2), st, ast->children[0]);
-					ast->children[1] = generate_tree(get_sub_list(token_list, 2, get_list_size(token_list)), st, ast->children[1]);
+					operand1 = get_sub_list(token_list, 1, 2);
+					operand2 = get_sub_list(token_list, 2, get_list_size(token_list));
+					ast->children[0] = generate_tree(operand1, st, ast->children[0]);
+					ast->children[1] = generate_tree(operand2, st, ast->children[1]);
+					free_token(operand1[0]);
+					free_token(operand2[0]);
+					free(operand1);
+					free(operand2);
 					return ast;
 				} else if((token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) || (token_list[1]->type == TOKEN_WORD && token_list[2]->type == TOKEN_L_PAREN)) {
 					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 2), st, ast->children[0]);
@@ -100,7 +109,7 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 
 	if(start == end) {
 		token_T ** sub_list = calloc(1, sizeof(struct TOKEN_T *));
-		sub_list[0] = list[start];
+		sub_list[0] = init_token(list[start]->id, list[start]->type);
 		return sub_list;
 	}
 
