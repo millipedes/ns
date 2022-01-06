@@ -98,13 +98,17 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 	}
 	token_T ** sub_list = calloc(end - start, sizeof(struct TOKEN_T *));
 	for(int i = start; i < end; i++) {
-		//sub_list[i - start] = list[
+		sub_list[i - start] = init_token(list[i]->id, list[i]->type);
 	}
-	return NULL;
+	return sub_list;
 }
 
 int get_list_size(token_T ** list) {
-	return -1;
+	int size = 0;
+	for(int i = 0; list[i]->type != TOKEN_EOL; i++) {
+		size = i;
+	}
+	return size;
 }
 
 void print_tree(ast_t * ast) {
