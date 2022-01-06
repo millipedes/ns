@@ -54,6 +54,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 	}
 	free(token_list);
     free_lexer(lexer);
+	free_tree(ast);
 }
 
 /**

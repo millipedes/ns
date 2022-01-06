@@ -132,13 +132,22 @@ void print_tree(ast_t * ast) {
 
 void free_tree(ast_t * ast) {
 	if(ast->children == NULL) {
-		free_node(ast->node);
-		free(ast);
+		if(ast->node) {
+			free_node(ast->node);
+		}
+
+		if(ast) {
+			free(ast);
+		}
 	} else if(ast->children != NULL) {
 		for(int i = 0; i < ast->no_children; i++) {
-			free_tree(ast);
+			free_tree(ast->children[i]);
 		}
-		free_node(ast->node);
-		free(ast);
+		if(ast->node) {
+			free_node(ast->node);
+		}
+		if(ast) {
+			free(ast);
+		}
 	}
 }
