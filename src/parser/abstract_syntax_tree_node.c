@@ -16,7 +16,6 @@
  */
 ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 	int symbol_index = find_symbol(st, token->id);
-	int * tmp;
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
 	node->name = calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
 
@@ -36,9 +35,8 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 				fprintf(stderr, "[ERROR]: TOKEN_INITIAL passed to parse tree!");
 				exit(1);
 			case TOKEN_INT:
-				tmp = calloc(1, sizeof(int));
-				*tmp = atoi(token->id);
-				node->value = tmp;
+				node->value = calloc(1, sizeof(int));
+				*((int *)node->value + 0) = atoi(token->id);
 				return node; 
 			case TOKEN_WORD:
 				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));

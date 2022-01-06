@@ -24,7 +24,7 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 	int no_children;
 } ast_t;
 
-ast_t * init_ast(ast_t * ast);
+ast_t * init_ast(void);
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 token_T ** get_sub_list(token_T ** list, int start, int end);
 int get_list_size(token_T ** list);

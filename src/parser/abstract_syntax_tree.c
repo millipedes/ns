@@ -9,8 +9,9 @@
  */
 #include"include/abstract_syntax_tree.h"
 
-ast_t * init_ast(ast_t * ast) {
-	ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
+ast_t * init_ast(void) {
+	ast_t * ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
+	ast->node = NULL;
 	ast->children = NULL;
 	ast->no_children = 0;
 	return ast;
@@ -55,8 +56,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				ast->no_children++;
 				ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
 				ast->node = init_node(token_list[0], st);
-				ast->children[0] = init_ast(ast->children[0]);
-				ast->children[1] = init_ast(ast->children[1]);
+				ast->children[0] = init_ast();
+				ast->children[1] = init_ast();
 				/** Massive code blurb checking for + INT INT || + EXPR INT
 				 * || + INT EXPT || + EXPR EXPR
 				 */
