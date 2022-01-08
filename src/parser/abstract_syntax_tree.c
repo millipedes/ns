@@ -42,11 +42,15 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
     } else {
 		switch(token_list[0]->type) {
 			case TOKEN_L_PAREN:
+                operands = 1;
+                potential_operands = initialize_potential_operands(operands);
+                potential_operands[0] = get_sub_list(token_list, 1, get_list_size(token_list));
                 ast->no_children++;
                 ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
                 ast->node = init_node(token_list[0], st);
                 ast->children[0] = init_ast();
-                ast->children[0] = generate_tree(get_sub_list(token_list, 1, get_list_size(token_list)), st, ast->children[0]);
+                ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
+                free_potential_operands(potential_operands, operands);
                 return ast;
 			case TOKEN_INITIAL:
 			case TOKEN_WORD:
@@ -82,19 +86,18 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
 					potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
-					//operand1 = get_sub_list(token_list, 1, 1);
-					//operand2 = get_sub_list(token_list, 2, get_list_size(token_list));
-					ast->children[0] = generate_tree(potential_operands[0]/*operand1*/, st, ast->children[0]);
-					ast->children[1] = generate_tree(potential_operands[1]/*operand2*/, st, ast->children[1]);
-					//free_token(operand1[0]);
-					//free_token(operand2[0]);
-					//free(operand1);
-					//free(operand2);
+					ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
+					ast->children[1] = generate_tree(potential_operands[1], st, ast->children[1]);
                     free_potential_operands(potential_operands, operands);
 					return ast;
 				} else if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) {
-					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 1), st, ast->children[0]);
-					ast->children[1] = generate_tree(get_sub_list(token_list, 2, get_list_size(token_list)), st, ast->children[1]);
+                    operands = 2;
+                    potential_operands = initialize_potential_operands(operands);
+					potential_operands[0] = get_sub_list(token_list, 1, 1);
+					potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
+					ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
+					ast->children[1] = generate_tree(potential_operands[1], st, ast->children[1]);
+                    free_potential_operands(potential_operands, operands);
 					return ast;
 				} else if(token_list[1]->type == TOKEN_L_PAREN) {
 					flag = 0;
@@ -200,6 +203,7 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
     for (int i = start; i <= (end - start + 2); i++) {
         if(list[i]->type == TOKEN_EOL) {
             eol_flag = 1;
+            break;
         }
     }
 

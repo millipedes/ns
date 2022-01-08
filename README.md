@@ -1,6 +1,7 @@
 # :mountain_snow: ns Programming Language
 ## :dart: Project Description/Goal
-ns is meant to be a fast relatively powerful programming language.  Currently
+ns is meant to be a fast relatively powerful programming language.  By May 2022
+it should have a fully functional stocastic process library natively. Currently
 it is interpreted, but soon I will likely write an assembly translation for
 GNU assembler.
 
