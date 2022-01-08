@@ -148,6 +148,8 @@ int evaluate_tree(ast_t * ast, symbol_table_t * st) {
                return less_than_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
             case '>':
                return greater_than_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '(':
+               return evaluate_tree(ast->children[0], st);
         }
     }
     fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
