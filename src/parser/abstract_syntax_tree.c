@@ -222,18 +222,6 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
         }
     }
     return sub_list;
-
-    //if(!eol_flag) {
-    //    for(int i = start; i <= end + 1; i++) {
-    //        sub_list[i - start] = init_token(list[i]->id, list[i]->type);
-    //    }
-    //    sub_list[end - start + 2] = init_token((char *)"0", TOKEN_EOL);
-    //} else {
-    //    for(int i = start; i <= end; i++) {
-    //        sub_list[i - start] = init_token(list[i]->id, list[i]->type);
-    //    }
-    //}
-	//return sub_list;
 }
 
 int get_list_size(token_T ** list) {
