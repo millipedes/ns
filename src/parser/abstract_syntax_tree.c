@@ -196,7 +196,7 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d` END `%d`\nExiting", start, end);
 		exit(1);
 	}
-    int eol_flag = 0;
+    token_T ** sub_list;
 
 	if(start == end) {
 		token_T ** sub_list = calloc(2, sizeof(struct TOKEN_T *));
@@ -205,29 +205,42 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 		return sub_list;
 	}
 
-    for (int i = start; i <= (end - start + 2); i++) {
-        if(list[i]->type == TOKEN_EOL) {
-            eol_flag = 1;
-            break;
+    // get_list_size rets list[size]->type == EOL, i.e. check one more
+    if(list[end]->type == TOKEN_EOL) {
+        sub_list = calloc(end - start + 1, sizeof(struct TOKEN_T *));
+        for(int i = start; i < (end + 1); i++) {
+            sub_list[i - start] = init_token(list[i]->id, list[i]->type);
+        }
+    } else {
+        sub_list = calloc(end - start + 2, sizeof(struct TOKEN_T *));
+        for(int i = start; i < (end + 2); i++) {
+            if(i == end + 1) {
+                    sub_list[i - start] = init_token((char *)"0", TOKEN_EOL);
+            } else {
+                sub_list[i - start] = init_token(list[i]->id, list[i]->type);
+            }
         }
     }
+    return sub_list;
 
-	token_T ** sub_list = calloc(eol_flag == 1 ? (end - start + 1) : (end - start + 2), sizeof(struct TOKEN_T *));
-	for(int i = start; i <= end; i++) {
-		sub_list[i - start] = init_token(list[i]->id, list[i]->type);
-	}
-    if(!eol_flag) {
-        sub_list[end - start + 2] = init_token((char *)"0", TOKEN_EOL);
-    }
-	return sub_list;
+    //if(!eol_flag) {
+    //    for(int i = start; i <= end + 1; i++) {
+    //        sub_list[i - start] = init_token(list[i]->id, list[i]->type);
+    //    }
+    //    sub_list[end - start + 2] = init_token((char *)"0", TOKEN_EOL);
+    //} else {
+    //    for(int i = start; i <= end; i++) {
+    //        sub_list[i - start] = init_token(list[i]->id, list[i]->type);
+    //    }
+    //}
+	//return sub_list;
 }
 
 int get_list_size(token_T ** list) {
 	int size = 0;
 	for(int i = 0; list[i]->type != TOKEN_EOL; i++) {
-		size = i;
+		size++;
 	}
-    size++;
 	return size;
 }
 
