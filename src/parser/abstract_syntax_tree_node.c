@@ -40,7 +40,7 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
                 node->type = deep_copy_string(node->type, (char *)"integer");
 				return node; 
 			case TOKEN_WORD:
-                // TODO ADD THE TYPE!!
+                // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
 				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
                 node->type = deep_copy_string(node->type, (char *)"integer");
 				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
