@@ -7,12 +7,20 @@ GNU assembler.
 ## :floppy_disk: Installation
 
 ## :star2: Currently Offered Features
-Not a whole lot at the moment (but hopefully a lot soon).
+As of January 7 2022 this is a very complicated [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
+calculator.
+
+However the entire code base is memory leakless for all of the calculator
+operations.  Many more features are coming quickly as the basic infrastructure
+of the language is now written.
 
 ## :scroll: Immediately on the List to be Implemented
 - Complete parser
-- Implement Type-Checking (probably a sub problem of parser)
-- Implement basic control structures (if, while, etc.)
+    - Implement Type-Checking (probably a sub problem of parser)
+    - Implement basic control structures (if, while, etc.)
+    - Implement char * operators
+    - Generate Matrix type and operators (most of the code will be copied from
+    my other repository [here](https://github.com/millipedes/linear_algebra_c_library).
 	- Implement in Eval
 	- Make Symbol Table Entries
 - Integrate matrix math library functionality
