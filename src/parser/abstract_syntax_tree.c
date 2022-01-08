@@ -9,6 +9,11 @@
  */
 #include"include/abstract_syntax_tree.h"
 
+/**
+* This function initializes an abstaract syntax tree
+* @param N/a
+* @return The tree that was initialized
+*/
 ast_t * init_ast(void) {
 	ast_t * ast = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE));
 	ast->node = NULL;
@@ -35,6 +40,12 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
     } else {
 		switch(token_list[0]->type) {
 			case TOKEN_L_PAREN:
+                ast->no_children++;
+                ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
+                ast->node = init_node(token_list[0], st);
+                ast->children[0] = init_ast();
+                ast->children[0] = generate_tree(get_sub_list(token_list, 1, get_list_size(token_list)), st, ast->children[0]);
+                return ast;
 			case TOKEN_INITIAL:
 			case TOKEN_WORD:
 			case TOKEN_R_PAREN:
@@ -65,7 +76,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				 * || + INT EXPT || + EXPR EXPR
 				 */
 				if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_INT) {
-					operand1 = get_sub_list(token_list, 1, 2);
+					operand1 = get_sub_list(token_list, 1, 1);
 					operand2 = get_sub_list(token_list, 2, get_list_size(token_list));
 					ast->children[0] = generate_tree(operand1, st, ast->children[0]);
 					ast->children[1] = generate_tree(operand2, st, ast->children[1]);
@@ -75,8 +86,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 					free(operand2);
 					return ast;
 				} else if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) {
-					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 2), st, ast->children[0]);
-					ast->children[1] = generate_tree(get_sub_list(token_list, 1, 2), st, ast->children[1]);
+					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 1), st, ast->children[0]);
+					ast->children[1] = generate_tree(get_sub_list(token_list, 2, get_list_size(token_list)), st, ast->children[1]);
 					return ast;
 				} else if(token_list[1]->type == TOKEN_L_PAREN) {
 					flag = 0;
@@ -140,7 +151,7 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 	}
 
 	token_T ** sub_list = calloc(end - start, sizeof(struct TOKEN_T *));
-	for(int i = start; i < end; i++) {
+	for(int i = start; i <= end; i++) {
 		sub_list[i - start] = init_token(list[i]->id, list[i]->type);
 	}
 	return sub_list;
@@ -151,6 +162,7 @@ int get_list_size(token_T ** list) {
 	for(int i = 0; list[i]->type != TOKEN_EOL; i++) {
 		size = i;
 	}
+    size++;
 	return size;
 }
 
