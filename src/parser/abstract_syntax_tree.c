@@ -101,6 +101,32 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	return NULL;
 }
 
+int evaluate_tree(ast_t * ast, symbol_table_t * st) {
+    if(!strncmp(ast->node->type, "integer", MAX_LINE)) {
+        return *((int *)ast->node->value);
+    } else if(!strncmp(ast->node->type, "operator", MAX_LINE)) {
+        // just switch off the first letter of the name, i.e. the op
+        switch(*((char *)ast->node->name + 0)) {
+            case '+':
+               return addition_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '-':
+               return subtraction_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '*':
+               return multiplication_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '/':
+               return division_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '^':
+               return power_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '<':
+               return less_than_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+            case '>':
+               return greater_than_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+        }
+    }
+    fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
+    exit(1);
+}
+
 token_T ** get_sub_list(token_T ** list, int start, int end) {
 	if(start > end) {
 		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d` END `%d`\nExiting", start, end);

@@ -6,10 +6,10 @@ OBJPATH=src/objects/
 EXEFILE=bin/main
 
 all:$(OBJFILES)
-	$(CC) $(OBJFILES) -o $(EXEFILE)
+	$(CC) $(OBJFILES) -o $(EXEFILE) -lm
 
 %.o: %.c $(HFILES)%.h
-	$(CC) -c $(CFILES) $< -o $@
+	$(CC) -c $(CFILES) $< -o $@ -lm
 
 vim:
 	nvim $(CFILES) 
