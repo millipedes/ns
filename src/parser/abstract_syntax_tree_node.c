@@ -37,52 +37,66 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 			case TOKEN_INT:
 				node->value = calloc(1, sizeof(int));
 				*((int *)node->value + 0) = atoi(token->id);
+                node->type = deep_copy_string(node->type, (char *)"integer");
 				return node; 
 			case TOKEN_WORD:
+                // TODO ADD THE TYPE!!
 				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
+                node->type = deep_copy_string(node->type, (char *)"integer");
 				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
 					*((char *)node->value + i) = token->id[i];
 				}
 				return node; 
 			case TOKEN_L_PAREN:
-				node->value = init_operator("(");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"(");
 				return node;
 			case TOKEN_R_PAREN:
-				node->value = init_operator(")");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)")");
 				return node;
 			case TOKEN_CARROT_POW:
-				node->value = init_operator("^");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"^");
 				return node;  
 			case TOKEN_SPACE:
 				fprintf(stderr, "[ERROR]: TOKEN_SPACE passed to parse tree!");
 				exit(1);
 				return node;  
 			case TOKEN_PLUS:
-				node->value = init_operator("+");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"+");
 				return node;  
 			case TOKEN_MINUS:
-				node->value = init_operator("-");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"-");
 				return node;  
 			case TOKEN_STAR_MULT:
-				node->value = init_operator("*");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"*");
 				return node;  
 			case TOKEN_FS_DIVIDE:
-				node->value = init_operator("/");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"/");
 				return node;  
 			case TOKEN_LESS_THAN:
-				node->value = init_operator("<");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"<");
 				return node;  
 			case TOKEN_GREATER_THAN:
-				node->value = init_operator(">");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)">");
 				return node;  
 			case TOKEN_L_BRACKET:
-				node->value = init_operator("[");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"[");
 				return node;  
 			case TOKEN_R_BRACKET:
-				node->value = init_operator("]");
+                node->type = deep_copy_string(node->type, "operator");
+				node->value = init_operator((char *)"]");
 				return node;  
 			case TOKEN_SEMICOLON:
-				node->value = init_operator(";");
+				node->value = init_operator((char *)";");
 				return node;  
 			case TOKEN_EOL:
 				fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
@@ -113,10 +127,24 @@ void free_node(ast_node_t * node) {
 	if (node->name) {
 		free(node->name);
 	}
-	// Since all values/pointers have size 8 bytes, just cast to char *
-	if((char *)node->value) {
+	/**
+     * A few cases requiring unique freeing of node.  See constants.h for
+     * a complete definition of typename().
+     *
+     * Note that if it is a standard pointer (i.e. not pointer to a struct)
+     * we can cast to any pointer, thus I have chosen char * psuedorandomly
+     */
+	if(!strncmp("integer", node->type, MAX_LINE)) {
 		free((char *)node->value);
 	}
+
+    if (!strncmp("operator", node->type, MAX_LINE)) {
+        free_operator((operator_t *)node->value);
+    }
+
+    if(node->type) {
+        free(node->type);
+    }
 	free(node);
 }	
 

@@ -1,7 +1,4 @@
-#include<string.h>
-#include<stdlib.h>
 #include"include/operator.h"
-#include"../constants_macros/include/constants.h"
 
 
 operator_t * init_operator(char * op) {

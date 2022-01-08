@@ -6,11 +6,7 @@
  * @bug None known
  * @todo Nothing atm
  */
-#include<stdio.h>
-#include<stdlib.h>
 #include"include/token_stack.h"
-#include"include/token.h"
-#include"include/token_types.h"
 
 /**
  * This function initializes a token_sack given a token

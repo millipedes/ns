@@ -7,12 +7,7 @@
  * @todo Add operator_t/variable_t support for free using typename in 
  * constants.h
  */
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include <ctype.h>
 #include"include/symbol_table.h"
-#include"../constants_macros/include/constants.h"
 
 /**
  * This function initializes the symbol_table with all of the reserved symbols
@@ -24,11 +19,11 @@ symbol_table_t * init_symbol_table(void) {
 	st->keys = calloc(ST_PRESET_SIZE, sizeof(char *));
 	st->values = calloc(ST_PRESET_SIZE, sizeof(char *));
 	st->no_symbols = 0;
-	init_null_st_entry(st, "+");
-	init_null_st_entry(st, "-");
-	init_null_st_entry(st, "/");
-	init_null_st_entry(st, "(");
-	init_null_st_entry(st, ")");
+	init_null_st_entry(st, (char *)"+");
+	init_null_st_entry(st, (char *)"-");
+	init_null_st_entry(st, (char *)"/");
+	init_null_st_entry(st, (char *)"(");
+	init_null_st_entry(st, (char *)")");
 	return st;
 }
 

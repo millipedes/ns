@@ -1,5 +1,10 @@
 #ifndef SYM_H
 #define SYM_H
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include <ctype.h>
+#include"../../constants_macros/include/constants.h"
 
 typedef struct SYMBOL_TABLE_T {
 	char ** keys;

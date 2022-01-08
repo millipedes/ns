@@ -21,6 +21,7 @@
 
 typedef struct AST_NODE_T {
 	char * name;
+    char * type;
 	void * value;
 	int is_op;
 } ast_node_t;

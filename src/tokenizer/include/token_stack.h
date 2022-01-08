@@ -10,7 +10,10 @@
 #ifndef TOK_ST_H
 #define TOK_ST_H
 
+#include<stdio.h>
+#include<stdlib.h>
 #include"token.h"
+#include"token_types.h"
 
 typedef struct TOKEN_STACK_STRUCT {
     struct TOKEN_STACK_STRUCT * previous;

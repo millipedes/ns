@@ -1,5 +1,8 @@
 #ifndef OPE_H
 #define OPE_H
+#include<string.h>
+#include<stdlib.h>
+#include"../../constants_macros/include/constants.h"
 
 typedef struct OPERATOR_T {
 	char * op_name;
