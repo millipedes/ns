@@ -31,8 +31,9 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	int flag = 0;
     int operands = 0;
     token_T *** potential_operands;
-	//token_T ** operand1;
-	//token_T ** operand2;
+    /* See initialize_potential_operands for better description of why this
+     * exits
+     */
 
 	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD) {
 		ast->node = init_node(token_list[0], st);
