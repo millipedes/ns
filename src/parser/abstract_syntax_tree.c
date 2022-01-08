@@ -29,8 +29,10 @@ ast_t * init_ast(void) {
  */
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	int flag = 0;
-	token_T ** operand1;
-	token_T ** operand2;
+    int operands = 0;
+    token_T *** potential_operands;
+	//token_T ** operand1;
+	//token_T ** operand2;
 
 	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD) {
 		ast->node = init_node(token_list[0], st);
@@ -76,14 +78,19 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				 * || + INT EXPT || + EXPR EXPR
 				 */
 				if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_INT) {
-					operand1 = get_sub_list(token_list, 1, 1);
-					operand2 = get_sub_list(token_list, 2, get_list_size(token_list));
-					ast->children[0] = generate_tree(operand1, st, ast->children[0]);
-					ast->children[1] = generate_tree(operand2, st, ast->children[1]);
-					free_token(operand1[0]);
-					free_token(operand2[0]);
-					free(operand1);
-					free(operand2);
+                    operands = 2;
+                    potential_operands = initialize_potential_operands(operands);
+					potential_operands[0] = get_sub_list(token_list, 1, 1);
+					potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
+					//operand1 = get_sub_list(token_list, 1, 1);
+					//operand2 = get_sub_list(token_list, 2, get_list_size(token_list));
+					ast->children[0] = generate_tree(potential_operands[0]/*operand1*/, st, ast->children[0]);
+					ast->children[1] = generate_tree(potential_operands[1]/*operand2*/, st, ast->children[1]);
+					//free_token(operand1[0]);
+					//free_token(operand2[0]);
+					//free(operand1);
+					//free(operand2);
+                    free_potential_operands(potential_operands, operands);
 					return ast;
 				} else if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) {
 					ast->children[0] = generate_tree(get_sub_list(token_list, 1, 1), st, ast->children[0]);
@@ -99,8 +106,9 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 							flag--;
 						}
 						if(flag == 0) {
-							ast->children[0] = generate_tree(get_sub_list(token_list, 1, 2), st, ast);
-							ast->children[1] = generate_tree(get_sub_list(token_list, 1, 2), st, ast);
+                            // Seg faults here because no EOL.  Need to fix end condition
+							ast->children[0] = generate_tree(get_sub_list(token_list, 1, i), st, ast->children[0]);
+							ast->children[1] = generate_tree(get_sub_list(token_list, i + 1, get_list_size(token_list)), st, ast->children[1]);
 							return ast;
 						}
 					}
@@ -138,22 +146,70 @@ int evaluate_tree(ast_t * ast, symbol_table_t * st) {
     exit(1);
 }
 
+/** This function requires some explaining in my opinion, so here we go :|
+ *
+ *
+ * This function is a type of "wrapper" for making an efficient way to 
+ * dynamically allocate a list of token_T**'s while still being able to 
+ * reasonaby free them.  The need for this function arises from the fact that
+ * across stack frames, the EOL_TOKEN gets lost from the list (as get_sub_list 
+ * is called multiple times).  I could replace EOL_TOKEN on all lists, but this
+ * would lead to one with two EOL_TOKENs and this would make it very difficult 
+ * to free.
+ * @param
+ * @return
+ */
+token_T *** initialize_potential_operands(int number_of_operands) {
+    token_T *** list_of_list = calloc(number_of_operands, sizeof(struct TOKEN_T **));
+    return list_of_list;
+}
+
+/**
+ * The free function for the potential_operands
+ * @param the potential_operands and the number of operands
+ * @return N/a
+ */
+void free_potential_operands(token_T *** list_of_list, int number_of_operands) {
+    for (int i = 0; i < number_of_operands; i++) {
+        for (int j = 0; list_of_list[i][j]->type != TOKEN_EOL; j++) {
+            free_token(list_of_list[i][j]);
+            if(list_of_list[i][j + 1]->type == TOKEN_EOL) {
+                free_token(list_of_list[i][j + 1]);
+                break;
+            }
+        }
+        free(list_of_list[i]);
+    }
+    free(list_of_list);
+}
+
 token_T ** get_sub_list(token_T ** list, int start, int end) {
 	if(start > end) {
 		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d` END `%d`\nExiting", start, end);
 		exit(1);
 	}
+    int eol_flag = 0;
 
 	if(start == end) {
-		token_T ** sub_list = calloc(1, sizeof(struct TOKEN_T *));
+		token_T ** sub_list = calloc(2, sizeof(struct TOKEN_T *));
 		sub_list[0] = init_token(list[start]->id, list[start]->type);
+        sub_list[1] = init_token((char *)"0", TOKEN_EOL);
 		return sub_list;
 	}
 
-	token_T ** sub_list = calloc(end - start, sizeof(struct TOKEN_T *));
+    for (int i = start; i <= (end - start + 2); i++) {
+        if(list[i]->type == TOKEN_EOL) {
+            eol_flag = 1;
+        }
+    }
+
+	token_T ** sub_list = calloc(eol_flag == 1 ? (end - start + 1) : (end - start + 2), sizeof(struct TOKEN_T *));
 	for(int i = start; i <= end; i++) {
 		sub_list[i - start] = init_token(list[i]->id, list[i]->type);
 	}
+    if(!eol_flag) {
+        sub_list[end - start + 2] = init_token((char *)"0", TOKEN_EOL);
+    }
 	return sub_list;
 }
 
