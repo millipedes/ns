@@ -110,9 +110,13 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 							flag--;
 						}
 						if(flag == 0) {
-                            // Seg faults here because no EOL.  Need to fix end condition
-							ast->children[0] = generate_tree(get_sub_list(token_list, 1, i), st, ast->children[0]);
-							ast->children[1] = generate_tree(get_sub_list(token_list, i + 1, get_list_size(token_list)), st, ast->children[1]);
+                            operands = 2;
+                            potential_operands = initialize_potential_operands(operands);
+                            potential_operands[0] = get_sub_list(token_list, 1, i);
+                            potential_operands[1] = get_sub_list(token_list, i + 1, get_list_size(token_list));
+							ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
+							ast->children[1] = generate_tree(potential_operands[1], st, ast->children[1]);
+                            free_potential_operands(potential_operands, operands);
 							return ast;
 						}
 					}
