@@ -41,7 +41,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 	ast_t * ast = init_ast();
 
 	ast = generate_tree(token_list, st, ast);
-	print_tree(ast);
+	//print_tree(ast);
     printf("%d\n", evaluate_tree(ast, st));
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
