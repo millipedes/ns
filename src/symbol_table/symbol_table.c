@@ -4,8 +4,7 @@
  * @author Matthew C. Lindeman
  * @date 12/22/21
  * @bug None known
- * @todo Add operator_t/variable_t support for free using typename in 
- * constants.h
+ * @todo Nothing atm
  */
 #include"include/symbol_table.h"
 

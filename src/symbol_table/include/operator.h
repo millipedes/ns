@@ -1,3 +1,11 @@
+/**
+ * @file operator.h
+ * @brief This file contains the function definitons relating to operator.c
+ * @author Matthew C. Lindeman
+ * @date January 08, 2022
+ * @bug None know
+ * @todo Nothing atm
+ */
 #ifndef OPE_H
 #define OPE_H
 #include<string.h>
