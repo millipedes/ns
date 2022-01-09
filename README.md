@@ -18,7 +18,7 @@ of the language is now written.
 As it is currently written, this language supports the following context free
 grammar (BNF-like notation):
 ```
-    expr    \(\overrightarrow{} \) + expr expr
+    expr    -> + expr expr
             | - expr expr
             | * expr expr
             | / expr expr
@@ -28,7 +28,7 @@ grammar (BNF-like notation):
             | < expr expr
             | integer
 
-    integer -> x $\ni \mbox{x} \in \mathbb{I}$
+    integer -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
