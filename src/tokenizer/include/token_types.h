@@ -1,3 +1,11 @@
+/**
+* @file token_types.h
+* @brief This file contains the enumeration that containst the token types
+* @author Matthew C. Lindeman
+* @date January 08, 2022
+* @bug None currently
+* @todo None currently
+*/
 #ifndef TOK_TYPE_H
 #define TOK_TYPE_H
 

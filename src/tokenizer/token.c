@@ -32,7 +32,8 @@ token_T * init_token(char * id, int type) {
  */
 void print_token_list(token_T ** token_list) {
     for(int i = 0; token_list[i]->type != TOKEN_EOL; i++) {
-        printf("[TOKEN ID]: %s, [TOKEN TYPE]: %s\n", token_list[i]->id, token_to_str(token_list[i]));
+        printf("[TOKEN ID]: %s, [TOKEN TYPE]: %s\n", token_list[i]->id,
+                token_to_str(token_list[i]));
     }
 }
 
@@ -138,10 +139,12 @@ int operator_degree(token_T * token) {
             return 2;
         case TOKEN_SPACE:
         case TOKEN_EOL:
-        printf("[UNEXPECTED ERROR WHEN TOKENIZING]\n[TOKEN ID]: %s\n", token->id);
+        printf("[UNEXPECTED ERROR WHEN TOKENIZING]\n[TOKEN ID]: %s\n",
+                token->id);
         return 0;
     }
-    printf("[UNEXPECTED ERROR WHEN TOKENIZING]\n[TOKEN ID]: %s\n", token->id);
+    printf("[UNEXPECTED ERROR WHEN TOKENIZING]\n[TOKEN ID]: %s\n",
+            token->id);
     return 0;
 }
 
