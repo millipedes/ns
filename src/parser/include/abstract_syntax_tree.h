@@ -27,6 +27,11 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 	int no_children;
 } ast_t;
 
+typedef struct EVAL_LINKED_LIST {
+    void * value;
+    struct EVAL_LINKED_LIST * prev;
+} eval_linked_list_t;
+
 ast_t * init_ast(void);
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 void * evaluate_tree(ast_t * ast, symbol_table_t * st);

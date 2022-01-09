@@ -33,10 +33,8 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 	ast_t * ast = init_ast();
 
 	ast = generate_tree(token_list, st, ast);
-	print_tree(ast);
-    void * value = evaluate_tree(ast, st);
-    printf("%d\n", *(int *)value);
-    free(value);
+
+    printf("%d\n", *(int *)evaluate_tree(ast, st));
 
     //print_token_list(token_list);
 

@@ -154,16 +154,14 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 
 /**
  * This function evaluates the ast
- * @param The ast and symbol table
- * @return The integer value of the evaluation of the tree
+ * @param The ast, symbol table and a linked list that makes freeing the
+ * pointers produced by this funciton possible
+ * @return The value of the evaluation of the tree
  */
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
-    void * result;
     switch (ast->node->type) {
         case NODE_INT:
-            result = calloc(1, sizeof(int));
-            *(int *)result = *((int *)ast->node->value);
-            return result;
+            return ast->node->value;
         case NODE_L_PAREN:
             return evaluate_tree(ast->children[0], st);
         case NODE_CARROT_POW:
