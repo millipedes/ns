@@ -45,12 +45,15 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 			case TOKEN_L_PAREN:
                 operands = 1;
                 potential_operands = initialize_potential_operands(operands);
-                potential_operands[0] = get_sub_list(token_list, 1, get_list_size(token_list));
+                potential_operands[0] = get_sub_list(token_list, 1, 
+                        get_list_size(token_list));
                 ast->no_children++;
-                ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
+                ast->children = calloc(ast->no_children, 
+                        sizeof(struct ABSTRACT_SYNTAX_TREE *));
                 ast->node = init_node(token_list[0], st);
                 ast->children[0] = init_ast();
-                ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
+                ast->children[0] = generate_tree(potential_operands[0], st,
+                        ast->children[0]);
                 free_potential_operands(potential_operands, operands);
                 return ast;
 			case TOKEN_INITIAL:
@@ -75,29 +78,38 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				// BINARY OPERATORS
 				ast->no_children++;
 				ast->no_children++;
-				ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
+				ast->children = calloc(ast->no_children, 
+                        sizeof(struct ABSTRACT_SYNTAX_TREE *));
 				ast->node = init_node(token_list[0], st);
 				ast->children[0] = init_ast();
 				ast->children[1] = init_ast();
 				/** Massive code blurb checking for + INT INT || + EXPR INT
 				 * || + INT EXPT || + EXPR EXPR
 				 */
-				if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_INT) {
+				if(token_list[1]->type == TOKEN_INT && 
+                        token_list[2]->type == TOKEN_INT) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
-					potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
-					ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
-					ast->children[1] = generate_tree(potential_operands[1], st, ast->children[1]);
+					potential_operands[1] = get_sub_list(token_list, 2, 
+                            get_list_size(token_list));
+					ast->children[0] = generate_tree(potential_operands[0], st,
+                            ast->children[0]);
+					ast->children[1] = generate_tree(potential_operands[1], st,
+                            ast->children[1]);
                     free_potential_operands(potential_operands, operands);
 					return ast;
-				} else if(token_list[1]->type == TOKEN_INT && token_list[2]->type == TOKEN_L_PAREN) {
+				} else if(token_list[1]->type == TOKEN_INT && 
+                        token_list[2]->type == TOKEN_L_PAREN) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
-					potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
-					ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
-					ast->children[1] = generate_tree(potential_operands[1], st, ast->children[1]);
+					potential_operands[1] = get_sub_list(token_list, 2,
+                            get_list_size(token_list));
+					ast->children[0] = generate_tree(potential_operands[0], st,
+                            ast->children[0]);
+					ast->children[1] = generate_tree(potential_operands[1], st,
+                            ast->children[1]);
                     free_potential_operands(potential_operands, operands);
 					return ast;
 				} else if(token_list[1]->type == TOKEN_L_PAREN) {
@@ -111,12 +123,17 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 						}
 						if(flag == 0) {
                             operands = 2;
-                            potential_operands = initialize_potential_operands(operands);
+                            potential_operands
+                                = initialize_potential_operands(operands);
                             potential_operands[0] = get_sub_list(token_list, 1, i);
-                            potential_operands[1] = get_sub_list(token_list, i + 1, get_list_size(token_list));
-							ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
-							ast->children[1] = generate_tree(potential_operands[1], st, ast->children[1]);
-                            free_potential_operands(potential_operands, operands);
+                            potential_operands[1] = get_sub_list(token_list,
+                                    i + 1, get_list_size(token_list));
+							ast->children[0] = generate_tree(potential_operands[0],
+                                    st, ast->children[0]);
+							ast->children[1] = generate_tree(potential_operands[1],
+                                    st, ast->children[1]);
+                            free_potential_operands(potential_operands,
+                                    operands);
 							return ast;
 						}
 					}
