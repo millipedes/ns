@@ -1,3 +1,11 @@
+/**
+ * @file integer.h
+ * @brief This file contains function definitions for the integer.c file
+ * @author Matthew C. Lindeman
+ * @date January 08, 2022
+ * @bug None know
+ * @todo Nothing atm
+ */
 #ifndef TYPE_H
 #define TYPE_H
 
