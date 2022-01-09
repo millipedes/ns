@@ -1,4 +1,4 @@
-# :mountain_snow: rasberry Programming Language
+# :strawberry: rasberry Programming Language
 ## :dart: Project Description/Goal
 rasberry is meant to be a fast relatively powerful programming language.  By
 May 2022 it should have a fully functional stocastic process library natively.
