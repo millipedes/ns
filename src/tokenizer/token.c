@@ -76,6 +76,16 @@ char * token_to_str(token_T * token) {
             return (char *) "TOKEN_R_BRACKET";
         case TOKEN_SEMICOLON:
             return (char *) "TOKEN_SEMICOLON";
+        case TOKEN_EQUAL_TEST:
+            return (char *) "TOKEN_EQUAL_TEST"; 
+        case TOKEN_LTE:
+            return (char *) "TOKEN_LTE";
+        case TOKEN_GTE:
+            return (char *) "TOKEN_GTE";
+        case TOKEN_NE:
+            return (char *) "TOKEN_NE";
+        case TOKEN_ASSIGN:
+            return (char *) "TOKEN_ASSIGN";
         case TOKEN_EOL:
             return (char *) "TOKEN_EOL";
     }
@@ -96,6 +106,11 @@ int is_operator(token_T * token) {
         case TOKEN_WORD:
         case TOKEN_EOL:
 			return 0;
+        case TOKEN_EQUAL_TEST:
+        case TOKEN_LTE:
+        case TOKEN_GTE:
+        case TOKEN_NE:
+        case TOKEN_ASSIGN:
         case TOKEN_L_PAREN:
         case TOKEN_R_PAREN:
         case TOKEN_L_BRACKET:
@@ -129,6 +144,11 @@ int operator_degree(token_T * token) {
         case TOKEN_R_BRACKET:
         case TOKEN_SEMICOLON:
             return 1;
+        case TOKEN_EQUAL_TEST:
+        case TOKEN_LTE:
+        case TOKEN_GTE:
+        case TOKEN_NE:
+        case TOKEN_ASSIGN:
         case TOKEN_CARROT_POW:
         case TOKEN_PLUS:
         case TOKEN_MINUS:

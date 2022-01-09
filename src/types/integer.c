@@ -78,3 +78,56 @@ int greater_than_operator(int value_one, int value_two) {
         return 0;
     }
 }
+
+/**
+ * This function is the equal test to wrapper for type integer
+ * @param The first and second integers to be compared
+ * @return 0: false 1: true
+ */
+int equal_test_operator(int value_one, int value_two) {
+    if(value_one == value_two) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * This function is the less than or equal to wrapper for type integer
+ * @param The first and second integers to be compared
+ * @return 0: false 1: true
+ */
+int less_than_equal_to_operator(int value_one, int value_two) {
+    if(value_one <= value_two) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * This function is the greater than or equal to wrapper for type integer
+ * @param The first and second integers to be compared
+ * @return 0: false 1: true
+ */
+int greater_than_equal_to_operator(int value_one, int value_two) {
+    if(value_one >= value_two) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * This function is the not equal to wrapper for type integer
+ * @param The first and second integers to be compared
+ * @return 0: false 1: true
+ */
+int not_equal_operator(int value_one, int value_two) {
+    if(value_one != value_two) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+

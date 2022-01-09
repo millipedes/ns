@@ -18,5 +18,9 @@ int multiplication_operator(int value_one, int value_two);
 int power_operator(int value_one, int value_two);
 int less_than_operator(int value_one, int value_two);
 int greater_than_operator(int value_one, int value_two);
+int equal_test_operator(int value_one, int value_two);
+int less_than_equal_to_operator(int value_one, int value_two);
+int greater_than_equal_to_operator(int value_one, int value_two);
+int not_equal_operator(int value_one, int value_two);
 
 #endif

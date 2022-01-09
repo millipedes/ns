@@ -36,7 +36,7 @@ token_T * lexer_next_token(lexer_T * lexer) {
             return lexer_parse_word(lexer);
         }
 
-        if(isdigit(lexer->c)) {
+        if(isdigit(lexer->c) && lexer->c != '!') {
             return lexer_parse_digit(lexer);
         }
 
@@ -67,11 +67,43 @@ token_T * lexer_next_token(lexer_T * lexer) {
                 lexer_advance(lexer);
                 return init_token((char *)"/", TOKEN_FS_DIVIDE);
             case '<':
-                lexer_advance(lexer);
-                return init_token((char *)"<", TOKEN_LESS_THAN);
+                if(lexer_peak(lexer) == '=') {
+                    lexer_advance(lexer);
+                    lexer_advance(lexer);
+                    return init_token((char *)"<=", TOKEN_LTE);
+                } else {
+                    lexer_advance(lexer);
+                    return init_token((char *)"<", TOKEN_LESS_THAN);
+                }
             case '>':
-                lexer_advance(lexer);
-                return init_token((char *)">", TOKEN_GREATER_THAN);
+                if(lexer_peak(lexer) == '=') {
+                    lexer_advance(lexer);
+                    lexer_advance(lexer);
+                    return init_token((char *)">=", TOKEN_GTE);
+                } else {
+                    lexer_advance(lexer);
+                    return init_token((char *)">", TOKEN_GREATER_THAN);
+                }
+            case '=':
+                if(lexer_peak(lexer) == '=') {
+                    lexer_advance(lexer);
+                    lexer_advance(lexer);
+                    return init_token((char *)"==", TOKEN_EQUAL_TEST);
+                } else {
+                    lexer_advance(lexer);
+                    return init_token((char *)"=", TOKEN_ASSIGN);
+                }
+            case '!':
+                if(lexer_peak(lexer) == '=') {
+                    lexer_advance(lexer);
+                    lexer_advance(lexer);
+                    return init_token((char *)"!=", TOKEN_NE);
+                } else {
+                    printf("[Error Generated from Lexer]: Unexpected Character `%c`"
+                            "\n", lexer->c);
+                    exit(1);
+                    break;
+                }
             case'[':
                 lexer_advance(lexer);
                 return init_token((char *)"[", TOKEN_L_BRACKET);
@@ -166,6 +198,16 @@ token_T ** generate_token_list(lexer_T * lexer) {
 	count++;
 
 	return token_list;
+}
+
+/**
+ * This function peaks at the next character in source without changing
+ * lexer->c
+ * @param the lexer
+ * @return the character we are peaking at
+ */
+char lexer_peak(lexer_T * lexer) {
+    return lexer->source[lexer->i + 1];
 }
 
 /**

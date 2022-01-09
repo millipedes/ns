@@ -26,6 +26,11 @@ typedef enum {
     TOKEN_L_BRACKET,
     TOKEN_R_BRACKET,
     TOKEN_SEMICOLON,
+    TOKEN_EQUAL_TEST,
+    TOKEN_LTE,
+    TOKEN_GTE,
+    TOKEN_NE,
+    TOKEN_ASSIGN,
     TOKEN_EOL
 } token_type;
 #endif
