@@ -41,6 +41,11 @@ grammar (BNF-like notation):
             | (expr)
             | > expr expr
             | < expr expr
+            | >= expr expr
+            | <= expr expr
+            | == expr expr
+            | != expr expr
+            | = expr expr
             | integer
 
     integer -> x such that x is an element of integers (32 bit signed)
