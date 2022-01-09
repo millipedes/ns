@@ -1,21 +1,13 @@
 /**
 * @file console.c
-* @brief This file is responsible for those functions which the console should perform (i.e. appropriately delegating user input to its proper channels)
+* @brief This file is responsible for those functions which the console should
+* perform (i.e. appropriately delegating user input to its proper channels)
 * @author Matthew C. Lindeman
 * @date Sept 20, 2021
 * @bug None currently
 * @todo A lot
 */
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include"include/menus.h"
-#include"../constants_macros/include/constants.h"
-#include"../lexical_analyzer/include/lexer.h"
-#include"../tokenizer/include/token.h"
-#include"../tokenizer/include/token_stack.h"
-#include"../symbol_table/include/symbol_table.h"
-#include"../parser/include/abstract_syntax_tree.h"
+#include"include/console.h"
 
 /**
  * This function
@@ -41,7 +33,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 	ast_t * ast = init_ast();
 
 	ast = generate_tree(token_list, st, ast);
-	//print_tree(ast);
+	// print_tree(ast);
     printf("%d\n", evaluate_tree(ast, st));
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
