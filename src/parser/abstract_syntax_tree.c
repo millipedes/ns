@@ -175,36 +175,57 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             free_potential_values(potential_values, ast);
             return result;
         case NODE_PLUS:
-            return addition_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = addition_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_MINUS:
-            return subtraction_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = subtraction_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_STAR_MULT:
-            return multiplication_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = multiplication_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_FS_DIVIDE:
-            return division_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = division_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_LESS_THAN:
-            return less_than_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = less_than_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_GREATER_THAN:
-            return greater_than_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = greater_than_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_EQUAL_TEST:
-            return equal_test_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = equal_test_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_LTE:
-            return less_than_equal_to_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = less_than_equal_to_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_GTE:
-            return greater_than_equal_to_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = greater_than_equal_to_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_NE:
-            return not_equal_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = not_equal_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_ASSIGN:
+            potential_values = initialize_potential_values(ast, st);
             break;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
