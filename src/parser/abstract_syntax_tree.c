@@ -145,6 +145,12 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	return NULL;
 }
 
+
+/**
+ * This function evaluates the ast
+ * @param The ast and symbol table
+ * @return The integer value of the evaluation of the tree
+ */
 int evaluate_tree(ast_t * ast, symbol_table_t * st) {
     if(!strncmp(ast->node->type, "integer", MAX_LINE)) {
         return *((int *)ast->node->value);
@@ -210,6 +216,14 @@ void free_potential_operands(token_T *** list_of_list, int number_of_operands) {
     free(list_of_list);
 }
 
+/**
+ * This funciton generates a deep copy of the list between start and end 
+ * inclusive. If the sequence is not terminated by an EOL_TOKEN then this
+ * function adds one.
+ * @param The token_list, the start index (starting at 0), and the end index
+ * (starting at 0).
+ * @return The sub list of tokens
+ */
 token_T ** get_sub_list(token_T ** list, int start, int end) {
 	if(start > end) {
 		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d` END `%d`\nExiting", start, end);
@@ -243,6 +257,11 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
     return sub_list;
 }
 
+/**
+ * This function gets the size of a given token_list
+ * @param the token list
+ * @return the size as an integer
+ */
 int get_list_size(token_T ** list) {
 	int size = 0;
 	for(int i = 0; list[i]->type != TOKEN_EOL; i++) {
@@ -251,6 +270,11 @@ int get_list_size(token_T ** list) {
 	return size;
 }
 
+/**
+ * This function prints an ast
+ * @param the ast
+ * @return N/a
+ */
 void print_tree(ast_t * ast) {
 	if(ast->children == NULL) {
 		printf("%s\n", ast->node->name);
@@ -262,6 +286,11 @@ void print_tree(ast_t * ast) {
 	}
 }
 
+/**
+ * This function frees a given ast
+ * @param the ast
+ * @return N/a
+ */
 void free_tree(ast_t * ast) {
 	if(ast->children == NULL) {
 		if(ast->node) {
