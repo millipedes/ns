@@ -1,6 +1,7 @@
 /**
  * @file lexer.c
- * @brief This file contains functions relacent to the 
+ * @brief This file contains functions that relate to the functions of the
+ * lexer.
  * @author Matthew C. Lindeman
  * @date January 08, 2022
  * @bug None known
@@ -81,7 +82,8 @@ token_T * lexer_next_token(lexer_T * lexer) {
                 lexer_advance(lexer);
                 return init_token((char *)";", TOKEN_SEMICOLON);
             default:
-                printf("[Error Generated from Lexer]: Unexpected Character `%c`\n", lexer->c);
+                printf("[Error Generated from Lexer]: Unexpected Character `%c`"
+                        "\n", lexer->c);
                 exit(1);
                 break;
         }
@@ -100,7 +102,8 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
     char * digit = (char *)calloc(1, sizeof(char));
 	token_T * token;
     while(isdigit(lexer->c)) {
-        integer = (char *)realloc(integer, (strnlen(integer, MAX_LEN) + 1) * sizeof(char));
+        integer = (char *)realloc(integer, (strnlen(integer, MAX_LEN) + 1)
+                * sizeof(char));
         *(digit + 0) = lexer->c;
         strncat(integer, digit, MAX_LINE);
         lexer_advance(lexer);
@@ -122,7 +125,8 @@ token_T * lexer_parse_word(lexer_T * lexer) {
 	token_T * token;
     // As long as current char is a character in the alphabet advance
     while(isalpha(lexer->c)) {
-        keyword = (char *)realloc(keyword, (strnlen(keyword, MAX_LINE) + 1) * sizeof(char));
+        keyword = (char *)realloc(keyword, (strnlen(keyword, MAX_LINE) + 1)
+                * sizeof(char));
         *tmp = lexer->c;
         strncat(keyword, tmp, MAX_LINE);
         lexer_advance(lexer);
