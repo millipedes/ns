@@ -2,12 +2,17 @@
  * @file lexer.c
  * @brief This file contains functions relacent to the 
  * @author Matthew C. Lindeman
- * @date
+ * @date January 08, 2022
  * @bug None known
  * @todo Nothing atm
  */
 #include"include/lexer.h"
 
+/**
+ * This function initializes a lexer_t * struct
+ * @param The IMMUTABLE source from the program to be lexed
+ * @return the new lexer
+ */
 lexer_T * init_lexer(char * source) {
     lexer_T * lexer = calloc(1, sizeof(struct LEXER_STRUCT *));
     lexer->source = source;
@@ -16,6 +21,12 @@ lexer_T * init_lexer(char * source) {
     return lexer;
 }
 
+/**
+ * This function gets the next token from the input (moves the current
+ * character up in the struct)
+ * @param The lexer with the code to be read
+ * @return The newly generated token
+ */
 token_T * lexer_next_token(lexer_T * lexer) {
     while(lexer->c != '\n' && lexer->c != '\r') {
         lexer_skip_whitespace(lexer);
@@ -79,6 +90,11 @@ token_T * lexer_next_token(lexer_T * lexer) {
     return init_token((char *)"0", TOKEN_EOL);
 }
 
+/**
+ * This function parses a digit from some source provided by the lexer
+ * @param The lexer
+ * @return The digit as an integer token
+ */
 token_T * lexer_parse_digit(lexer_T * lexer) {
     char * integer = (char *)calloc(1, sizeof(char));
     char * digit = (char *)calloc(1, sizeof(char));
@@ -95,6 +111,11 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
     return token;
 }
 
+/**
+ * This function parses a keyword from the lexer source
+ * @param The lexer
+ * @return the integer token
+ */
 token_T * lexer_parse_word(lexer_T * lexer) {
     char * keyword = (char *)calloc(1, sizeof(char));
     char * tmp = (char *)calloc(1, sizeof(char));
@@ -112,6 +133,13 @@ token_T * lexer_parse_word(lexer_T * lexer) {
     return token;
 }
 
+/**
+ * This function takes a lexer and generates a list of tokens from the source
+ * @TODO This function doesn't belong here, fix the library looping problem in
+ * token
+ * @param the lexer
+ * @return the token list
+ */
 token_T ** generate_token_list(lexer_T * lexer) {
 	int max = 1;
 	int count = 0;
@@ -136,6 +164,11 @@ token_T ** generate_token_list(lexer_T * lexer) {
 	return token_list;
 }
 
+/**
+ * This function advances where the lexer points to by 1 (assuming valid)
+ * @param the lexer
+ * @return N/a
+ */
 void lexer_advance(lexer_T * lexer) {
     if((lexer->c != '\n' && lexer->c != '\r') && lexer->i < lexer->src_size) {
         lexer->i++;
@@ -143,12 +176,22 @@ void lexer_advance(lexer_T * lexer) {
     }
 }
 
+/**
+ * This function skips whitespace in the source
+ * @param the lexer
+ * @return N/a
+ */
 void lexer_skip_whitespace(lexer_T * lexer) {
     if(lexer->c == ' ') {
         lexer_advance(lexer);
     }
 }
 
+/**
+ * This function frees the lexer (surprisingly easy)
+ * @param the lexer
+ * @return N/a
+ */
 void free_lexer(lexer_T * lexer) {
     if(lexer) {
         free(lexer);

@@ -1,3 +1,12 @@
+/**
+ * @file lexer.h
+ * @brief This file contains the function definitions of those functions
+ * in lexer.c
+ * @author Matthew C. Lindeman
+ * @date January 08, 2022
+ * @bug None known
+ * @todo Nothing atm
+ */
 #ifndef CMM_LEX_H
 #define CMM_LEX_H
 #include<stdio.h>

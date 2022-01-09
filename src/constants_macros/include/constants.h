@@ -1,3 +1,12 @@
+/**
+ * @file constants.h
+ * @brief This file contains all of the constants and macros used in the
+ * prorgamming language
+ * @author Matthew C. Lindeman
+ * @date January 08, 2022
+ * @bug None currently
+ * @todo None currently
+ */
 #ifndef CONST_H
 #define CONST_H
 
