@@ -9,6 +9,7 @@ GNU assembler.
 The program depends on the following:
 - gcc
 - gnu make (fyi just `make` for people on 99% of distros)
+- sudo
 
 The current installation process will put a binary called `millipedes-nsi`
 (millipedes ns interpreter) in your /usr/bin/ directory (where bash looks for
