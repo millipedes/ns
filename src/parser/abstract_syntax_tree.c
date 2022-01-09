@@ -159,14 +159,21 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
  * @return The value of the evaluation of the tree
  */
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
+    void ** potential_values;
+    void * result;
     switch (ast->node->type) {
         case NODE_INT:
-            return ast->node->value;
+            result = calloc(1, sizeof(int));
+            *(int *)result = *(int *)ast->node->value;
+            return result;
         case NODE_L_PAREN:
-            return evaluate_tree(ast->children[0], st);
+            result = evaluate_tree(ast->children[0], st);
+            return result;
         case NODE_CARROT_POW:
-            return power_operator(evaluate_tree(ast->children[0], st),
-                    evaluate_tree(ast->children[1], st));
+            potential_values = initialize_potential_values(ast, st);
+            result = power_operator(potential_values[0], potential_values[1]);
+            free_potential_values(potential_values, ast);
+            return result;
         case NODE_PLUS:
             return addition_operator(evaluate_tree(ast->children[0], st),
                     evaluate_tree(ast->children[1], st));
@@ -244,6 +251,21 @@ void free_potential_operands(token_T *** list_of_list, int number_of_operands) {
         free(list_of_list[i]);
     }
     free(list_of_list);
+}
+
+void ** initialize_potential_values(ast_t * ast, symbol_table_t * st) {
+    void ** pv = calloc(ast->no_children, sizeof(void *));
+    for(int i = 0; i < ast->no_children; i++) {
+        pv[i] =  evaluate_tree(ast->children[i], st);
+    }
+    return pv;
+}
+
+void free_potential_values(void ** values, ast_t * ast) {
+    for (int i = 0; i < ast->no_children; i++) {
+        free(values[i]);
+    }
+    free(values);
 }
 
 /**

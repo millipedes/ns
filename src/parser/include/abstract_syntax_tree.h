@@ -38,6 +38,8 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st);
 token_T ** get_sub_list(token_T ** list, int start, int end);
 token_T *** initialize_potential_operands(int number_of_operands);
 void free_potential_operands(token_T *** list_of_list, int number_of_operands);
+void ** initialize_potential_values(ast_t * ast, symbol_table_t * st);
+void free_potential_values(void ** values, ast_t * ast);
 int get_list_size(token_T ** list);
 void print_tree(ast_t * ast);
 void free_tree(ast_t * ast);
