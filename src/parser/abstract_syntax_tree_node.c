@@ -151,6 +151,8 @@ void free_node(ast_node_t * node) {
         case NODE_INT:
             free((int *)node->value);
             break;
+        case NODE_WORD:
+            free_variable((variable_t *)node->value);
         case NODE_L_PAREN:
             free_operator((operator_t *)node->value);
             break;

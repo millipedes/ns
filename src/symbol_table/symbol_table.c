@@ -15,6 +15,7 @@
  */
 symbol_table_t * init_symbol_table(void) {
 	symbol_table_t * st = calloc(1, sizeof(struct SYMBOL_TABLE_T));
+    // All pointers have same size
 	st->keys = calloc(ST_PRESET_SIZE, sizeof(char *));
 	st->values = calloc(ST_PRESET_SIZE, sizeof(char *));
 	st->no_symbols = 0;
@@ -52,7 +53,7 @@ int check_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
 
     // Index will never be 0 (i.e. 0 will only be if not found), "if" is reserved
     if(!find_symbol(st, name)) {
-        add_st_entry(st, name, value);
+        add_st_entry(st, name, value, node_type_to_st_type(st, name, nt));
         return 0;
     } else {
         write_st_entry(st, name, value);
@@ -80,10 +81,38 @@ int find_symbol(symbol_table_t * st, char * key_to_check) {
 	return 0;
 }
 
+types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
+    int key_index;
+    switch(nt) {
+        case NODE_INT:
+            return INTEGER;
+        case NODE_WORD:
+            key_index = find_symbol(st, key);
+            if(key_index) {
+                return st->types[key_index];
+            }
+            return -1;
+        default:
+            fprintf(stderr, "[SYMBOL TABLE]: node_type_to_st_type error!\n"
+                    "Exiting\n");
+            exit(1);
+    }
+}
+
 void write_st_entry(symbol_table_t * st, char * key, void * value) {
 }
 
-void add_st_entry(symbol_table_t * st, char * key, void * value) {
+void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
+    /** 
+     * The way it is setup, no_children == |keys| => realloc size will always
+     * be no_children, and again all pointers same size
+     */
+    st->keys = realloc(st->keys, st->no_symbols * sizeof(char *));
+    st->keys[st->no_symbols] = key;
+    st->values = realloc(st->values, st->no_symbols * sizeof(char *));
+    st->values[st->no_symbols] = value;
+    st->types[st->no_symbols] = type;
+    st->no_symbols++;
 }
 
 void free_symbol_table(symbol_table_t * st) {

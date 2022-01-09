@@ -10,8 +10,15 @@
 #ifndef VAR_H
 #define VAR_H
 
-typedef struct {
-    int * value;
+#include<stdlib.h>
+#include"../../types/include/types.h"
+
+typedef struct VARIABLE_T {
+    void * value;
+    types type;
 }variable_t;
+
+variable_t * init_variable(void * value, types type);
+void free_variable(variable_t * variable);
 
 #endif

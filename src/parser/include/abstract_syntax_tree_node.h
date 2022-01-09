@@ -19,6 +19,7 @@
 #include"../../tokenizer/include/token_types.h"
 #include"../../constants_macros/include/constants.h"
 #include"../../symbol_table/include/operator.h"
+#include"../../symbol_table/include/variable.h"
 
 typedef struct AST_NODE_T {
 	char * name;
