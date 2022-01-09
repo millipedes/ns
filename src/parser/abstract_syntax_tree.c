@@ -65,7 +65,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 			case TOKEN_L_BRACKET:
 			case TOKEN_R_BRACKET:
 			case TOKEN_SEMICOLON:
-				printf("[ABSTRACT SYNTAX TREE]: Garbage Passed As AST NODE\nExiting\n");
+				printf("[ABSTRACT SYNTAX TREE]: Garbage Passed As AST NODE\n"
+                        "Exiting\n");
 				exit(1);
 				break;
 			case TOKEN_PLUS:
@@ -158,19 +159,26 @@ int evaluate_tree(ast_t * ast, symbol_table_t * st) {
         // just switch off the first letter of the name, i.e. the op
         switch(*((char *)ast->node->name + 0)) {
             case '+':
-               return addition_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return addition_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '-':
-               return subtraction_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return subtraction_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '*':
-               return multiplication_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return multiplication_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '/':
-               return division_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return division_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '^':
-               return power_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return power_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '<':
-               return less_than_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return less_than_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '>':
-               return greater_than_operator(evaluate_tree(ast->children[0], st), evaluate_tree(ast->children[1], st));
+               return greater_than_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
             case '(':
                return evaluate_tree(ast->children[0], st);
         }
@@ -193,7 +201,8 @@ int evaluate_tree(ast_t * ast, symbol_table_t * st) {
  * @return
  */
 token_T *** initialize_potential_operands(int number_of_operands) {
-    token_T *** list_of_list = calloc(number_of_operands, sizeof(struct TOKEN_T **));
+    token_T *** list_of_list = calloc(number_of_operands,
+            sizeof(struct TOKEN_T **));
     return list_of_list;
 }
 
@@ -226,7 +235,8 @@ void free_potential_operands(token_T *** list_of_list, int number_of_operands) {
  */
 token_T ** get_sub_list(token_T ** list, int start, int end) {
 	if(start > end) {
-		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d` END `%d`\nExiting", start, end);
+		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d`"
+                " END `%d`\nExiting", start, end);
 		exit(1);
 	}
     token_T ** sub_list;
