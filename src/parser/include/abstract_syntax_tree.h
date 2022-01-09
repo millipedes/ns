@@ -16,7 +16,6 @@
 #include"abstract_syntax_tree_node.h"
 #include"../../constants_macros/include/constants.h"
 #include"../../symbol_table/include/symbol_table.h"
-#include"../../symbol_table/include/symbol_table.h"
 #include"../../tokenizer/include/token_types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../types/include/integer.h"
@@ -26,11 +25,6 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 	ast_node_t * node;
 	int no_children;
 } ast_t;
-
-typedef struct EVAL_LINKED_LIST {
-    void * value;
-    struct EVAL_LINKED_LIST * prev;
-} eval_linked_list_t;
 
 ast_t * init_ast(void);
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);

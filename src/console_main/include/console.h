@@ -20,6 +20,7 @@
 #include"../../symbol_table/include/symbol_table.h"
 #include"../../parser/include/abstract_syntax_tree.h"
 #include"../../symbol_table/include/symbol_table.h"
+#include"../../symbol_table/include/operator.h"
 
 int exit_check(char user_input_buffer[]);
 void execute_line(char user_input_buffer[], symbol_table_t * st);

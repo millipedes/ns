@@ -6,8 +6,8 @@
  * @bug None know
  * @todo Nothing atm
  */
-#ifndef TYPE_H
-#define TYPE_H
+#ifndef INT_OP_H
+#define INT_OP_H
 
 #include<stdlib.h>
 #include<math.h>

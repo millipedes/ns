@@ -38,6 +38,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
     printf("%d\n", *(int *)value);
     free(value);
 
+
     //print_token_list(token_list);
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
