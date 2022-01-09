@@ -12,6 +12,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"node_types.h"
 #include"abstract_syntax_tree_node.h"
 #include"../../constants_macros/include/constants.h"
 #include"../../symbol_table/include/symbol_table.h"

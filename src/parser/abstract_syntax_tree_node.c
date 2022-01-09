@@ -37,27 +37,27 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 			case TOKEN_INT:
 				node->value = calloc(1, sizeof(int));
 				*((int *)node->value + 0) = atoi(token->id);
-                node->type = deep_copy_string(node->type, (char *)"integer");
+                node->type = NODE_INT;
 				return node; 
 			case TOKEN_WORD:
                 // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
 				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR),
                         sizeof(char));
-                node->type = deep_copy_string(node->type, (char *)"integer");
+                node->type = NODE_INT;
 				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
 					*((char *)node->value + i) = token->id[i];
 				}
 				return node; 
 			case TOKEN_L_PAREN:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_L_PAREN;
 				node->value = init_operator((char *)"(");
 				return node;
 			case TOKEN_R_PAREN:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_R_PAREN;
 				node->value = init_operator((char *)")");
 				return node;
 			case TOKEN_CARROT_POW:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_CARROT_POW;
 				node->value = init_operator((char *)"^");
 				return node;  
 			case TOKEN_SPACE:
@@ -65,40 +65,61 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 				exit(1);
 				return node;  
 			case TOKEN_PLUS:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_PLUS;
 				node->value = init_operator((char *)"+");
 				return node;  
 			case TOKEN_MINUS:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_MINUS;
 				node->value = init_operator((char *)"-");
 				return node;  
 			case TOKEN_STAR_MULT:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_STAR_MULT;
 				node->value = init_operator((char *)"*");
 				return node;  
 			case TOKEN_FS_DIVIDE:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_FS_DIVIDE;
 				node->value = init_operator((char *)"/");
 				return node;  
 			case TOKEN_LESS_THAN:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_LESS_THAN;
 				node->value = init_operator((char *)"<");
 				return node;  
 			case TOKEN_GREATER_THAN:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_GREATER_THAN;
 				node->value = init_operator((char *)">");
 				return node;  
 			case TOKEN_L_BRACKET:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_L_BRACKET;
 				node->value = init_operator((char *)"[");
 				return node;  
 			case TOKEN_R_BRACKET:
-                node->type = deep_copy_string(node->type, "operator");
+                node->type = NODE_R_BRACKET;
 				node->value = init_operator((char *)"]");
 				return node;  
 			case TOKEN_SEMICOLON:
+                node->type = NODE_SEMICOLON;
 				node->value = init_operator((char *)";");
 				return node;  
+            case TOKEN_EQUAL_TEST:
+                node->type = NODE_EQUAL_TEST;
+                node->value = init_operator((char *)"==");
+                return node;
+            case TOKEN_LTE:
+                node->type = NODE_LTE;
+                node->value = init_operator((char *)"<=");
+                return node;
+            case TOKEN_GTE:
+                node->type = NODE_GTE;
+                node->value = init_operator((char *)">=");
+                return node;
+            case TOKEN_NE:
+                node->type = NODE_NE;
+                node->value = init_operator((char *)"!=");
+                return node;
+            case TOKEN_ASSIGN:
+                node->type = NODE_ASSIGN;
+                node->value = init_operator((char *)"=");
+                return node;
 			case TOKEN_EOL:
 				fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
 				exit(1);
@@ -129,23 +150,63 @@ void free_node(ast_node_t * node) {
 	if (node->name) {
 		free(node->name);
 	}
-	/**
-     * A few cases requiring unique freeing of node.  See constants.h for
-     * a complete definition of typename().
-     *
-     * Note that if it is a standard pointer (i.e. not pointer to a struct)
-     * we can cast to any pointer, thus I have chosen char * psuedorandomly
-     */
-	if(!strncmp("integer", node->type, MAX_LINE)) {
-		free((char *)node->value);
-	}
-
-    if (!strncmp("operator", node->type, MAX_LINE)) {
-        free_operator((operator_t *)node->value);
-    }
-
-    if(node->type) {
-        free(node->type);
+	
+    // A few cases requiring unique freeing of node.  
+    switch (node->type) {
+        case NODE_INT:
+            free((int *)node->value);
+            break;
+        case NODE_L_PAREN:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_R_PAREN:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_CARROT_POW:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_PLUS:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_MINUS:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_STAR_MULT:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_FS_DIVIDE:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_LESS_THAN:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_GREATER_THAN:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_L_BRACKET:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_R_BRACKET:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_SEMICOLON:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_EQUAL_TEST:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_LTE:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_GTE:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_NE:
+            free_operator((operator_t *)node->value);
+            break;
+        case NODE_ASSIGN:
+            free_operator((operator_t *)node->value);
+            break;             
     }
 	free(node);
 }	

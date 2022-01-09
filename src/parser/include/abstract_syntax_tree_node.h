@@ -12,6 +12,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"node_types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../symbol_table/include/symbol_table.h"
 #include"../../tokenizer/include/token_stack.h"
@@ -21,7 +22,7 @@
 
 typedef struct AST_NODE_T {
 	char * name;
-    char * type;
+    node_type type;
 	void * value;
 	int is_op;
 } ast_node_t;

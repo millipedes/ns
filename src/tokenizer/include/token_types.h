@@ -1,6 +1,6 @@
 /**
 * @file token_types.h
-* @brief This file contains the enumeration that containst the token types
+* @brief This file contains the enumeration that contains the token types
 * @author Matthew C. Lindeman
 * @date January 08, 2022
 * @bug None currently

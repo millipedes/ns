@@ -30,13 +30,13 @@ int exit_check(char user_input_buffer[]) {
 void execute_line(char user_input_buffer[], symbol_table_t * st) {
     lexer_T * lexer = init_lexer(user_input_buffer);
     token_T ** token_list = generate_token_list(lexer);
-	//ast_t * ast = init_ast();
+	ast_t * ast = init_ast();
 
-	//ast = generate_tree(token_list, st, ast);
-	// print_tree(ast);
-    //printf("%d\n", evaluate_tree(ast, st));
+	ast = generate_tree(token_list, st, ast);
+	print_tree(ast);
+    printf("%d\n", evaluate_tree(ast, st));
 
-    print_token_list(token_list);
+    //print_token_list(token_list);
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
 	for (int i = 0; token_list[i]->type != TOKEN_EOL; i++) {
@@ -48,7 +48,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 	}
 	free(token_list);
     free_lexer(lexer);
-	//free_tree(ast);
+	free_tree(ast);
 }
 
 /**
