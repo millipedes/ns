@@ -69,6 +69,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                         "Exiting\n");
 				exit(1);
 				break;
+            case TOKEN_ASSIGN:
 			case TOKEN_PLUS:
 			case TOKEN_MINUS:
 			case TOKEN_FS_DIVIDE:
@@ -80,7 +81,6 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
             case TOKEN_LTE:
             case TOKEN_GTE:
             case TOKEN_NE:
-            case TOKEN_ASSIGN:
 				// BINARY OPERATORS
 				ast->no_children++;
 				ast->no_children++;
@@ -92,8 +92,10 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				/** Massive code blurb checking for + INT INT || + EXPR INT
 				 * || + INT EXPT || + EXPR EXPR
 				 */
-				if(token_list[1]->type == TOKEN_INT && 
-                        token_list[2]->type == TOKEN_INT) {
+				if((token_list[1]->type == TOKEN_INT && 
+                        token_list[2]->type == TOKEN_INT) ||
+                        (token_list[1]->type == TOKEN_WORD &&
+                         token_list[2]->type == TOKEN_INT)) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
@@ -162,11 +164,14 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
  */
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     void ** potential_values;
-    void * result;
+    void * result = NULL;
     switch (ast->node->type) {
         case NODE_INT:
             result = calloc(1, sizeof(int));
             *(int *)result = *(int *)ast->node->value;
+            return result;
+        case NODE_WORD:
+            result = deep_copy_string((char *)result, (char *)ast->node->value);
             return result;
         case NODE_L_PAREN:
             result = evaluate_tree(ast->children[0], st);
@@ -229,10 +234,14 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             return result;
         case NODE_ASSIGN:
             potential_values = initialize_potential_values(ast, st);
-            if(make_entry(st, (char *)potential_values[0], potential_values[1], ast->children[2]->node->type)) {
+            result = calloc(1, sizeof(char *));
+            if(make_entry(st, (char *)potential_values[0], potential_values[1], ast->children[1]->node->type)) {
+                *((char *)result + 0) = 't';
+            } else {
+                *((char *)result + 0) = 'f';
             }
-
-            break;
+            free_potential_values(potential_values, ast);
+            return result;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
             exit(1);

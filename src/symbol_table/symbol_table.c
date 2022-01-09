@@ -18,6 +18,7 @@ symbol_table_t * init_symbol_table(void) {
     // All pointers have same size
 	st->keys = calloc(ST_PRESET_SIZE, sizeof(char *));
 	st->values = calloc(ST_PRESET_SIZE, sizeof(char *));
+    st->types = calloc(ST_PRESET_SIZE, sizeof(types));
 	st->no_symbols = 0;
 	init_null_st_entry(st, (char *)"if");
 	init_null_st_entry(st, (char *)"while");
@@ -116,16 +117,16 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
      * The way it is setup, no_children == |keys| => realloc size will always
      * be no_children, and again all pointers same size
      */
-    st->keys = realloc(st->keys, st->no_symbols * sizeof(char *));
+    st->keys = realloc(st->keys, (st->no_symbols + 1) * sizeof(char *));
     st->keys[st->no_symbols] = key;
-    st->values = realloc(st->values, st->no_symbols * sizeof(char *));
+    st->values = realloc(st->values, (st->no_symbols + 1) * sizeof(char *));
     st->values[st->no_symbols] = value;
     st->types[st->no_symbols] = type;
     st->no_symbols++;
 }
 
 void free_symbol_table(symbol_table_t * st) {
-	for(int i = 0; i < st->no_symbols; i++) {
+	for(int i = 0; i < (st->no_symbols - 1); i++) {
 		free(st->keys[i]);
 		if(*((char *)st->values + i)) {
 			free((char *)st->values + i);
@@ -135,6 +136,9 @@ void free_symbol_table(symbol_table_t * st) {
 	 *  value is of a type pointer
 	 */
 	free((char **)st->values);
+    if(st->types) {
+        free(st->types);
+    }
 	free(st->keys);
 	free(st);
 }	

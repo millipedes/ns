@@ -16,11 +16,7 @@
  */
 ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
-	node->name = calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
-
-	for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
-		node->name[i] = token->id[i];
-	}
+    node->name = deep_copy_string(node->name, token->id);
 
 	if(is_operator(token)) {
 		node->is_op = 1;
@@ -39,12 +35,8 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
             return node; 
         case TOKEN_WORD:
             // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
-            node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR),
-                    sizeof(char));
-            node->type = NODE_INT;
-            for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
-                *((char *)node->value + i) = token->id[i];
-            }
+            node->value = deep_copy_string(node->value, token->id);
+            node->type = NODE_WORD;
             return node; 
         case TOKEN_L_PAREN:
             node->type = NODE_L_PAREN;
@@ -152,7 +144,8 @@ void free_node(ast_node_t * node) {
             free((int *)node->value);
             break;
         case NODE_WORD:
-            free_variable((variable_t *)node->value);
+            free((char *)node->value);
+            break;
         case NODE_L_PAREN:
             free_operator((operator_t *)node->value);
             break;
