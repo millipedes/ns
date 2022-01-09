@@ -153,7 +153,9 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 
 
 /**
- * This function evaluates the ast
+ * This function evaluates the ast (the whole potential_values and result
+ * nonsense is to free, which does work and is a neat solution imo, not super
+ * efficient tho maybe)
  * @param The ast, symbol table and a linked list that makes freeing the
  * pointers produced by this funciton possible
  * @return The value of the evaluation of the tree
@@ -170,6 +172,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             result = evaluate_tree(ast->children[0], st);
             return result;
         case NODE_CARROT_POW:
+            //NOTE TO SELF you can add ifs over type for operator 100% generic
             potential_values = initialize_potential_values(ast, st);
             result = power_operator(potential_values[0], potential_values[1]);
             free_potential_values(potential_values, ast);
