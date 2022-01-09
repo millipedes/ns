@@ -18,7 +18,7 @@ of the language is now written.
 As it is currently written, this language supports the following context free
 grammar (BNF-like notation):
 ```
-    expr    -> + expr expr
+    expr    \\(\rightarrow \\) + expr expr
             | - expr expr
             | * expr expr
             | / expr expr
