@@ -9,13 +9,15 @@ GNU assembler.
 The program depends on the following:
 - gcc
 - gnu make (fyi just `make` for people on 99% of distros)
-- sudo
 
 The current installation process will put a binary called `millipedes-nsi`
 (millipedes ns interpreter) in your /usr/bin/ directory (where bash looks for
 binaries, i.e. can be called from command line with millipedes-nsi).  This can
 be achieved via:
 ```
+    git clone git@github.com:millipedes/ns.git
+    cd ns
+    mkdir bin/
     sudo make install
 ```
 
@@ -49,7 +51,7 @@ grammar (BNF-like notation):
     - Implement basic control structures (if, while, etc.)
     - Implement char * operators
     - Generate Matrix type and operators (most of the code will be copied from
-    my other repository [here](https://github.com/millipedes/linear_algebra_c_library).
+    my other repository [here](https://github.com/millipedes/linear_algebra_c_library)).
 	- Implement in Eval
 	- Make Symbol Table Entries
 - Integrate matrix math library functionality
