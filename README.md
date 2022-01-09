@@ -52,17 +52,19 @@ grammar (BNF-like notation):
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-- Complete parser
-    - Implement Type-Checking
-    - Implement basic control structures (if, while, etc.)
-    - Implement char * operators
-    - Generate Matrix type and operators (most of the code will be copied from
-    my other repository [here](https://github.com/millipedes/linear_algebra_c_library)).
-	- Implement in Eval
-	- Make Symbol Table Entries
-- Integrate matrix math library functionality
-- Infix function notation
-- Make Symbol Table Stack (i.e. allow language to have stack frames)
-- Make some command line flags work
-- Make UI nicer (for REPL)
-- Assembly translation for GAS 
+1) Get assignment operator working
+2) Fix TOKEN_WORD/add NODE_WORD
+3) Print value of valid word
+4) Error on invalid word
+5) Error on assignment of invalid type
+6) Array/matrix support
+7) Implement type float
+8) Implement type string
+9) implement type function
+10) Implement if, while, for
+11) Implement Stack Frames
+12) Implement File support
+13) Implment Module support
+14) Command Line Arguements/REPL UI improvement
+15) MAYBE Infix function notation
+16) MAYBE Assembly translation for GAS 
