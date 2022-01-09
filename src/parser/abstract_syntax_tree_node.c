@@ -15,7 +15,6 @@
  * @return the node
  */
 ast_node_t * init_node(token_T * token, symbol_table_t * st) {
-	int symbol_index = find_symbol(st, token->id);
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
 	node->name = calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
 
@@ -29,105 +28,101 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 		node->is_op = 0;
 	}
 
-	if(symbol_index != -1) {
-		switch(token->type) {
-			case TOKEN_INITIAL:
-				fprintf(stderr, "[ERROR]: TOKEN_INITIAL passed to parse tree!");
-				exit(1);
-			case TOKEN_INT:
-				node->value = calloc(1, sizeof(int));
-				*((int *)node->value + 0) = atoi(token->id);
-                node->type = NODE_INT;
-				return node; 
-			case TOKEN_WORD:
-                // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
-				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR),
-                        sizeof(char));
-                node->type = NODE_INT;
-				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
-					*((char *)node->value + i) = token->id[i];
-				}
-				return node; 
-			case TOKEN_L_PAREN:
-                node->type = NODE_L_PAREN;
-				node->value = init_operator((char *)"(");
-				return node;
-			case TOKEN_R_PAREN:
-                node->type = NODE_R_PAREN;
-				node->value = init_operator((char *)")");
-				return node;
-			case TOKEN_CARROT_POW:
-                node->type = NODE_CARROT_POW;
-				node->value = init_operator((char *)"^");
-				return node;  
-			case TOKEN_SPACE:
-				fprintf(stderr, "[ERROR]: TOKEN_SPACE passed to parse tree!");
-				exit(1);
-				return node;  
-			case TOKEN_PLUS:
-                node->type = NODE_PLUS;
-				node->value = init_operator((char *)"+");
-				return node;  
-			case TOKEN_MINUS:
-                node->type = NODE_MINUS;
-				node->value = init_operator((char *)"-");
-				return node;  
-			case TOKEN_STAR_MULT:
-                node->type = NODE_STAR_MULT;
-				node->value = init_operator((char *)"*");
-				return node;  
-			case TOKEN_FS_DIVIDE:
-                node->type = NODE_FS_DIVIDE;
-				node->value = init_operator((char *)"/");
-				return node;  
-			case TOKEN_LESS_THAN:
-                node->type = NODE_LESS_THAN;
-				node->value = init_operator((char *)"<");
-				return node;  
-			case TOKEN_GREATER_THAN:
-                node->type = NODE_GREATER_THAN;
-				node->value = init_operator((char *)">");
-				return node;  
-			case TOKEN_L_BRACKET:
-                node->type = NODE_L_BRACKET;
-				node->value = init_operator((char *)"[");
-				return node;  
-			case TOKEN_R_BRACKET:
-                node->type = NODE_R_BRACKET;
-				node->value = init_operator((char *)"]");
-				return node;  
-			case TOKEN_SEMICOLON:
-                node->type = NODE_SEMICOLON;
-				node->value = init_operator((char *)";");
-				return node;  
-            case TOKEN_EQUAL_TEST:
-                node->type = NODE_EQUAL_TEST;
-                node->value = init_operator((char *)"==");
-                return node;
-            case TOKEN_LTE:
-                node->type = NODE_LTE;
-                node->value = init_operator((char *)"<=");
-                return node;
-            case TOKEN_GTE:
-                node->type = NODE_GTE;
-                node->value = init_operator((char *)">=");
-                return node;
-            case TOKEN_NE:
-                node->type = NODE_NE;
-                node->value = init_operator((char *)"!=");
-                return node;
-            case TOKEN_ASSIGN:
-                node->type = NODE_ASSIGN;
-                node->value = init_operator((char *)"=");
-                return node;
-			case TOKEN_EOL:
-				fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
-				exit(1);
-				return node;
-		}
-	} else {
-		printf("[ERROR]: `%s` is undefined", token->id);
-	}
+    switch(token->type) {
+        case TOKEN_INITIAL:
+            fprintf(stderr, "[ERROR]: TOKEN_INITIAL passed to parse tree!");
+            exit(1);
+        case TOKEN_INT:
+            node->value = calloc(1, sizeof(int));
+            *((int *)node->value + 0) = atoi(token->id);
+            node->type = NODE_INT;
+            return node; 
+        case TOKEN_WORD:
+            // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
+            node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR),
+                    sizeof(char));
+            node->type = NODE_INT;
+            for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
+                *((char *)node->value + i) = token->id[i];
+            }
+            return node; 
+        case TOKEN_L_PAREN:
+            node->type = NODE_L_PAREN;
+            node->value = init_operator((char *)"(");
+            return node;
+        case TOKEN_R_PAREN:
+            node->type = NODE_R_PAREN;
+            node->value = init_operator((char *)")");
+            return node;
+        case TOKEN_CARROT_POW:
+            node->type = NODE_CARROT_POW;
+            node->value = init_operator((char *)"^");
+            return node;  
+        case TOKEN_SPACE:
+            fprintf(stderr, "[ERROR]: TOKEN_SPACE passed to parse tree!");
+            exit(1);
+            return node;  
+        case TOKEN_PLUS:
+            node->type = NODE_PLUS;
+            node->value = init_operator((char *)"+");
+            return node;  
+        case TOKEN_MINUS:
+            node->type = NODE_MINUS;
+            node->value = init_operator((char *)"-");
+            return node;  
+        case TOKEN_STAR_MULT:
+            node->type = NODE_STAR_MULT;
+            node->value = init_operator((char *)"*");
+            return node;  
+        case TOKEN_FS_DIVIDE:
+            node->type = NODE_FS_DIVIDE;
+            node->value = init_operator((char *)"/");
+            return node;  
+        case TOKEN_LESS_THAN:
+            node->type = NODE_LESS_THAN;
+            node->value = init_operator((char *)"<");
+            return node;  
+        case TOKEN_GREATER_THAN:
+            node->type = NODE_GREATER_THAN;
+            node->value = init_operator((char *)">");
+            return node;  
+        case TOKEN_L_BRACKET:
+            node->type = NODE_L_BRACKET;
+            node->value = init_operator((char *)"[");
+            return node;  
+        case TOKEN_R_BRACKET:
+            node->type = NODE_R_BRACKET;
+            node->value = init_operator((char *)"]");
+            return node;  
+        case TOKEN_SEMICOLON:
+            node->type = NODE_SEMICOLON;
+            node->value = init_operator((char *)";");
+            return node;  
+        case TOKEN_EQUAL_TEST:
+            node->type = NODE_EQUAL_TEST;
+            node->value = init_operator((char *)"==");
+            return node;
+        case TOKEN_LTE:
+            node->type = NODE_LTE;
+            node->value = init_operator((char *)"<=");
+            return node;
+        case TOKEN_GTE:
+            node->type = NODE_GTE;
+            node->value = init_operator((char *)">=");
+            return node;
+        case TOKEN_NE:
+            node->type = NODE_NE;
+            node->value = init_operator((char *)"!=");
+            return node;
+        case TOKEN_ASSIGN:
+            node->type = NODE_ASSIGN;
+            node->value = init_operator((char *)"=");
+            return node;
+        case TOKEN_EOL:
+            fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
+            exit(1);
+            return node;
+    }
 	return node;
 }
 

@@ -13,17 +13,21 @@
  * @param The first and second integers to be added
  * @return The result of the addition of the two integers
  */
-int addition_operator(int value_one, int value_two) {
-    return value_one + value_two;
-}
- 
+void * addition_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    *(int *)result = *(int *)value_one + *(int *)value_two;
+    return result;
+} 
+  
 /**
  * This function is the subtraction wrapper for type integer
  * @param The first and second integers to be subtracted
  * @return The result of the subtraction of the two integers
  */
-int subtraction_operator(int value_one, int value_two) {
-    return value_one - value_two;
+void * subtraction_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    *(int *)result = *(int *)value_one - *(int *)value_two;
+    return result;
 } 
 
 /**
@@ -31,8 +35,10 @@ int subtraction_operator(int value_one, int value_two) {
  * @param The first and second integers to be multiplied
  * @return The result of the multiplication of the two integers
  */
-int multiplication_operator(int value_one, int value_two) {
-    return value_one * value_two;
+void * multiplication_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    *(int *)result = *(int *)value_one * *(int *)value_two;
+    return result;
 }
 
 /**
@@ -40,8 +46,10 @@ int multiplication_operator(int value_one, int value_two) {
  * @param The first and second integers to be divided
  * @return The result of the division of the two integers
  */
-int division_operator(int value_one, int value_two) {
-    return value_one / value_two;
+void * division_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    *(int *)result = *(int *)value_one / *(int *)value_two;
+    return result;
 } 
 
 /**
@@ -49,8 +57,10 @@ int division_operator(int value_one, int value_two) {
  * @param The first and second integers to be divided
  * @return The result of the division of the two integers
  */
-int power_operator(int value_one, int value_two) {
-    return (int)pow(value_one, value_two);
+void * power_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    *(int *)result = (int)pow(*(int *)value_one, *(int *)value_two);
+    return result;
 }
 
 /**
@@ -58,11 +68,14 @@ int power_operator(int value_one, int value_two) {
  * @param The first and second integers to be compared
  * @return 0: false 1: true
  */
-int less_than_operator(int value_one, int value_two) {
-    if(value_one > value_two) {
-        return 0;
+void * less_than_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    if(*(int *)value_one < *(int *)value_two) {
+        *(int *)result = 1;
+        return result;
     } else {
-        return 1;
+        *(int *)result = 0;
+        return result;
     }
 }
 
@@ -71,11 +84,14 @@ int less_than_operator(int value_one, int value_two) {
  * @param The first and second integers to be compared
  * @return 0: false 1: true
  */
-int greater_than_operator(int value_one, int value_two) {
-    if(value_one > value_two) {
-        return 1;
+void * greater_than_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    if(*(int *)value_one > *(int *)value_two) {
+        *(int *)result = 1;
+        return result;
     } else {
-        return 0;
+        *(int *)result = 0;
+        return result;
     }
 }
 
@@ -84,11 +100,14 @@ int greater_than_operator(int value_one, int value_two) {
  * @param The first and second integers to be compared
  * @return 0: false 1: true
  */
-int equal_test_operator(int value_one, int value_two) {
-    if(value_one == value_two) {
-        return 1;
+void * equal_test_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    if(*(int *)value_one == *(int *)value_two) {
+        *(int *)result = 1;
+        return result;
     } else {
-        return 0;
+        *(int *)result = 0;
+        return result;
     }
 }
 
@@ -97,11 +116,14 @@ int equal_test_operator(int value_one, int value_two) {
  * @param The first and second integers to be compared
  * @return 0: false 1: true
  */
-int less_than_equal_to_operator(int value_one, int value_two) {
-    if(value_one <= value_two) {
-        return 1;
+void * less_than_equal_to_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    if(*(int *)value_one <= *(int *)value_two) {
+        *(int *)result = 1;
+        return result;
     } else {
-        return 0;
+        *(int *)result = 0;
+        return result;
     }
 }
 
@@ -110,11 +132,14 @@ int less_than_equal_to_operator(int value_one, int value_two) {
  * @param The first and second integers to be compared
  * @return 0: false 1: true
  */
-int greater_than_equal_to_operator(int value_one, int value_two) {
-    if(value_one >= value_two) {
-        return 1;
+void * greater_than_equal_to_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    if(*(int *)value_one >= *(int *)value_two) {
+        *(int *)result = 1;
+        return result;
     } else {
-        return 0;
+        *(int *)result = 0;
+        return result;
     }
 }
 
@@ -123,11 +148,14 @@ int greater_than_equal_to_operator(int value_one, int value_two) {
  * @param The first and second integers to be compared
  * @return 0: false 1: true
  */
-int not_equal_operator(int value_one, int value_two) {
-    if(value_one != value_two) {
-        return 1;
+void * not_equal_operator(void * value_one, void * value_two) {
+    void * result = calloc(1, sizeof(int));
+    if(*(int *)value_one != *(int *)value_two) {
+        *(int *)result = 1;
+        return result;
     } else {
-        return 0;
+        *(int *)result = 0;
+        return result;
     }
 }
 

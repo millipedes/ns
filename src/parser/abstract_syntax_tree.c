@@ -157,47 +157,50 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
  * @param The ast and symbol table
  * @return The integer value of the evaluation of the tree
  */
-int evaluate_tree(ast_t * ast, symbol_table_t * st) {
+void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
+    void * result;
     switch (ast->node->type) {
         case NODE_INT:
-            return *((int *)ast->node->value);
+            result = calloc(1, sizeof(int));
+            *(int *)result = *((int *)ast->node->value);
+            return result;
         case NODE_L_PAREN:
-               return evaluate_tree(ast->children[0], st);
+            return evaluate_tree(ast->children[0], st);
         case NODE_CARROT_POW:
-               return power_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return power_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_PLUS:
-               return addition_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return addition_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_MINUS:
-               return subtraction_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return subtraction_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_STAR_MULT:
-               return multiplication_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return multiplication_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_FS_DIVIDE:
-               return division_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return division_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_LESS_THAN:
-               return less_than_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return less_than_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_GREATER_THAN:
-               return greater_than_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return greater_than_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_EQUAL_TEST:
-               return equal_test_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return equal_test_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_LTE:
-               return less_than_equal_to_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return less_than_equal_to_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_GTE:
-               return greater_than_equal_to_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return greater_than_equal_to_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_NE:
-               return not_equal_operator(evaluate_tree(ast->children[0], st),
-                       evaluate_tree(ast->children[1], st));
+            return not_equal_operator(evaluate_tree(ast->children[0], st),
+                    evaluate_tree(ast->children[1], st));
         case NODE_ASSIGN:
-               break;
+            break;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
             exit(1);

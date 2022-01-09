@@ -45,23 +45,12 @@ char * deep_copy_string(char * dest, char * src) {
 	return dest;
 }
 
-int find_symbol(symbol_table_t * st, char * key_to_check) {
-	int flag = 0;
-	
-	if(isdigit(*key_to_check)) {
-		for(int i = 0; i < strnlen(key_to_check, MAX_LEN); i++) {
-			if(!isdigit(*(key_to_check + i))) {
-					flag = 1;
-			}
-		}
-	}
-	if(!flag) {
-		return atoi(key_to_check);
-	}
+//int check_entry(symbol_table_t * st, int 
 
+int find_symbol(symbol_table_t * st, char * key_to_check) {
 	for(int i = 0; i < st->no_symbols; i++) {
 		if(!strncmp(st->keys[i], key_to_check, MAX_LEN)) {
-			return i;
+			return 1;
 		}
 	}
 	return -1;

@@ -9,18 +9,19 @@
 #ifndef TYPE_H
 #define TYPE_H
 
+#include<stdlib.h>
 #include<math.h>
 
-int addition_operator(int value_one, int value_two);
-int subtraction_operator(int value_one, int value_two);
-int division_operator(int value_one, int value_two);
-int multiplication_operator(int value_one, int value_two);
-int power_operator(int value_one, int value_two);
-int less_than_operator(int value_one, int value_two);
-int greater_than_operator(int value_one, int value_two);
-int equal_test_operator(int value_one, int value_two);
-int less_than_equal_to_operator(int value_one, int value_two);
-int greater_than_equal_to_operator(int value_one, int value_two);
-int not_equal_operator(int value_one, int value_two);
+void * addition_operator(void * value_one, void * value_two);
+void * subtraction_operator(void * value_one, void * value_two);
+void * division_operator(void * value_one, void * value_two);
+void * multiplication_operator(void * value_one, void * value_two);
+void * power_operator(void * value_one, void * value_two);
+void * less_than_operator(void * value_one, void * value_two);
+void * greater_than_operator(void * value_one, void * value_two);
+void * equal_test_operator(void * value_one, void * value_two);
+void * less_than_equal_to_operator(void * value_one, void * value_two);
+void * greater_than_equal_to_operator(void * value_one, void * value_two);
+void * not_equal_operator(void * value_one, void * value_two);
 
 #endif
