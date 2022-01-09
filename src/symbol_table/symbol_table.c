@@ -45,7 +45,7 @@ char * deep_copy_string(char * dest, char * src) {
 	return dest;
 }
 
-int check_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
+int make_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
     if(is_reserved(st, name)) {
         fprintf(stderr, "[SYMBOL TABLE] : `%s` is a reserved word!\n", name);
         return -1;
@@ -56,7 +56,7 @@ int check_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
         add_st_entry(st, name, value, node_type_to_st_type(st, name, nt));
         return 0;
     } else {
-        write_st_entry(st, name, value);
+        write_st_entry(st, name, value, nt);
         return 0;
     }
 
@@ -99,7 +99,16 @@ types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
     }
 }
 
-void write_st_entry(symbol_table_t * st, char * key, void * value) {
+void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt) {
+    void * tmp;
+    int key_index = find_symbol(st, key);
+    if(st->types[key_index] != node_type_to_st_type(st, key, nt)) {
+        fprintf(stderr, "[SYMBOL TABLE]: cannot assign `%s` wrong type!\n", key);
+        exit(1);
+    }
+    tmp = st->values[key_index];
+    st->values[key_index] = value;
+    free(tmp);
 }
 
 void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
