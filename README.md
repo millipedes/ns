@@ -15,9 +15,25 @@ However the entire code base is memory leakless for all of the calculator
 operations.  Many more features are coming quickly as the basic infrastructure
 of the language is now written.
 
+As it is currently written, this language supports the following context free
+grammar (BNF-like notation):
+```
+    expr    -> + expr expr
+            | - expr expr
+            | * expr expr
+            | / expr expr
+            | ^ expr expr
+            | (expr)
+            | > expr expr
+            | < expr expr
+            | integer
+
+    integer -> x $\ni \mbox{x} \in \mathbb{I}$
+```
+
 ## :scroll: Immediately on the List to be Implemented
 - Complete parser
-    - Implement Type-Checking (probably a sub problem of parser)
+    - Implement Type-Checking
     - Implement basic control structures (if, while, etc.)
     - Implement char * operators
     - Generate Matrix type and operators (most of the code will be copied from
