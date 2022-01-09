@@ -30,7 +30,7 @@ git-update:
 
 install:
 	all
-	mv bin/main /usr/bin/millipedes-nsi
+	mv bin/main /usr/bin/millipedes-rbi
 
 clean:
 	rm $(OBJFILES)

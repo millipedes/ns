@@ -1,9 +1,9 @@
-# :mountain_snow: ns Programming Language
+# :mountain_snow: rasberry Programming Language
 ## :dart: Project Description/Goal
-ns is meant to be a fast relatively powerful programming language.  By May 2022
-it should have a fully functional stocastic process library natively. Currently
-it is interpreted, but soon I will likely write an assembly translation for
-GNU assembler.
+rasberry is meant to be a fast relatively powerful programming language.  By
+May 2022 it should have a fully functional stocastic process library natively.
+Currently it is interpreted, but soon I will likely write an assembly
+translation for GNU assembler.
 
 ## :floppy_disk: Installation
 The program depends on the following:
@@ -11,15 +11,15 @@ The program depends on the following:
 - gnu make (fyi just `make` for people on 99% of distros)
 - sudo
 
-The current installation process will put a binary called `millipedes-nsi`
-(millipedes ns interpreter) in your /usr/bin/ directory (where bash looks for
-binaries, i.e. can be called from command line with millipedes-nsi).  This can
-be achieved via:
+The current installation process will put a binary called `millipedes-rbi`
+(millipedes rasberry interpreter) in your /usr/bin/ directory (where bash looks
+for binaries, i.e. can be called from command line with millipedes-nsi).  This
+can be achieved via:
 ```
-    git clone https://github.com/millipedes/ns.git
-    cd ns
-    mkdir bin/
-    sudo make install
+    $ git clone https://github.com/millipedes/ns.git
+    $ cd ns
+    $ mkdir bin/
+    $ sudo make install
 ```
 
 ## :star2: Currently Offered Features
