@@ -8,7 +8,7 @@ GNU assembler.
 ## :floppy_disk: Installation
 The program depends on the following:
 - gcc
-- gnu make (fyi just make for people on 99% of distros)
+- gnu make (fyi just `make` for people on 99% of distros)
 
 The current installation process will put a binary called `millipedes-nsi`
 (millipedes ns interpreter) in your /usr/bin/ directory (where bash looks for
