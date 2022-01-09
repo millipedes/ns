@@ -229,6 +229,9 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             return result;
         case NODE_ASSIGN:
             potential_values = initialize_potential_values(ast, st);
+            if(make_entry(st, (char *)potential_values[0], potential_values[1], ast->children[2]->node->type)) {
+            }
+
             break;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");

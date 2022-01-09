@@ -48,16 +48,16 @@ char * deep_copy_string(char * dest, char * src) {
 int make_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
     if(is_reserved(st, name)) {
         fprintf(stderr, "[SYMBOL TABLE] : `%s` is a reserved word!\n", name);
-        return -1;
+        return 0;
     }
 
     // Index will never be 0 (i.e. 0 will only be if not found), "if" is reserved
     if(!find_symbol(st, name)) {
         add_st_entry(st, name, value, node_type_to_st_type(st, name, nt));
-        return 0;
+        return 1;
     } else {
         write_st_entry(st, name, value, nt);
-        return 0;
+        return 1;
     }
 
 }
