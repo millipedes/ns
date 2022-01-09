@@ -11,7 +11,7 @@ The program depends on the following:
 - gnu make (fyi just make for people on 99% of distros)
 
 The current installation process will put a binary called `millipedes-nsi`
-(millipedes ns interpreter) in your /usr/bin/ directory (where bash lookes for
+(millipedes ns interpreter) in your /usr/bin/ directory (where bash looks for
 binaries, i.e. can be called from command line with millipedes-nsi).  This can
 be achieved via:
 ```
