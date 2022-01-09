@@ -28,5 +28,9 @@ git-update:
 	git commit -m "update commit"
 	git push origin main
 
+install:
+	all
+	mv bin/main /usr/bin/millipedes-nsi
+
 clean:
 	rm $(OBJFILES)

@@ -6,6 +6,17 @@ it is interpreted, but soon I will likely write an assembly translation for
 GNU assembler.
 
 ## :floppy_disk: Installation
+The program depends on the following:
+- gcc
+- gnu make (fyi just make for people on 99% of distros)
+
+The current installation process will put a binary called `millipedes-nsi`
+(millipedes ns interpreter) in your /usr/bin/ directory (where bash lookes for
+binaries, i.e. can be called from command line with millipedes-nsi).  This can
+be achieved via:
+```
+    sudo make install
+```
 
 ## :star2: Currently Offered Features
 As of January 7 2022 this is a very complicated [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
