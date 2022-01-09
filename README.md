@@ -15,7 +15,7 @@ The current installation process will put a binary called `millipedes-nsi`
 binaries, i.e. can be called from command line with millipedes-nsi).  This can
 be achieved via:
 ```
-    git clone git@github.com:millipedes/ns.git
+    git clone https://github.com/millipedes/ns.git
     cd ns
     mkdir bin/
     sudo make install
