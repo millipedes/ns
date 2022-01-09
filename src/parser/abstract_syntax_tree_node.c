@@ -41,7 +41,8 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
 				return node; 
 			case TOKEN_WORD:
                 // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
-				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR), sizeof(char));
+				node->value = (char *)calloc(strnlen(token->id, MAX_OPERATOR),
+                        sizeof(char));
                 node->type = deep_copy_string(node->type, (char *)"integer");
 				for(int i = 0; i < strnlen(token->id, MAX_OPERATOR); i++) {
 					*((char *)node->value + i) = token->id[i];
@@ -115,7 +116,8 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
  * @return N/a
  */
 void print_node(ast_node_t * node) {
-	printf("[NODE NAME]: %s\t[IS_OP]: %s\n", node->name, (node->is_op == 1 ? "TRUE" : "FALSE"));
+	printf("[NODE NAME]: %s\t[IS_OP]: %s\n", node->name,
+            (node->is_op == 1 ? "TRUE" : "FALSE"));
 }
 
 /**
