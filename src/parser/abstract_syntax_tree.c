@@ -184,6 +184,9 @@ int evaluate_tree(ast_t * ast, symbol_table_t * st) {
         case NODE_GREATER_THAN:
                return greater_than_operator(evaluate_tree(ast->children[0], st),
                        evaluate_tree(ast->children[1], st));
+        case NODE_EQUAL_TEST:
+               return equal_test_operator(evaluate_tree(ast->children[0], st),
+                       evaluate_tree(ast->children[1], st));
         case NODE_LTE:
                return less_than_equal_to_operator(evaluate_tree(ast->children[0], st),
                        evaluate_tree(ast->children[1], st));
