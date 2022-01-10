@@ -100,7 +100,7 @@ types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
     }
 }
 
-//TODO write in variable_t *
+//TODO write in variable_t * as it stands there is a weird memory problem fix this and that problem is fixed too 
 void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt) {
     void * tmp;
     int key_index = find_symbol(st, key);
@@ -113,7 +113,7 @@ void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt)
     free(tmp);
 }
 
-//TODO write in variable_t *
+//TODO write in variable_t * as it stands there is a weird memory problem fix this and that problem is fixed too 
 void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
     /** 
      * The way it is setup, no_children == |keys| => realloc size will always
@@ -128,7 +128,7 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
 }
 
 void free_symbol_table(symbol_table_t * st) {
-	for(int i = 0; i < (st->no_symbols - 1); i++) {
+	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);
 		if(*((char *)st->values + i)) {
 			free((char *)st->values + i);
