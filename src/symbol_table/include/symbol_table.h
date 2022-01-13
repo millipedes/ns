@@ -39,6 +39,7 @@ int find_symbol(symbol_table_t * st, char * key_to_check);
 types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt);
 void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt);
 void add_st_entry(symbol_table_t * st, char * key, void * value, types type);
+void * get_st_value(symbol_table_t * st, int sym_index);
 void free_symbol_table(symbol_table_t * st);
 
 #endif

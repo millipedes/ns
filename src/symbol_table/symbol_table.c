@@ -126,6 +126,18 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
     st->no_symbols++;
 }
 
+/**
+ * This function gets the st value of a particalar index.
+ * NOTE: this function returns the pointer thus its intened use it only for
+ * getting values not assigning pointers (it will lead to double free/seg 
+ * fault).
+ * @param the symbol table and the symbol index
+ * @return the address of the value of the index sym_index
+ */
+void * get_st_value(symbol_table_t * st, int sym_index) {
+    return ((variable_t *)st->values[sym_index])->value;
+}
+
 void free_symbol_table(symbol_table_t * st) {
 	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);

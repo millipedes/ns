@@ -165,13 +165,28 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     void ** potential_values;
     void * result = NULL;
+    int sym_index = 0;
     switch (ast->node->type) {
         case NODE_INT:
             result = calloc(1, sizeof(int));
             *(int *)result = *(int *)ast->node->value;
             return result;
         case NODE_WORD:
-            result = deep_copy_string((char *)result, (char *)ast->node->value);
+            sym_index = find_symbol(st, ast->node->name);
+            if(sym_index) {
+                switch(st->types[sym_index]) {
+                    case INTEGER:
+                        result = calloc(1, sizeof(int));
+                        *(int *)result = *((int *)get_st_value(st, sym_index));
+                        return result;
+                    case RESERVED:
+                        fprintf(stderr, "TMP DEV FLAG, SOMETHING WENT WRONG, RESERVED EVALED\n");
+                        exit(1);
+                }
+            } else {
+                result = deep_copy_string((char *)result, (char *)ast->node->value);
+                return result;
+            }
             return result;
         case NODE_L_PAREN:
             result = evaluate_tree(ast->children[0], st);
