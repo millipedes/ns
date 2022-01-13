@@ -120,9 +120,9 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
      * be no_children, and again all pointers same size
      */
     st->keys = realloc(st->keys, (st->no_symbols + 1) * sizeof(char *));
-    st->keys[st->no_symbols] = key;
+    st->keys[st->no_symbols] = deep_copy_string(st->keys[st->no_symbols], key);
     st->values = realloc(st->values, (st->no_symbols + 1) * sizeof(char *));
-    st->values[st->no_symbols] = value;
+    st->values[st->no_symbols] = init_variable(value, type);
     st->types[st->no_symbols] = type;
     st->no_symbols++;
 }
@@ -130,9 +130,13 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
 void free_symbol_table(symbol_table_t * st) {
 	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);
-		if(*((char *)st->values + i)) {
-			free((char *)st->values + i);
-		}
+        switch(st->types[i]) {
+            case INTEGER:
+                free_variable((variable_t *)st->values[i]);
+                break;
+            case RESERVED:
+                break;
+        }
 	}
 	/** All pointers have the same size of 8 bytes i.e. as long as the
 	 *  value is of a type pointer

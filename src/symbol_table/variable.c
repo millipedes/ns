@@ -11,6 +11,15 @@
 variable_t * init_variable(void * value, types type) {
     //TODO assign value correctly deep
     variable_t * variable = calloc(1, sizeof(struct VARIABLE_T));
+    switch(type) {
+        case INTEGER:
+            variable->value = calloc(1, sizeof(int));
+            *((int *)variable->value) = *(int *)value;
+            return variable;
+        case RESERVED:
+            fprintf(stderr, "[INIT VARIABLE]: REVSERVED passed as variable\nExiting\n");
+            exit(1);
+    }
 
     return variable;
 }

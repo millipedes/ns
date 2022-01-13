@@ -26,6 +26,7 @@ typedef struct SYMBOL_TABLE_T {
 	char ** keys;
 	void ** values;
     types * types;
+    // Types is only needed here for idying func/var/etc
 	int no_symbols;
 } symbol_table_t;
 
