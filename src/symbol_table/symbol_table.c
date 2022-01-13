@@ -109,11 +109,10 @@ void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt)
         exit(1);
     }
     tmp = st->values[key_index];
-    st->values[key_index] = value;
-    free(tmp);
+    st->values[key_index] = init_variable(value, st->types[key_index]);
+    free_variable(tmp);
 }
 
-//TODO write in variable_t * as it stands there is a weird memory problem fix this and that problem is fixed too 
 void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
     /** 
      * The way it is setup, no_children == |keys| => realloc size will always
