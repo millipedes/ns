@@ -135,7 +135,8 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
  * @return the address of the value of the index sym_index
  */
 void * get_st_value(symbol_table_t * st, int sym_index) {
-    return ((variable_t *)st->values[sym_index])->value;
+    //TODO add functions etc.
+    return st->values[sym_index];
 }
 
 void free_symbol_table(symbol_table_t * st) {

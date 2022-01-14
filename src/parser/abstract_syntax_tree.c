@@ -165,6 +165,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     void ** potential_values;
     void * result = NULL;
+    //variable_t * tmp;
     int sym_index = 0;
     switch (ast->node->type) {
         case NODE_INT:
@@ -176,15 +177,20 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             if(sym_index) {
                 switch(st->types[sym_index]) {
                     case INTEGER:
+                        /** 
+                         * We use the st to get values ie we only care about 
+                         * interesting index
+                         */
                         result = calloc(1, sizeof(int));
-                        *(int *)result = *((int *)get_st_value(st, sym_index));
+                        *(int *)result = *(int *)((variable_t *)get_st_value(st, sym_index))->value;
                         return result;
                     case RESERVED:
                         fprintf(stderr, "TMP DEV FLAG, SOMETHING WENT WRONG, RESERVED EVALED\n");
                         exit(1);
                 }
             } else {
-                result = deep_copy_string((char *)result, (char *)ast->node->value);
+                result = calloc(1, sizeof(int));
+                *(int *)result = st->no_symbols;
                 return result;
             }
             return result;
@@ -250,7 +256,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
         case NODE_ASSIGN:
             potential_values = initialize_potential_values(ast, st);
             result = calloc(1, sizeof(char *));
-            if(make_entry(st, (char *)potential_values[0], potential_values[1], ast->children[1]->node->type)) {
+            if(make_entry(st, ast->children[0]->node->name, potential_values[1], ast->children[1]->node->type)) {
                 *((char *)result + 0) = 't';
             } else {
                 *((char *)result + 0) = 'f';
