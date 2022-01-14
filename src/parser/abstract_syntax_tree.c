@@ -95,7 +95,9 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				if((token_list[1]->type == TOKEN_INT && 
                         token_list[2]->type == TOKEN_INT) ||
                         (token_list[1]->type == TOKEN_WORD &&
-                         token_list[2]->type == TOKEN_INT)) {
+                         token_list[2]->type == TOKEN_INT) ||
+                        (token_list[1]->type == TOKEN_WORD &&
+                         token_list[2]->type == TOKEN_WORD)) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
