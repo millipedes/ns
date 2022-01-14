@@ -144,6 +144,7 @@ void free_symbol_table(symbol_table_t * st) {
 	for(int i = 0; i < st->no_symbols; i++) {
 		free(st->keys[i]);
         switch(st->types[i]) {
+            case DATA_FRAME:
             case INTEGER:
                 free_variable((variable_t *)st->values[i]);
                 break;

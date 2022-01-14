@@ -34,7 +34,6 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->type = NODE_INT;
             return node; 
         case TOKEN_WORD:
-            // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
             node->value = deep_copy_string(node->value, token[0]->id);
             node->type = NODE_WORD;
             return node; 
@@ -79,8 +78,9 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->value = init_operator((char *)">");
             return node;  
         case TOKEN_L_BRACKET:
-            node->type = NODE_L_BRACKET;
-            //node->value = init_matrix(token);
+            // TODO add matrix lookup
+            node->type = NODE_DATA_FRAME;
+            node->value = init_data_frame(token, st);
             return node;  
         case TOKEN_R_BRACKET:
             node->type = NODE_R_BRACKET;
@@ -173,6 +173,8 @@ void free_node(ast_node_t * node) {
         case NODE_GREATER_THAN:
             free_operator((operator_t *)node->value);
             break;
+        case NODE_DATA_FRAME:
+            free_data_frame((data_frame_t *)node->value);
         case NODE_L_BRACKET:
             free_operator((operator_t *)node->value);
             break;

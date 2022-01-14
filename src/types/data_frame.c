@@ -63,6 +63,7 @@ data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
                 }
                 end++;
             }
+            return data_frame;
         default:
             fprintf(stderr, "[INIT DATA FRAME]: Unexpected token passed to init data_frame\nExiting\n");
             exit(1);
@@ -114,3 +115,6 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
     return sub_list;
 }
 
+void free_data_frame(data_frame_t * df) {
+
+}

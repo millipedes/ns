@@ -15,5 +15,6 @@ typedef struct DATA_FRAME_T {
 
 data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st);
 token_T ** get_sub_list(token_T ** list, int start, int end);
+void free_data_frame(data_frame_t * df);
 
 #endif

@@ -71,7 +71,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 			case TOKEN_L_BRACKET:
                 ast->no_children++;
                 ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE));
-                //ast->node = init_node(to
+                ast->node = init_node(token_list, st);
                 return ast;
             case TOKEN_ASSIGN:
 			case TOKEN_PLUS:
@@ -191,6 +191,9 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                         result = calloc(1, sizeof(int));
                         *(int *)result = *(int *)((variable_t *)get_st_value(st, sym_index))->value;
                         return result;
+                    case DATA_FRAME:
+                        result = (data_frame_t *)((variable_t *)get_st_value(st, sym_index))->value;
+                        return result;
                     case RESERVED:
                         fprintf(stderr, "TMP DEV FLAG, SOMETHING WENT WRONG, RESERVED EVALED\n");
                         exit(1);
@@ -269,6 +272,10 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                 *((char *)result + 0) = 'f';
             }
             free(tmp);
+            return result;
+        case NODE_DATA_FRAME:
+            //TODO make deep clone for data_frame_t
+            //result = clone_data_frame(ast->node);
             return result;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");

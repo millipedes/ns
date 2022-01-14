@@ -20,6 +20,7 @@
 #include"../../constants_macros/include/constants.h"
 #include"../../symbol_table/include/operator.h"
 #include"../../symbol_table/include/variable.h"
+#include"../../types/include/data_frame.h"
 
 typedef struct AST_NODE_T {
 	char * name;
