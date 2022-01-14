@@ -107,7 +107,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                             ast->children[1]);
                     free_potential_operands(potential_operands, operands);
 					return ast;
-				} else if(token_list[1]->type == TOKEN_INT && 
+				} else if((token_list[1]->type == TOKEN_INT || 
+                          token_list[1]->type == TOKEN_WORD) && 
                         token_list[2]->type == TOKEN_L_PAREN) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
@@ -254,14 +255,12 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             free_potential_values(potential_values, ast);
             return result;
         case NODE_ASSIGN:
-            potential_values = initialize_potential_values(ast, st);
             result = calloc(1, sizeof(char *));
-            if(make_entry(st, ast->children[0]->node->name, potential_values[1], ast->children[1]->node->type)) {
+            if(make_entry(st, ast->children[0]->node->name, evaluate_tree(ast->children[1], st), ast->children[1]->node->type)) {
                 *((char *)result + 0) = 't';
             } else {
                 *((char *)result + 0) = 'f';
             }
-            free_potential_values(potential_values, ast);
             return result;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");

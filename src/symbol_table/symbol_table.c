@@ -85,6 +85,7 @@ int find_symbol(symbol_table_t * st, char * key_to_check) {
 types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
     int key_index;
     switch(nt) {
+        case NODE_L_PAREN:
         case NODE_INT:
             return INTEGER;
         case NODE_WORD:
