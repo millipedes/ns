@@ -30,6 +30,9 @@ However the entire code base is memory leakless for all of the calculator
 operations.  Many more features are coming quickly as the basic infrastructure
 of the language is now written.
 
+The programming language has a working symbol table (i.e. complete stack frame
+functionality for integers, but no entry point to making new frames yet).
+
 As it is currently written, this language supports the following context free
 grammar (BNF-like notation):
 ```
@@ -57,15 +60,18 @@ integer -> x such that x is an element of integers (32 bit signed)
 ## :scroll: Immediately on the List to be Implemented
 1) Error on invalid word
     1.1) Reserve `exit`/remove console.c nonsense
-2) Error on assignment of invalid type
-3) Array/matrix support
-4) Implement type float
-5) Implement type string
-6) implement type function
-7) Implement if, while, for
-8) Implement Stack Frames
-9) Implement File support
-10) Implment Module support
-11) Command Line Arguements/REPL UI improvement
-12) MAYBE Infix function notation
-13) MAYBE Assembly translation for GAS 
+2) integer_matrix type support
+3) float type support
+4) float_matrix type support
+5) string type support
+6) string_matrix support
+7) matrx_matrix support
+8) Implement if, while, for
+8) Implement stack frames
+9) Implement functions
+10) Implement function entry point (i.e. make main reserved)
+11) Implment Module support
+12) Implement File I/O support
+13) Command Line Arguements/REPL UI improvement
+14) MAYBE Infix function notation
+15) MAYBE Assembly translation for GAS 
