@@ -16,8 +16,8 @@ The current installation process will put a binary called `millipedes-rbi`
 for binaries, i.e. can be called from command line with millipedes-nsi).  This
 can be achieved via:
 ```
-    $ git clone https://github.com/millipedes/ns.git
-    $ cd ns
+    $ git clone https://github.com/millipedes/rasberry.git
+    $ cd rasberry
     $ mkdir bin/
     $ sudo make install
 ```
