@@ -33,38 +33,38 @@ of the language is now written.
 As it is currently written, this language supports the following context free
 grammar (BNF-like notation):
 ```
-    expr    -> + expr expr
-            | - expr expr
-            | * expr expr
-            | / expr expr
-            | ^ expr expr
-            | (expr)
-            | > expr expr
-            | < expr expr
-            | >= expr expr
-            | <= expr expr
-            | == expr expr
-            | != expr expr
-            | = expr expr
-            | integer
+expr    -> + expr expr
+         | - expr expr
+         | * expr expr
+         | / expr expr
+         | ^ expr expr
+         | (expr)
+         | > expr expr
+         | < expr expr
+         | >= expr expr
+         | <= expr expr
+         | == expr expr
+         | != expr expr
+         | = var expr
+         | var
+         | integer
 
-    integer -> x such that x is an element of integers (32 bit signed)
+var     -> integer
+
+integer -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Get assignment operator working
-2) Fix TOKEN_WORD/add NODE_WORD
-3) Print value of valid word
-4) Error on invalid word
-5) Error on assignment of invalid type
-6) Array/matrix support
-7) Implement type float
-8) Implement type string
-9) implement type function
-10) Implement if, while, for
-11) Implement Stack Frames
-12) Implement File support
-13) Implment Module support
-14) Command Line Arguements/REPL UI improvement
-15) MAYBE Infix function notation
-16) MAYBE Assembly translation for GAS 
+1) Error on invalid word
+2) Error on assignment of invalid type
+3) Array/matrix support
+4) Implement type float
+5) Implement type string
+6) implement type function
+7) Implement if, while, for
+8) Implement Stack Frames
+9) Implement File support
+10) Implment Module support
+11) Command Line Arguements/REPL UI improvement
+12) MAYBE Infix function notation
+13) MAYBE Assembly translation for GAS 
