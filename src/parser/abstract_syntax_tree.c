@@ -166,7 +166,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     void ** potential_values;
     void * result = NULL;
-    //variable_t * tmp;
+    void * tmp;
     int sym_index = 0;
     switch (ast->node->type) {
         case NODE_INT:
@@ -256,11 +256,13 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             return result;
         case NODE_ASSIGN:
             result = calloc(1, sizeof(char *));
-            if(make_entry(st, ast->children[0]->node->name, evaluate_tree(ast->children[1], st), ast->children[1]->node->type)) {
+            tmp = evaluate_tree(ast->children[1], st);
+            if(make_entry(st, ast->children[0]->node->name, tmp, ast->children[1]->node->type)) {
                 *((char *)result + 0) = 't';
             } else {
                 *((char *)result + 0) = 'f';
             }
+            free(tmp);
             return result;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
