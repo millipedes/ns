@@ -56,6 +56,7 @@ integer -> x such that x is an element of integers (32 bit signed)
 
 ## :scroll: Immediately on the List to be Implemented
 1) Error on invalid word
+    1.1) Reserve `exit`/remove console.c nonsense
 2) Error on assignment of invalid type
 3) Array/matrix support
 4) Implement type float
