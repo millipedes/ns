@@ -11,6 +11,7 @@
 
 typedef enum {
     INTEGER,
+    DATA_FRAME,
     RESERVED
 } types;
 #endif

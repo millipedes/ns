@@ -33,6 +33,8 @@ of the language is now written.
 The programming language has a working symbol table (i.e. complete stack frame
 functionality for integers, but no entry point to making new frames yet).
 
+As it currently stands, the language will very likely have lazy evaluation.
+
 As it is currently written, this language supports the following context free
 grammar (BNF-like notation):
 ```

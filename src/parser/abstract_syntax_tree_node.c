@@ -14,28 +14,28 @@
  * @param the token from which you initalize the node
  * @return the node
  */
-ast_node_t * init_node(token_T * token, symbol_table_t * st) {
+ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
-    node->name = deep_copy_string(node->name, token->id);
+    node->name = deep_copy_string(node->name, token[0]->id);
 
-	if(is_operator(token)) {
+	if(is_operator(token[0])) {
 		node->is_op = 1;
 	} else {
 		node->is_op = 0;
 	}
 
-    switch(token->type) {
+    switch(token[0]->type) {
         case TOKEN_INITIAL:
             fprintf(stderr, "[ERROR]: TOKEN_INITIAL passed to parse tree!");
             exit(1);
         case TOKEN_INT:
             node->value = calloc(1, sizeof(int));
-            *((int *)node->value + 0) = atoi(token->id);
+            *((int *)node->value + 0) = atoi(token[0]->id);
             node->type = NODE_INT;
             return node; 
         case TOKEN_WORD:
             // TODO ADD THE TYPE/SYMBOL_TABLE LOOKUP!!
-            node->value = deep_copy_string(node->value, token->id);
+            node->value = deep_copy_string(node->value, token[0]->id);
             node->type = NODE_WORD;
             return node; 
         case TOKEN_L_PAREN:
@@ -80,7 +80,7 @@ ast_node_t * init_node(token_T * token, symbol_table_t * st) {
             return node;  
         case TOKEN_L_BRACKET:
             node->type = NODE_L_BRACKET;
-            node->value = init_operator((char *)"[");
+            //node->value = init_matrix(token);
             return node;  
         case TOKEN_R_BRACKET:
             node->type = NODE_R_BRACKET;

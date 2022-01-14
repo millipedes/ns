@@ -36,7 +36,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
      */
 
 	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD) {
-		ast->node = init_node(token_list[0], st);
+		ast->node = init_node(token_list, st);
 		ast->children = NULL;
 		ast->no_children = 0;
 		return ast;
@@ -50,7 +50,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                 ast->no_children++;
                 ast->children = calloc(ast->no_children, 
                         sizeof(struct ABSTRACT_SYNTAX_TREE *));
-                ast->node = init_node(token_list[0], st);
+                ast->node = init_node(token_list, st);
                 ast->children[0] = init_ast();
                 ast->children[0] = generate_tree(potential_operands[0], st,
                         ast->children[0]);
@@ -59,16 +59,20 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 			case TOKEN_INITIAL:
 			case TOKEN_WORD:
 			case TOKEN_R_PAREN:
+			case TOKEN_R_BRACKET:
 			case TOKEN_INT:
 			case TOKEN_EOL:
 			case TOKEN_SPACE:
-			case TOKEN_L_BRACKET:
-			case TOKEN_R_BRACKET:
 			case TOKEN_SEMICOLON:
 				printf("[ABSTRACT SYNTAX TREE]: Garbage Passed As AST NODE\n"
                         "Exiting\n");
 				exit(1);
 				break;
+			case TOKEN_L_BRACKET:
+                ast->no_children++;
+                ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE));
+                //ast->node = init_node(to
+                return ast;
             case TOKEN_ASSIGN:
 			case TOKEN_PLUS:
 			case TOKEN_MINUS:
@@ -86,7 +90,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				ast->no_children++;
 				ast->children = calloc(ast->no_children, 
                         sizeof(struct ABSTRACT_SYNTAX_TREE *));
-				ast->node = init_node(token_list[0], st);
+				ast->node = init_node(token_list, st);
 				ast->children[0] = init_ast();
 				ast->children[1] = init_ast();
 				/** Massive code blurb checking for + INT INT || + EXPR INT
@@ -326,48 +330,6 @@ void free_potential_values(void ** values, ast_t * ast) {
         free(values[i]);
     }
     free(values);
-}
-
-/**
- * This funciton generates a deep copy of the list between start and end 
- * inclusive. If the sequence is not terminated by an EOL_TOKEN then this
- * function adds one.
- * @param The token_list, the start index (starting at 0), and the end index
- * (starting at 0).
- * @return The sub list of tokens
- */
-token_T ** get_sub_list(token_T ** list, int start, int end) {
-	if(start > end) {
-		fprintf(stderr, "[ABSTRACT SYNTAX TREE]: from get_sub_list START: `%d`"
-                " END `%d`\nExiting", start, end);
-		exit(1);
-	}
-    token_T ** sub_list;
-
-	if(start == end) {
-		token_T ** sub_list = calloc(2, sizeof(struct TOKEN_T *));
-		sub_list[0] = init_token(list[start]->id, list[start]->type);
-        sub_list[1] = init_token((char *)"0", TOKEN_EOL);
-		return sub_list;
-	}
-
-    // get_list_size rets list[size]->type == EOL, i.e. check one more
-    if(list[end]->type == TOKEN_EOL) {
-        sub_list = calloc(end - start + 1, sizeof(struct TOKEN_T *));
-        for(int i = start; i < (end + 1); i++) {
-            sub_list[i - start] = init_token(list[i]->id, list[i]->type);
-        }
-    } else {
-        sub_list = calloc(end - start + 2, sizeof(struct TOKEN_T *));
-        for(int i = start; i < (end + 2); i++) {
-            if(i == end + 1) {
-                    sub_list[i - start] = init_token((char *)"0", TOKEN_EOL);
-            } else {
-                sub_list[i - start] = init_token(list[i]->id, list[i]->type);
-            }
-        }
-    }
-    return sub_list;
 }
 
 /**
