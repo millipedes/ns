@@ -18,7 +18,6 @@
 #include"../../symbol_table/include/symbol_table.h"
 #include"../../tokenizer/include/token_types.h"
 #include"../../tokenizer/include/token.h"
-#include"../../types/include/integer.h"
 #include"../../types/include/types.h"
 
 typedef struct ABSTRACT_SYNTAX_TREE {

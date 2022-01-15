@@ -12,16 +12,16 @@
 #include<stdlib.h>
 #include<math.h>
 
-void * addition_operator(void * value_one, void * value_two);
-void * subtraction_operator(void * value_one, void * value_two);
-void * division_operator(void * value_one, void * value_two);
-void * multiplication_operator(void * value_one, void * value_two);
-void * power_operator(void * value_one, void * value_two);
-void * less_than_operator(void * value_one, void * value_two);
-void * greater_than_operator(void * value_one, void * value_two);
-void * equal_test_operator(void * value_one, void * value_two);
-void * less_than_equal_to_operator(void * value_one, void * value_two);
-void * greater_than_equal_to_operator(void * value_one, void * value_two);
-void * not_equal_operator(void * value_one, void * value_two);
+void * integer_addition_operator(void * value_one, void * value_two);
+void * integer_subtraction_operator(void * value_one, void * value_two);
+void * integer_division_operator(void * value_one, void * value_two);
+void * integer_multiplication_operator(void * value_one, void * value_two);
+void * integer_power_operator(void * value_one, void * value_two);
+void * integer_less_than_operator(void * value_one, void * value_two);
+void * integer_greater_than_operator(void * value_one, void * value_two);
+void * integer_equal_test_operator(void * value_one, void * value_two);
+void * integer_less_than_equal_to_operator(void * value_one, void * value_two);
+void * integer_greater_than_equal_to_operator(void * value_one, void * value_two);
+void * integer_not_equal_operator(void * value_one, void * value_two);
 
 #endif
