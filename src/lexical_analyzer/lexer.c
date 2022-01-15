@@ -152,21 +152,25 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
  * @return the integer token
  */
 token_T * lexer_parse_word(lexer_T * lexer) {
-    char * keyword = (char *)calloc(1, sizeof(char));
-    char * tmp = (char *)calloc(1, sizeof(char));
-	token_T * token;
-    // As long as current char is a character in the alphabet advance
+    /*---------------------------------26 from 14---------------------------------*/
+    int word_len = 0;
+    int start = lexer->i;
+    int index = 0;
+    token_T * token = NULL;
     while(isalpha(lexer->c)) {
-        keyword = (char *)realloc(keyword, (strnlen(keyword, MAX_LINE) + 1)
-                * sizeof(char));
-        *tmp = lexer->c;
-        strncat(keyword, tmp, MAX_LINE);
+        word_len++;
         lexer_advance(lexer);
     }
-	token = init_token(keyword, TOKEN_WORD);
-    free(tmp);
-	free(keyword);
+    char * keyword = calloc(word_len, sizeof(char));
+    while(start < word_len) {
+        keyword[index] = lexer->source[start];
+        start++;
+        index++;
+    }
+    token = init_token(keyword, TOKEN_WORD);
+    free(keyword);
     return token;
+
 }
 
 /**
