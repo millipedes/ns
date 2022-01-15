@@ -351,6 +351,7 @@ ter_t ** initialize_potential_values(ast_t * ast, symbol_table_t * st) {
 void free_potential_values(ter_t ** ter, ast_t * ast) {
     for (int i = 0; i < ast->no_children; i++) {
         free(ter[i]->result);
+        free(ter[i]);
     }
     free(ter);
 }
