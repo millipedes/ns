@@ -130,19 +130,22 @@ token_T * lexer_next_token(lexer_T * lexer) {
  * @return The digit as an integer token
  */
 token_T * lexer_parse_digit(lexer_T * lexer) {
-    char * integer = (char *)calloc(1, sizeof(char));
-    char * digit = (char *)calloc(1, sizeof(char));
-	token_T * token;
+    int digit_len = 0;
+    int start = lexer->i;
+    int index = 0;
+    token_T * token = NULL;
     while(isdigit(lexer->c)) {
-        integer = (char *)realloc(integer, (strnlen(integer, MAX_LEN) + 1)
-                * sizeof(char));
-        *(digit + 0) = lexer->c;
-        strncat(integer, digit, MAX_LINE);
+        digit_len++;
         lexer_advance(lexer);
     }
-	token = init_token(integer, TOKEN_INT);
-    free(digit);
-	free(integer);
+    char * digit_word = calloc(digit_len + 1, sizeof(char));
+    while(start < digit_len) {
+        digit_word[index] = lexer->source[start];
+        start++;
+        index++;
+    }
+    token = init_token(digit_word, TOKEN_INT);
+    free(digit_word);
     return token;
 }
 
