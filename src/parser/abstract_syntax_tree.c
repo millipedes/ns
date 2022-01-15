@@ -183,15 +183,15 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
  * @return The value of the evaluation of the tree
  */
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
-    void ** potential_values;
-    void * result = NULL;
-    void * tmp;
+    ter_t ** potential_values;
+    ter_t * ter = calloc(1, sizeof(struct TER_T));
+    ter_t * tmp;
     int sym_index = 0;
     switch (ast->node->type) {
         case NODE_INT:
-            result = calloc(1, sizeof(int));
-            *(int *)result = *(int *)ast->node->value;
-            return result;
+            ter->result = calloc(1, sizeof(int));
+            *(int *)ter->result = *(int *)ast->node->value;
+            return ter;
         case NODE_WORD:
             sym_index = find_symbol(st, ast->node->name);
             if(sym_index) {
@@ -201,94 +201,97 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                          * We use the st to get values ie we only care about 
                          * interesting index
                          */
-                        result = calloc(1, sizeof(int));
-                        *(int *)result = *((int *)get_st_value(st, sym_index));
-                        return result;
+                        ter->result = calloc(1, sizeof(int));
+                        *((int *)ter->result) = *((int *)get_st_value(st, sym_index));
+                        ter->type = INTEGER;
+                        return ter;
                     case DATA_FRAME:
-                        result = clone_data_frame((data_frame_t *)get_st_value(st, sym_index));
-                        return result;
+                        ter->result = clone_data_frame((data_frame_t *)get_st_value(st, sym_index));
+                        ter->type = DATA_FRAME;
+                        return ter;
                     case RESERVED:
                         fprintf(stderr, "TMP DEV FLAG, SOMETHING WENT WRONG, RESERVED EVALED\n");
                         exit(1);
                 }
             } else {
-                result = calloc(1, sizeof(int));
-                *(int *)result = st->no_symbols;
-                return result;
+                ter->result = calloc(1, sizeof(int));
+                *(int *)ter->result = st->no_symbols;
+                return ter;
             }
-            return result;
+            return ter;
         case NODE_L_PAREN:
-            result = evaluate_tree(ast->children[0], st);
-            return result;
+            ter->result = evaluate_tree(ast->children[0], st);
+            return ter;
         case NODE_CARROT_POW:
             //NOTE TO SELF you can add ifs over type for operator 100% generic
             potential_values = initialize_potential_values(ast, st);
-            result = power_operator(potential_values[0], potential_values[1]);
+            ter->result = power_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_PLUS:
             potential_values = initialize_potential_values(ast, st);
-            result = addition_operator(potential_values[0], potential_values[1]);
+            ter->result = addition_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_MINUS:
             potential_values = initialize_potential_values(ast, st);
-            result = subtraction_operator(potential_values[0], potential_values[1]);
+            ter->result = subtraction_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_STAR_MULT:
             potential_values = initialize_potential_values(ast, st);
-            result = multiplication_operator(potential_values[0], potential_values[1]);
+            ter->result = multiplication_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_FS_DIVIDE:
             potential_values = initialize_potential_values(ast, st);
-            result = division_operator(potential_values[0], potential_values[1]);
+            ter->result = division_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_LESS_THAN:
             potential_values = initialize_potential_values(ast, st);
-            result = less_than_operator(potential_values[0], potential_values[1]);
+            ter->result = less_than_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_GREATER_THAN:
             potential_values = initialize_potential_values(ast, st);
-            result = greater_than_operator(potential_values[0], potential_values[1]);
+            ter->result = greater_than_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_EQUAL_TEST:
             potential_values = initialize_potential_values(ast, st);
-            result = equal_test_operator(potential_values[0], potential_values[1]);
+            ter->result = equal_test_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_LTE:
             potential_values = initialize_potential_values(ast, st);
-            result = less_than_equal_to_operator(potential_values[0], potential_values[1]);
+            ter->result = less_than_equal_to_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_GTE:
             potential_values = initialize_potential_values(ast, st);
-            result = greater_than_equal_to_operator(potential_values[0], potential_values[1]);
+            ter->result = greater_than_equal_to_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_NE:
             potential_values = initialize_potential_values(ast, st);
-            result = not_equal_operator(potential_values[0], potential_values[1]);
+            ter->result = not_equal_operator(potential_values[0]->result, potential_values[1]->result);
             free_potential_values(potential_values, ast);
-            return result;
+            return ter;
         case NODE_ASSIGN:
-            result = calloc(1, sizeof(char *));
+            ter->result = calloc(1, sizeof(char *));
             tmp = evaluate_tree(ast->children[1], st);
-            if(make_entry(st, ast->children[0]->node->name, tmp, ast->children[1]->node->type)) {
-                *((char *)result + 0) = 't';
+            if(make_entry(st, ast->children[0]->node->name, tmp->result, ast->children[1]->node->type)) {
+                *((char *)ter->result + 0) = 't';
             } else {
-                *((char *)result + 0) = 'f';
+                *((char *)ter->result + 0) = 'f';
             }
+            free(tmp->result);
             free(tmp);
-            return result;
+            return ter;
         case NODE_DATA_FRAME:
-            result = clone_data_frame((data_frame_t *)ast->node->value);
-            return result;
+            ter->result = clone_data_frame((data_frame_t *)ast->node->value);
+            return ter;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
             exit(1);
@@ -336,19 +339,20 @@ void free_potential_operands(token_T *** list_of_list, int number_of_operands) {
     free(list_of_list);
 }
 
-void ** initialize_potential_values(ast_t * ast, symbol_table_t * st) {
-    void ** pv = calloc(ast->no_children, sizeof(void *));
+// TODO ter_t smh
+ter_t ** initialize_potential_values(ast_t * ast, symbol_table_t * st) {
+    ter_t ** pv = calloc(ast->no_children, sizeof(struct TER_T));
     for(int i = 0; i < ast->no_children; i++) {
         pv[i] =  evaluate_tree(ast->children[i], st);
     }
     return pv;
 }
 
-void free_potential_values(void ** values, ast_t * ast) {
+void free_potential_values(ter_t ** ter, ast_t * ast) {
     for (int i = 0; i < ast->no_children; i++) {
-        free(values[i]);
+        free(ter[i]->result);
     }
-    free(values);
+    free(ter);
 }
 
 /**

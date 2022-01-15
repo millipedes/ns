@@ -34,12 +34,20 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 
 	ast = generate_tree(token_list, st, ast);
 
-    void * value = evaluate_tree(ast, st);
-    printf("%d\n", *(int *)value);
+    ter_t * value = evaluate_tree(ast, st);
 
-    //free(value);
-
-    //print_token_list(token_list);
+    switch (value->type) {
+        case INTEGER:
+            printf("%d\n", *(int *)value->result);
+            free(value->result);
+            free(value);
+            break;
+        case DATA_FRAME:
+            //for(int i = 0; i < 
+            break;
+        case RESERVED:
+            break;
+    }
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
 	for (int i = 0; token_list[i]->type != TOKEN_EOL; i++) {

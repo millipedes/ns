@@ -19,6 +19,7 @@
 #include"../../tokenizer/include/token_types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../types/include/integer.h"
+#include"../../types/include/types.h"
 
 typedef struct ABSTRACT_SYNTAX_TREE {
 	struct ABSTRACT_SYNTAX_TREE ** children;
@@ -26,13 +27,18 @@ typedef struct ABSTRACT_SYNTAX_TREE {
 	int no_children;
 } ast_t;
 
+typedef struct TER_T {
+    void * result;
+    types type;
+} ter_t;
+
 ast_t * init_ast(void);
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 void * evaluate_tree(ast_t * ast, symbol_table_t * st);
 token_T *** initialize_potential_operands(int number_of_operands);
 void free_potential_operands(token_T *** list_of_list, int number_of_operands);
-void ** initialize_potential_values(ast_t * ast, symbol_table_t * st);
-void free_potential_values(void ** values, ast_t * ast);
+ter_t ** initialize_potential_values(ast_t * ast, symbol_table_t * st);
+void free_potential_values(ter_t ** values, ast_t * ast);
 int get_list_size(token_T ** list);
 void print_tree(ast_t * ast);
 void free_tree(ast_t * ast);
