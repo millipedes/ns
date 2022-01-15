@@ -72,7 +72,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
  * This funciton starts the console
  */
 void console_start(symbol_table_t * st) {
-    char user_input_buffer[MAX_LINE];
+    char user_input_buffer[MAX_LINE]  = {};
     /*the buffer used to handle user input*/
 
     print_welcome_screen();
