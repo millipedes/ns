@@ -130,7 +130,7 @@ token_T * lexer_next_token(lexer_T * lexer) {
  * @return The digit as an integer token
  */
 token_T * lexer_parse_digit(lexer_T * lexer) {
-    int digit_len = 0;
+    int digit_len = lexer->i;
     int start = lexer->i;
     int index = 0;
     token_T * token = NULL;
@@ -155,7 +155,7 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
  * @return the integer token
  */
 token_T * lexer_parse_word(lexer_T * lexer) {
-    int word_len = 0;
+    int word_len = lexer->i;
     int start = lexer->i;
     int index = 0;
     token_T * token = NULL;
