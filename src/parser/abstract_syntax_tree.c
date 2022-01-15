@@ -70,7 +70,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				break;
 			case TOKEN_L_BRACKET:
                 ast->no_children++;
-                ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE));
+                ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
+                ast->children[0] = init_ast();
                 ast->node = init_node(token_list, st);
                 return ast;
             case TOKEN_ASSIGN:
@@ -152,7 +153,19 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 							return ast;
 						}
 					}
-				}
+				} else if(token_list[1]->type == TOKEN_WORD && token_list[2]->type == TOKEN_L_BRACKET) {
+                    operands = 2;
+                    potential_operands = initialize_potential_operands(operands);
+					potential_operands[0] = get_sub_list(token_list, 1, 1);
+					potential_operands[1] = get_sub_list(token_list, 2, 
+                            get_list_size(token_list));
+					ast->children[0] = generate_tree(potential_operands[0], st,
+                            ast->children[0]);
+					ast->children[1] = generate_tree(potential_operands[1], st,
+                            ast->children[1]);
+                    free_potential_operands(potential_operands, operands);
+					return ast;
+                }
 				break;
 		}
 	}
@@ -189,10 +202,10 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                          * interesting index
                          */
                         result = calloc(1, sizeof(int));
-                        *(int *)result = *(int *)((variable_t *)get_st_value(st, sym_index))->value;
+                        *(int *)result = *((int *)get_st_value(st, sym_index));
                         return result;
                     case DATA_FRAME:
-                        result = (data_frame_t *)((variable_t *)get_st_value(st, sym_index))->value;
+                        result = clone_data_frame((data_frame_t *)get_st_value(st, sym_index));
                         return result;
                     case RESERVED:
                         fprintf(stderr, "TMP DEV FLAG, SOMETHING WENT WRONG, RESERVED EVALED\n");
@@ -274,8 +287,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             free(tmp);
             return result;
         case NODE_DATA_FRAME:
-            //TODO make deep clone for data_frame_t
-            //result = clone_data_frame(ast->node);
+            result = clone_data_frame((data_frame_t *)ast->node->value);
             return result;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");

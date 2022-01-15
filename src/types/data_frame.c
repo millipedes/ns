@@ -1,8 +1,13 @@
 #include"include/data_frame.h"
 
-data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
+/**
+ * Need to fix circular reference
+ */
+
+data_frame_t * init_data_frame(token_T ** token_list) {
     data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
-    int sym_index = 0;
+    data_frame->length = 0;
+    //int sym_index = 0;
     int inner_mats = 0;
     int flag = 0;
     int start = 0;
@@ -10,27 +15,34 @@ data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
     token_type tmp = token_list[1]->type;
 
 
-    for(data_frame->length = 0; token_list[data_frame->length]->type != TOKEN_EOL; data_frame->length++) {
-        if(token_list[data_frame->length]->type == TOKEN_L_BRACKET) {
-            if(flag == 1) {
-                data_frame->length++;
+    if(tmp == TOKEN_L_BRACKET) {
+        for(int i = 1; token_list[i]->type != TOKEN_EOL; i++) {
+            if(token_list[i]->type == TOKEN_L_BRACKET) {
+                if(flag == 1) {
+                    data_frame->length++;
+                }
+                flag++;
             }
-            flag++;
+            if(token_list[data_frame->length]->type == TOKEN_R_BRACKET) {
+                flag--;
+            }
+            if(flag == 0) {
+                break;
+            }
         }
-        if(token_list[data_frame->length]->type == TOKEN_R_BRACKET) {
-            flag--;
-        }
-        if(flag == 0) {
-            break;
+    } else if(tmp == TOKEN_INT) {
+        while(token_list[data_frame->length]->type != TOKEN_R_BRACKET) {
+            data_frame->length++;
         }
     }
+    data_frame->length--;
 
     // This block accounts for notation like = a []*size
     if(token_list[data_frame->length + 1]->type == TOKEN_STAR_MULT) {
         if(token_list[data_frame->length + 2]->type == TOKEN_INT) {
             data_frame->length = atoi(token_list[data_frame->length + 2]->id);
 
-        } else if(token_list[data_frame->length + 2]->type == TOKEN_WORD) {
+        } /*else if(token_list[data_frame->length + 2]->type == TOKEN_WORD) {
             sym_index = find_symbol(st, token_list[data_frame->length + 2]->id);
             if(sym_index) {
                 data_frame->length = *((int *)st->values[sym_index]);
@@ -38,7 +50,7 @@ data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
                 fprintf(stderr, "[INIT DATA FRAME]: `%s` not defined!\nExiting\n", token_list[data_frame->length + 2]->id);
                 exit(1);
             }
-        } else {
+        } */else {
             fprintf(stderr, "[INIT DATA FRAME]: Something went very wrong `%s` passed as mat len\nExiting\n", token_list[data_frame->length + 2]->id);
             exit(1);
         }
@@ -46,10 +58,10 @@ data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
     switch(tmp) {
         case TOKEN_INT:
             data_frame->type = INTEGER;
-            data_frame->comps = calloc(data_frame->length, sizeof(int));
+            data_frame->comps = calloc(data_frame->length, sizeof(int *));
             for(int i = 0; i < data_frame->length; i++) {
                 data_frame->comps[i] = calloc(1, sizeof(int));
-                *((int *)data_frame->comps[i]) = atoi(token_list[i]->id);
+                *((int *)data_frame->comps[i]) = atoi(token_list[i + 1]->id);
             }
             return data_frame;
         case TOKEN_L_BRACKET:
@@ -57,7 +69,7 @@ data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
             data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
             while((token_list[end]->type == TOKEN_R_BRACKET && token_list[end + 1]->type != TOKEN_SEMICOLON)) {
                 if(token_list[end]->type == TOKEN_R_BRACKET && token_list[end + 1]->type == TOKEN_SEMICOLON) {
-                    data_frame->comps[inner_mats] = init_data_frame(get_sub_list(token_list, start, end), st);
+                    data_frame->comps[inner_mats] = init_data_frame(get_sub_list(token_list, start, end));
                     start = end + 2;
                     inner_mats++;
                 }
@@ -71,6 +83,30 @@ data_frame_t * init_data_frame(token_T ** token_list, symbol_table_t * st) {
     }
 
     return data_frame;
+}
+
+data_frame_t * clone_data_frame(data_frame_t * df) {
+    data_frame_t * copy = calloc(1, sizeof(struct DATA_FRAME_T));
+    copy->length = df->length;
+    switch (df->type) {
+        case INTEGER:
+            copy->comps = calloc(df->length, sizeof(int *));
+            for(int i = 0; i < df->length; i++) {
+                copy->comps[i] = calloc(1, sizeof(int));
+                *((int *)copy->comps[i]) = *((int *)df->comps[i]);
+            }
+            break;
+        case DATA_FRAME:
+            copy = calloc(df->length, sizeof(struct DATA_FRAME_T *));
+            for(int i = 0; i < df->length; i++) {
+                copy->comps[i] = clone_data_frame((data_frame_t *)df->comps[i]);
+            }
+            break;
+        case RESERVED:
+            fprintf(stderr, "[CLONE DATA] Error\nExiting\n");
+            break;
+    }
+    return copy;
 }
 
 /**
@@ -116,5 +152,11 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
 }
 
 void free_data_frame(data_frame_t * df) {
-
+    if(df->type == INTEGER) {
+        for(int i = 0; i < df->length; i++) {
+            free(df->comps[i]);
+        }
+        free(df->comps);
+        free(df);
+    }
 }

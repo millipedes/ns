@@ -88,6 +88,8 @@ types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
         case NODE_L_PAREN:
         case NODE_INT:
             return INTEGER;
+        case NODE_DATA_FRAME:
+            return DATA_FRAME;
         case NODE_WORD:
             key_index = find_symbol(st, key);
             if(key_index) {
@@ -110,8 +112,20 @@ void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt)
         exit(1);
     }
     tmp = st->values[key_index];
-    st->values[key_index] = init_variable(value, st->types[key_index]);
-    free_variable(tmp);
+    switch(node_type_to_st_type(st, key, nt)) {
+        case INTEGER:
+            st->values[key_index] = calloc(1, sizeof(int));
+            *((int *)st->values[key_index]) = *(int *)value;
+            free(tmp);
+            break;
+        case DATA_FRAME:
+            st->values[key_index] = clone_data_frame((data_frame_t *)value);
+            free_data_frame(tmp);
+            break;
+        case RESERVED:
+            fprintf(stderr, "[INIT VARIABLE]: REVSERVED passed as variable\nExiting\n");
+            exit(1);
+    }
 }
 
 void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
@@ -122,7 +136,18 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
     st->keys = realloc(st->keys, (st->no_symbols + 1) * sizeof(char *));
     st->keys[st->no_symbols] = deep_copy_string(st->keys[st->no_symbols], key);
     st->values = realloc(st->values, (st->no_symbols + 1) * sizeof(char *));
-    st->values[st->no_symbols] = init_variable(value, type);
+    switch (type) {
+        case INTEGER:
+            st->values[st->no_symbols] = calloc(1, sizeof(int));
+            *((int *)st->values[st->no_symbols]) = *(int *)value;
+            break;
+        case DATA_FRAME:
+            st->values[st->no_symbols] = clone_data_frame((data_frame_t *)value);
+            break;
+        case RESERVED:
+            fprintf(stderr, "[INIT VARIABLE]: REVSERVED passed as variable\nExiting\n");
+            exit(1);
+    }
     st->types[st->no_symbols] = type;
     st->no_symbols++;
 }
@@ -145,8 +170,10 @@ void free_symbol_table(symbol_table_t * st) {
 		free(st->keys[i]);
         switch(st->types[i]) {
             case DATA_FRAME:
+                free_data_frame((data_frame_t *)(st->values[i]));
+                break;
             case INTEGER:
-                free_variable((variable_t *)st->values[i]);
+                free((int *)st->values[i]);
                 break;
             case RESERVED:
                 break;

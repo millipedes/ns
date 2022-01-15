@@ -80,7 +80,7 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
         case TOKEN_L_BRACKET:
             // TODO add matrix lookup
             node->type = NODE_DATA_FRAME;
-            node->value = init_data_frame(token, st);
+            node->value = init_data_frame(token);
             return node;  
         case TOKEN_R_BRACKET:
             node->type = NODE_R_BRACKET;
@@ -175,6 +175,7 @@ void free_node(ast_node_t * node) {
             break;
         case NODE_DATA_FRAME:
             free_data_frame((data_frame_t *)node->value);
+            break;
         case NODE_L_BRACKET:
             free_operator((operator_t *)node->value);
             break;

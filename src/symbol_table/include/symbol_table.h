@@ -16,6 +16,7 @@
 #include"../../constants_macros/include/constants.h"
 #include"../../parser/include/node_types.h"
 #include"../../types/include/types.h"
+#include"../../types/include/data_frame.h"
 
 /**
  * Noteworthy observation, all pointers to structs have size 8 as well as

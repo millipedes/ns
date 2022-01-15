@@ -19,7 +19,6 @@
 #include"../../tokenizer/include/token_types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../types/include/integer.h"
-#include"../../types/include/data_frame.h"
 
 typedef struct ABSTRACT_SYNTAX_TREE {
 	struct ABSTRACT_SYNTAX_TREE ** children;

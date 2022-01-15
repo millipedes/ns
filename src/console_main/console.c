@@ -36,8 +36,8 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
 
     void * value = evaluate_tree(ast, st);
     printf("%d\n", *(int *)value);
-    free(value);
 
+    //free(value);
 
     //print_token_list(token_list);
 
