@@ -152,7 +152,6 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
  * @return the integer token
  */
 token_T * lexer_parse_word(lexer_T * lexer) {
-    /*---------------------------------26 from 14---------------------------------*/
     int word_len = 0;
     int start = lexer->i;
     int index = 0;
@@ -170,7 +169,6 @@ token_T * lexer_parse_word(lexer_T * lexer) {
     token = init_token(keyword, TOKEN_WORD);
     free(keyword);
     return token;
-
 }
 
 /**

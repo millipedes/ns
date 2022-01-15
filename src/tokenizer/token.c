@@ -17,9 +17,11 @@
  * @return      a pointer the generated token
  */
 token_T * init_token(char * id, int type) {
-    token_T * token = calloc(1, sizeof(struct TOKEN_STRUCT *));
-	token->id = calloc(strnlen(id, MAX_LINE), sizeof(char));
-	for (int i = 0; i < strnlen(id, MAX_LINE); i++) {
+    token_T * token = calloc(1, sizeof(struct TOKEN_STRUCT));
+    size_t len = strnlen(id, MAX_LINE);
+    // NUL terminate => + 1
+	token->id = calloc(len + 1, sizeof(char));
+	for (int i = 0; i < len + 1; i++) {
 		token->id[i] = id[i];
 	}
     token->type = type;
