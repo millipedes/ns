@@ -39,8 +39,9 @@ void init_null_st_entry(symbol_table_t * st, char * entry) {
 }
 
 char * deep_copy_string(char * dest, char * src) {
-	dest = calloc(strnlen(src, MAX_LEN), sizeof(char));
-	for(int i = 0; i < strnlen(src, MAX_LEN); i++) {
+    size_t len = strnlen(src, MAX_LEN);
+	dest = calloc(len + 1, sizeof(char));
+	for(int i = 0; i < strnlen(src, MAX_LEN) + 1; i++) {
 		*(dest + i) = *(src + i);
 	}
 	return dest;
@@ -148,6 +149,7 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
             fprintf(stderr, "[INIT VARIABLE]: REVSERVED passed as variable\nExiting\n");
             exit(1);
     }
+    st->types = realloc(st->types, (st->no_symbols + 1) * sizeof(types));
     st->types[st->no_symbols] = type;
     st->no_symbols++;
 }
