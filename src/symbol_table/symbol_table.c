@@ -167,7 +167,6 @@ void * get_st_value(symbol_table_t * st, int sym_index) {
 
 void free_symbol_table(symbol_table_t * st) {
 	for(int i = 0; i < st->no_symbols; i++) {
-		free(st->keys[i]);
         switch(st->types[i]) {
             case DATA_FRAME:
                 free_data_frame((data_frame_t *)(st->values[i]));
@@ -178,6 +177,7 @@ void free_symbol_table(symbol_table_t * st) {
             case RESERVED:
                 break;
         }
+		free(st->keys[i]);
 	}
 	/** All pointers have the same size of 8 bytes i.e. as long as the
 	 *  value is of a type pointer

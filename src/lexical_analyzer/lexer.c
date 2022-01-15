@@ -15,7 +15,7 @@
  * @return the new lexer
  */
 lexer_T * init_lexer(char * source) {
-    lexer_T * lexer = calloc(1, sizeof(struct LEXER_STRUCT *));
+    lexer_T * lexer = calloc(1, sizeof(struct LEXER_STRUCT));
     lexer->source = source;
     lexer->src_size = strnlen(source, MAX_LINE);
     lexer->c = lexer->source[0];

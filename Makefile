@@ -21,7 +21,7 @@ debug:
 	gdb -q $(EXEFILE)
 
 memcheck:
-	valgrind $(EXEFILE) --leak-check=full
+	valgrind $(EXEFILE) --leak-check=full --read-var-info
 
 git-update:
 	git add Makefile README.md src/ LICENSE .gitignore
