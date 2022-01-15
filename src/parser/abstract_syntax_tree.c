@@ -290,11 +290,23 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             } else {
                 *((char *)ter->result + 0) = 'f';
             }
-            free(tmp->result);
-            free(tmp);
+            switch (tmp->type) {
+                case INTEGER:
+                    free(tmp->result);
+                    free(tmp);
+                    break;
+                case DATA_FRAME:
+                    free_data_frame((data_frame_t *)tmp->result);
+                    free(tmp);
+                    break;
+                case RESERVED:
+                        fprintf(stderr, "[EVAL TREE]: trying to free unexpected data\nExiting\n");
+                        exit(1);
+            }
             return ter;
         case NODE_DATA_FRAME:
             ter->result = clone_data_frame((data_frame_t *)ast->node->value);
+            ter->type = DATA_FRAME;
             return ter;
         default:
             fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
