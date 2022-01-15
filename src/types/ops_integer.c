@@ -6,7 +6,7 @@
  * @bug None know
  * @todo Nothing atm
  */
-#include"include/integer.h"
+#include"include/ops_integer.h"
 
 /**
  * This function is the addition wrapper for type integer

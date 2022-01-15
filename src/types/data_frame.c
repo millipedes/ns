@@ -1,9 +1,5 @@
 #include"include/data_frame.h"
 
-/**
- * Need to fix circular reference
- */
-
 data_frame_t * init_data_frame(token_T ** token_list) {
     data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
     data_frame->length = 0;

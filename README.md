@@ -60,9 +60,8 @@ integer -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Error on invalid word
-    1.1) Reserve `exit`/remove console.c nonsense
-2) integer_matrix type support
+1) Write integer data frame operators
+2) Reserve `exit`/remove console.c nonsense
 3) float type support
 4) float_matrix type support
 5) string type support
