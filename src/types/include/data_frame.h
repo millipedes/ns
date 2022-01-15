@@ -14,7 +14,9 @@ typedef struct DATA_FRAME_T {
 
 data_frame_t * init_data_frame(token_T ** token_list);
 token_T ** get_sub_list(token_T ** list, int start, int end);
+int get_list_size(token_T ** list);
 data_frame_t * clone_data_frame(data_frame_t * df);
+void print_data_frame(data_frame_t * df);
 void free_data_frame(data_frame_t * df);
 
 #endif

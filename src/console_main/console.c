@@ -43,11 +43,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
             free(value);
             break;
         case DATA_FRAME:
-            printf("[ ");
-            for(int i = 0; i < ((data_frame_t *)value->result)->length; i++) {
-                printf("%d ", *(int *)((data_frame_t *)value->result)->comps[i]);
-            }
-            printf("]\n");
+            print_data_frame((data_frame_t *)value->result);
             free_data_frame((data_frame_t *)value->result);
             free(value);
             break;

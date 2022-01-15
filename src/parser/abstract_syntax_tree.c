@@ -373,19 +373,6 @@ void free_potential_values(ter_t ** ter, ast_t * ast) {
 }
 
 /**
- * This function gets the size of a given token_list
- * @param the token list
- * @return the size as an integer
- */
-int get_list_size(token_T ** list) {
-	int size = 0;
-	for(int i = 0; list[i]->type != TOKEN_EOL; i++) {
-		size++;
-	}
-	return size;
-}
-
-/**
  * This function prints an ast
  * @param the ast
  * @return N/a
