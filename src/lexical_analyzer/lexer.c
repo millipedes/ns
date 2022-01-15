@@ -160,7 +160,7 @@ token_T * lexer_parse_word(lexer_T * lexer) {
         word_len++;
         lexer_advance(lexer);
     }
-    char * keyword = calloc(word_len, sizeof(char));
+    char * keyword = calloc(word_len + 1, sizeof(char));
     while(start < word_len) {
         keyword[index] = lexer->source[start];
         start++;
