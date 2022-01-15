@@ -220,7 +220,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             }
             return ter;
         case NODE_L_PAREN:
-            ter->result = evaluate_tree(ast->children[0], st);
+            ter = evaluate_tree(ast->children[0], st);
             return ter;
         case NODE_CARROT_POW:
             //NOTE TO SELF you can add ifs over type for operator 100% generic
