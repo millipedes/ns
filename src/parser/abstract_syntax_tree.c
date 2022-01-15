@@ -185,6 +185,9 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     ter_t ** potential_values;
     ter_t * ter = calloc(1, sizeof(struct TER_T));
+    ter_t * ter2 = NULL;
+    //TODO fix this code
+    // ter never gets freed for '('
     ter_t * tmp;
     int sym_index = 0;
     switch (ast->node->type) {
@@ -220,8 +223,9 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             }
             return ter;
         case NODE_L_PAREN:
-            ter = evaluate_tree(ast->children[0], st);
-            return ter;
+            free(ter);
+            ter2 = evaluate_tree(ast->children[0], st);
+            return ter2;
         case NODE_CARROT_POW:
             //NOTE TO SELF you can add ifs over type for operator 100% generic
             potential_values = initialize_potential_values(ast, st);
