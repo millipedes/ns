@@ -2,7 +2,7 @@
  * @file float.c
  * @brief This file contains the operator wrappes for the float type
  * @author Matthew C. Lindeman
- * @date January 08, 2022
+ * @date January 16, 2022
  * @bug None know
  * @todo Nothing atm
  */

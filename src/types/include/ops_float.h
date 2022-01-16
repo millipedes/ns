@@ -2,7 +2,7 @@
  * @file float.h
  * @brief This file contains function definitions for the float.c file
  * @author Matthew C. Lindeman
- * @date January 08, 2022
+ * @date January 16, 2022
  * @bug None know
  * @todo Nothing atm
  */

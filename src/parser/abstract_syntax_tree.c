@@ -99,12 +99,12 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 				/** Massive code blurb checking for + INT INT || + EXPR INT
 				 * || + INT EXPT || + EXPR EXPR
 				 */
-				if((token_list[1]->type == TOKEN_INT && 
-                        token_list[2]->type == TOKEN_INT) ||
-                        (token_list[1]->type == TOKEN_WORD &&
-                         token_list[2]->type == TOKEN_INT) ||
-                        (token_list[1]->type == TOKEN_WORD &&
-                         token_list[2]->type == TOKEN_WORD)) {
+                // reprase = W | S | I | F & 1==2
+				if((token_list[1]->type == TOKEN_INT
+                            || token_list[1]->type == TOKEN_WORD
+                            || token_list[1]->type == TOKEN_FLOAT
+                            || token_list[1]->type == TOKEN_STRING)
+                        && token_list[1]->type == token_list[2]->type) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
@@ -116,8 +116,10 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                             ast->children[1]);
                     free_potential_operands(potential_operands, operands);
 					return ast;
-				} else if((token_list[1]->type == TOKEN_INT || 
-                          token_list[1]->type == TOKEN_WORD) && 
+				} else if((token_list[1]->type == TOKEN_INT
+                            || token_list[1]->type == TOKEN_WORD
+                            || token_list[1]->type == TOKEN_STRING
+                            || token_list[1]->type == TOKEN_FLOAT) && 
                         token_list[2]->type == TOKEN_L_PAREN) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
@@ -218,7 +220,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                     case FLOAT:
                         ter->result = calloc(1, sizeof(double));
                         *((double *)ter->result) = *((double *)get_st_value(st, sym_index));
-                        ter->type = INTEGER;
+                        ter->type = FLOAT;
                         return ter;
                     case DATA_FRAME:
                         ter->result = clone_data_frame((data_frame_t *)get_st_value(st, sym_index));
@@ -250,57 +252,68 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
         case NODE_CARROT_POW:
             //NOTE TO SELF you can add ifs over type for operator 100% generic
             potential_values = initialize_potential_values(ast, st);
-            ter->result = power_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = power_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_PLUS:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = addition_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = addition_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_MINUS:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = subtraction_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = subtraction_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_STAR_MULT:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = multiplication_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = multiplication_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_FS_DIVIDE:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = division_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = division_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_LESS_THAN:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = less_than_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = less_than_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_GREATER_THAN:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = greater_than_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = greater_than_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_EQUAL_TEST:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = equal_test_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = equal_test_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_LTE:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = less_than_equal_to_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = less_than_equal_to_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_GTE:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = greater_than_equal_to_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = greater_than_equal_to_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_NE:
             potential_values = initialize_potential_values(ast, st);
-            ter->result = not_equal_operator(potential_values[0]->result, potential_values[1]->result, ter->type);
+            ter->type = potential_values[0]->type;
+            ter->result = not_equal_operator(potential_values[0]->result, potential_values[1]->result, ter->type); 
             free_potential_values(potential_values, ast);
             return ter;
         case NODE_ASSIGN:

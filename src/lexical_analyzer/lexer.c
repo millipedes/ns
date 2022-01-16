@@ -143,6 +143,7 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
         if(lexer->c == '.') {
             float_flag = 1;
             lexer_advance(lexer);
+            digit_len++;
         }
     }
     char * digit_word = calloc(digit_len + 1, sizeof(char));

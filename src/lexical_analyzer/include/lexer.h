@@ -15,6 +15,8 @@
 #include<ctype.h>
 #include "../../tokenizer/include/token.h"
 #include"../../constants_macros/include/constants.h"
+//TODO add this for data_frame element access/stack frame stuff
+//#include"../../symbol_table/include/symbol_table.h"
 
 typedef struct LEXER_STRUCT {
     char * source;
