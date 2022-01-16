@@ -15,6 +15,8 @@
 
 typedef enum {
     INTEGER,
+    STRING,
+    FLOAT,
     DATA_FRAME,
     RESERVED
 } types;

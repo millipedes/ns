@@ -13,6 +13,8 @@ typedef enum {
     TOKEN_INITIAL,
     TOKEN_INT,
     TOKEN_WORD,
+    TOKEN_STRING,
+    TOKEN_FLOAT,
     TOKEN_L_PAREN,
     TOKEN_R_PAREN,
     TOKEN_CARROT_POW,

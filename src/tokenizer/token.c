@@ -52,6 +52,12 @@ char * token_to_str(token_T * token) {
             return (char *) "TOKEN_INT";
         case TOKEN_WORD:
             return (char *) "TOKEN_WORD";
+        case TOKEN_STRING: 
+            return (char *) "TOKEN_STRING";
+        case TOKEN_FLOAT:
+            return (char *) "TOKEN_FLOAT";
+        //case TOKEN_QUOTE:
+        //    return (char *) "TOKEN_QUOTE";
         case TOKEN_L_PAREN:
             return (char *) "TOKEN_L_PAREN";
         case TOKEN_R_PAREN:
@@ -104,6 +110,9 @@ int is_operator(token_T * token) {
 	switch(token->type) {
         case TOKEN_INITIAL:
         case TOKEN_INT:
+        case TOKEN_STRING:
+        case TOKEN_FLOAT:
+        //case TOKEN_QUOTE:
         case TOKEN_SEMICOLON:
         case TOKEN_WORD:
         case TOKEN_EOL:
@@ -140,6 +149,9 @@ int operator_degree(token_T * token) {
         case TOKEN_INITIAL:
         case TOKEN_INT:
         case TOKEN_WORD:
+        case TOKEN_STRING:
+        case TOKEN_FLOAT:
+        //case TOKEN_QUOTE:
         case TOKEN_L_PAREN:
         case TOKEN_R_PAREN:
         case TOKEN_L_BRACKET:

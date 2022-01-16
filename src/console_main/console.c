@@ -48,6 +48,16 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
             free_data_frame((data_frame_t *)value->result);
             free(value);
             break;
+        case STRING:
+            printf("`%s`\n", (char *)value->result);
+            free(value->result);
+            free(value);
+            break;
+        case FLOAT:
+            printf("%lf\n", *(double *)value->result);
+            free(value->result);
+            free(value);
+            break;
         case RESERVED:
             break;
     }

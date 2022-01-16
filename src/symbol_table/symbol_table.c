@@ -87,8 +87,14 @@ types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
     int key_index;
     switch(nt) {
         case NODE_L_PAREN:
+            fprintf(stderr, "[ST]: why on earth are you trying to write an '(' to the st?!?\n");
+            exit(1);
         case NODE_INT:
             return INTEGER;
+        case NODE_FLOAT:
+            return FLOAT;
+        case NODE_STRING:
+            return STRING;
         case NODE_DATA_FRAME:
             return DATA_FRAME;
         case NODE_WORD:
@@ -119,6 +125,15 @@ void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt)
             *((int *)st->values[key_index]) = *(int *)value;
             free(tmp);
             break;
+        case FLOAT:
+            st->values[key_index] = calloc(1, sizeof(double));
+            *((double *)st->values[key_index]) = *(double *)value;
+            free(tmp);
+            break;
+        case STRING:
+            st->values[key_index] = deep_copy_string((char *)st->values[key_index], (char *)value);
+            free(tmp);
+            break;
         case DATA_FRAME:
             st->values[key_index] = clone_data_frame((data_frame_t *)value);
             free_data_frame(tmp);
@@ -144,6 +159,13 @@ void add_st_entry(symbol_table_t * st, char * key, void * value, types type) {
             break;
         case DATA_FRAME:
             st->values[st->no_symbols] = clone_data_frame((data_frame_t *)value);
+            break;
+        case STRING:
+            st->values[st->no_symbols] = deep_copy_string((char *)st->values[st->no_symbols], (char *)value);
+            break;
+        case FLOAT:
+            st->values[st->no_symbols] = calloc(1, sizeof(double));
+            *((double *)st->values[st->no_symbols]) = *(double *)value;
             break;
         case RESERVED:
             fprintf(stderr, "[INIT VARIABLE]: REVSERVED passed as variable\nExiting\n");
@@ -175,6 +197,12 @@ void free_symbol_table(symbol_table_t * st) {
                 break;
             case INTEGER:
                 free((int *)st->values[i]);
+                break;
+            case FLOAT:
+                free((double *)st->values[i]);
+                break;
+            case STRING:
+                free((char *)st->values[i]);
                 break;
             case RESERVED:
                 break;

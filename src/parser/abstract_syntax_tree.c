@@ -35,7 +35,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
      * exits
      */
 
-	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD) {
+	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD || token_list[0]->type == TOKEN_STRING || token_list[0]->type == TOKEN_FLOAT) {
 		ast->node = init_node(token_list, st);
 		ast->children = NULL;
 		ast->no_children = 0;
@@ -58,6 +58,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                 return ast;
 			case TOKEN_INITIAL:
 			case TOKEN_WORD:
+            case TOKEN_FLOAT:
+            case TOKEN_STRING:
 			case TOKEN_R_PAREN:
 			case TOKEN_R_BRACKET:
 			case TOKEN_INT:
@@ -194,6 +196,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
         case NODE_INT:
             ter->result = calloc(1, sizeof(int));
             *(int *)ter->result = *(int *)ast->node->value;
+            ter->type = INTEGER;
             return ter;
         case NODE_WORD:
             sym_index = find_symbol(st, ast->node->name);
@@ -206,6 +209,15 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                          */
                         ter->result = calloc(1, sizeof(int));
                         *((int *)ter->result) = *((int *)get_st_value(st, sym_index));
+                        ter->type = INTEGER;
+                        return ter;
+                    case STRING:
+                        ter->result = deep_copy_string((char *)ter->result, (char *)get_st_value(st, sym_index));
+                        ter->type = STRING;
+                        break;
+                    case FLOAT:
+                        ter->result = calloc(1, sizeof(double));
+                        *((double *)ter->result) = *((double *)get_st_value(st, sym_index));
                         ter->type = INTEGER;
                         return ter;
                     case DATA_FRAME:
@@ -221,6 +233,15 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                 *(int *)ter->result = st->no_symbols;
                 return ter;
             }
+            return ter;
+        case NODE_STRING:
+            ter->type = STRING;
+            ter->result = deep_copy_string((char *)ter->result, (char *)ast->node->value);
+            return ter;
+        case NODE_FLOAT:
+            ter->type = FLOAT;
+            ter->result = calloc(1, sizeof(double));
+            *(double *)ter->result = *(double *)ast->node->value;
             return ter;
         case NODE_L_PAREN:
             free(ter);
@@ -299,6 +320,13 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                     free_data_frame((data_frame_t *)tmp->result);
                     free(tmp);
                     break;
+                case STRING:
+                    free(tmp->result);
+                    free(tmp);
+                    break;
+                case FLOAT:
+                    free(tmp->result);
+                    free(tmp);
                 case RESERVED:
                         fprintf(stderr, "[EVAL TREE]: trying to free unexpected data\nExiting\n");
                         exit(1);

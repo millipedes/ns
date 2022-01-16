@@ -12,6 +12,8 @@
 typedef enum {
     NODE_INT,
     NODE_WORD,
+    NODE_STRING,
+    NODE_FLOAT,
     NODE_L_PAREN,
     NODE_R_PAREN,
     NODE_CARROT_POW,

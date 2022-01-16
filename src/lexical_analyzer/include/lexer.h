@@ -27,6 +27,7 @@ lexer_T * init_lexer(char * source);
 token_T * lexer_next_token(lexer_T * lexer);
 token_T * lexer_parse_digit(lexer_T * lexer);
 token_T * lexer_parse_word(lexer_T * lexer);
+token_T * lexer_parse_string(lexer_T * lexer);
 token_T ** generate_token_list(lexer_T * lexer);
 char lexer_peak(lexer_T * lexer);
 void lexer_advance(lexer_T * lexer);

@@ -66,6 +66,8 @@ token_T * lexer_next_token(lexer_T * lexer) {
             case '/':
                 lexer_advance(lexer);
                 return init_token((char *)"/", TOKEN_FS_DIVIDE);
+            case '\"':
+                return lexer_parse_string(lexer);
             case '<':
                 if(lexer_peak(lexer) == '=') {
                     lexer_advance(lexer);
@@ -133,10 +135,15 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
     int digit_len = lexer->i;
     int start = lexer->i;
     int index = 0;
+    int float_flag = 0;
     token_T * token = NULL;
     while(isdigit(lexer->c)) {
         digit_len++;
         lexer_advance(lexer);
+        if(lexer->c == '.') {
+            float_flag = 1;
+            lexer_advance(lexer);
+        }
     }
     char * digit_word = calloc(digit_len + 1, sizeof(char));
     while(start < digit_len) {
@@ -144,7 +151,11 @@ token_T * lexer_parse_digit(lexer_T * lexer) {
         start++;
         index++;
     }
-    token = init_token(digit_word, TOKEN_INT);
+    if(float_flag) {
+        token = init_token(digit_word, TOKEN_FLOAT);
+    } else {
+        token = init_token(digit_word, TOKEN_INT);
+    }
     free(digit_word);
     return token;
 }
@@ -170,6 +181,28 @@ token_T * lexer_parse_word(lexer_T * lexer) {
         index++;
     }
     token = init_token(keyword, TOKEN_WORD);
+    free(keyword);
+    return token;
+}
+
+token_T * lexer_parse_string(lexer_T * lexer) {
+    lexer_advance(lexer);
+    int word_len = lexer->i;
+    int start = lexer->i;
+    int index = 0;
+    token_T * token = NULL;
+    while(lexer->c != '\"') {
+        word_len++;
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer); // for end "
+    char * keyword = calloc(word_len + 1, sizeof(char));
+    while(start < word_len) {
+        keyword[index] = lexer->source[start];
+        start++;
+        index++;
+    }
+    token = init_token(keyword, TOKEN_STRING);
     free(keyword);
     return token;
 }

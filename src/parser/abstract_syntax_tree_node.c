@@ -38,6 +38,15 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->value = deep_copy_string(node->value, token[0]->id);
             node->type = NODE_WORD;
             return node; 
+        case TOKEN_STRING:
+            node->value = deep_copy_string(node->value, token[0]->id);
+            node->type = NODE_STRING;
+            return node;
+        case TOKEN_FLOAT:
+            node->value = calloc(1, sizeof(double));
+            *((double *)node->value + 0) = atof(token[0]->id);
+            node->type = NODE_FLOAT;
+            return node;
         case TOKEN_L_PAREN:
             node->type = NODE_L_PAREN;
             node->value = init_operator((char *)"(");
@@ -154,6 +163,12 @@ void free_node(ast_node_t * node) {
             break;
         case NODE_WORD:
             free((char *)node->value);
+            break;
+        case NODE_STRING:
+            free((char *)node->value);
+            break;
+        case NODE_FLOAT:
+            free((double *)node->value);
             break;
         case NODE_L_PAREN:
             free_operator((operator_t *)node->value);
