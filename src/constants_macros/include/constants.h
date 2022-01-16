@@ -11,7 +11,6 @@
 #define CONST_H
 
 #include"../../symbol_table/include/operator.h"
-#include"../../symbol_table/include/variable.h"
 
 #define MAX_LINE 4096
 #define MAX_OPERATOR 16
@@ -22,7 +21,6 @@
 	   int *: "std_pointer",			\
       void *: "void pointer",           \
 operator_t *: "operator_pointer",   	\
-variable_t *: "pointer to variable"     \
 )
 
 #endif
