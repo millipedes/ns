@@ -79,6 +79,8 @@ void * less_than_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_less_than_operator(value_one, value_two);
+        case FLOAT:
+            return float_less_than_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -92,6 +94,8 @@ void * greater_than_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_greater_than_operator(value_one, value_two);
+        case FLOAT:
+            return float_greater_than_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -105,6 +109,8 @@ void * equal_test_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_equal_test_operator(value_one, value_two);
+        case FLOAT:
+            return float_equal_test_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -118,6 +124,8 @@ void * less_than_equal_to_operator(void * value_one, void * value_two, types typ
     switch(type) {
         case INTEGER:
             return integer_less_than_equal_to_operator(value_one, value_two);
+        case FLOAT:
+            return float_less_than_equal_to_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -131,6 +139,8 @@ void * greater_than_equal_to_operator(void * value_one, void * value_two, types 
     switch(type) {
         case INTEGER:
             return integer_greater_than_equal_to_operator(value_one, value_two);
+        case FLOAT:
+            return float_greater_than_equal_to_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -144,6 +154,8 @@ void * not_equal_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_not_equal_operator(value_one, value_two);
+        case FLOAT:
+            return float_not_equal_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
