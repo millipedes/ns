@@ -43,6 +43,7 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                 //---------------CALLOC **
                 data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
                 p_df = initialize_potential_data_frames(data_frame->length);
+                flag = 0;
 
                 //---------------CALLOC/ASSIGN *
                 for(int i = 0; i < data_frame->length; i++) {
@@ -50,11 +51,23 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                         p_df[i] = get_sub_list(token_list, 1, get_list_size(token_list));
                         data_frame->comps[i] = init_data_frame(p_df[i]);
                     } else {
+                        do {
+                            switch (token_list[tl_index]->type) {
+                                case TOKEN_R_BRACKET:
+                                    flag--;
+                                    break;
+                                case TOKEN_L_BRACKET:
+                                    flag++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            tl_index++;
+                        } while(flag != 0);
                         /**================TODO==================
                          * Fix the whole bracket detection, tl_index doesn't work (i.e. [[1] [2] [1 2]])
                          */
-                        tl_index += (((data_frame_t **)data_frame->comps)[i - 1])->length;
-                        tl_index += 3; // last element/']'/'['
+                        tl_index += 1; // to get from ']' to '['
                         p_df[i] = get_sub_list(token_list, tl_index, get_list_size(token_list));
                         data_frame->comps[i] = init_data_frame(p_df[i]);
                     }
