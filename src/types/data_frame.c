@@ -205,8 +205,7 @@ void free_data_frame(data_frame_t * df) {
         }
         free((int **)df->comps);
         free(df);
-    }
-    if(df->type == DATA_FRAME) {
+    } else if(df->type == DATA_FRAME) {
         for(int i = 0; i < df->length; i++) {
             free_data_frame(((data_frame_t **)df->comps)[i]);
         }
