@@ -60,11 +60,19 @@ expr        -> + expr expr
              | var
              | integer
              | data_frame
+             | string
+             | float
 
 var         -> integer
+             | float
+             | string
              | data frame
 
+string      -> "(a-z || A-Z || 0-9 || symbol)*"
+
 data frame  -> [(var)*]
+
+float       -> x such that x is a signed 32 bit double precision floating point number
 
 integer     -> x such that x is an element of integers (32 bit signed)
 ```
