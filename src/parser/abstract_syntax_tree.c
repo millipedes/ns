@@ -104,9 +104,9 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                             || token_list[1]->type == TOKEN_WORD
                             || token_list[1]->type == TOKEN_FLOAT
                             || token_list[1]->type == TOKEN_STRING)
-                        && (token_list[1]->type == token_list[2]->type
-                            || (token_list[1]->type == TOKEN_WORD
-                                && token_list[0]->type == TOKEN_ASSIGN))) {
+                        && (token_list[1]->type == token_list[2]->type)) {
+                           // || (token_list[1]->type == TOKEN_WORD
+                           //     && token_list[0]->type == TOKEN_ASSIGN))) {
                     operands = 2;
                     potential_operands = initialize_potential_operands(operands);
 					potential_operands[0] = get_sub_list(token_list, 1, 1);
@@ -321,7 +321,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
         case NODE_ASSIGN:
             ter->result = calloc(1, sizeof(char *));
             tmp = evaluate_tree(ast->children[1], st);
-            ter->type = tmp->type;
+            ter->type = RESERVED;
             if(make_entry(st, ast->children[0]->node->name, tmp->result, ast->children[1]->node->type)) {
                 *((char *)ter->result + 0) = 't';
             } else {

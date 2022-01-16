@@ -20,6 +20,17 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                     *((int **)data_frame->comps)[i] = atoi(token_list[i]->id);
                 }
                 return data_frame;
+            case TOKEN_FLOAT:
+                data_frame->type = FLOAT;
+                while(token_list[data_frame->length]->type == TOKEN_FLOAT) {
+                    data_frame->length++;
+                }
+                data_frame->comps = calloc(data_frame->length, sizeof(double *));
+                for (int i = 0; i < data_frame->length; i++) {
+                    ((double **)data_frame->comps)[i] = calloc(1, sizeof(double));
+                    *((double **)data_frame->comps)[i] = atof(token_list[i]->id);
+                }
+                return data_frame;
             case TOKEN_L_BRACKET:
                 data_frame->type = DATA_FRAME;
                 //---------------BEGIN GET LEN
@@ -217,9 +228,9 @@ void print_data_frame(data_frame_t * df) {
             printf("[");
             for(int i = 0; i < df->length; i++) {
                 if(i == 0) {
-                    printf("%d", *((int *)df->comps[i]));
+                    printf("%d", *((int **)df->comps)[i]);
                 } else {
-                    printf(" %d", *((int *)df->comps[i]));
+                    printf(" %d", *((int **)df->comps)[i]);
                 }
             }
             printf("]");
@@ -264,8 +275,9 @@ void free_data_frame(data_frame_t * df) {
         for(int i = 0; i < df->length; i++) {
             free(((int **)df->comps)[i]);
         }
-        free((int **)df->comps);
-        free(df);
+        if(df) {
+            free(df);
+        }
     } else if(df->type == DATA_FRAME) {
         for(int i = 0; i < df->length; i++) {
             free_data_frame(((data_frame_t **)df->comps)[i]);
