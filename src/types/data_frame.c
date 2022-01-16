@@ -50,6 +50,9 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                         p_df[i] = get_sub_list(token_list, 1, get_list_size(token_list));
                         data_frame->comps[i] = init_data_frame(p_df[i]);
                     } else {
+                        /**================TODO==================
+                         * Fix the whole bracket detection, tl_index doesn't work (i.e. [[1] [2] [1 2]])
+                         */
                         tl_index += (((data_frame_t **)data_frame->comps)[i - 1])->length;
                         tl_index += 3; // last element/']'/'['
                         p_df[i] = get_sub_list(token_list, tl_index, get_list_size(token_list));
