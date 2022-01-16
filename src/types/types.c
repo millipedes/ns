@@ -6,6 +6,8 @@ void * addition_operator(void * value_one, void * value_two, types type) {
             return integer_addition_operator(value_one, value_two);
         case DATA_FRAME:
             break;
+        case FLOAT:
+            return float_addition_operator(value_one, value_two);
         case RESERVED:
             fprintf(stderr, "[OPERATOR]: trying to add reserved types\nExiting\n");
             exit(1);
@@ -19,6 +21,8 @@ void * subtraction_operator(void * value_one, void * value_two, types type) {
             return integer_subtraction_operator(value_one, value_two);
         case DATA_FRAME:
             break;
+        case FLOAT:
+            return float_subtraction_operator(value_one, value_two);
         case RESERVED:
             fprintf(stderr, "[OPERATOR]: trying to sub reserved types\nExiting\n");
             exit(1);
@@ -30,6 +34,8 @@ void * division_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_division_operator(value_one, value_two);
+        case FLOAT:
+            return float_division_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -43,6 +49,8 @@ void * multiplication_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_multiplication_operator(value_one, value_two);
+        case FLOAT:
+            return float_multiplication_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:
@@ -56,6 +64,8 @@ void * power_operator(void * value_one, void * value_two, types type) {
     switch(type) {
         case INTEGER:
             return integer_power_operator(value_one, value_two);
+        case FLOAT:
+            return float_power_operator(value_one, value_two);
         case DATA_FRAME:
             break;
         case RESERVED:

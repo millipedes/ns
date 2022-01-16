@@ -98,6 +98,21 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
                 *((int *)copy->comps[i]) = *((int *)df->comps[i]);
             }
             break;
+        case FLOAT:
+            copy->type = df->type;
+            copy->comps = calloc(df->length, sizeof(double *));
+            for(int i = 0; i < df->length; i++) {
+                copy->comps[i] = calloc(1, sizeof(double));
+                *((double *)copy->comps[i]) = *((double *)df->comps[i]);
+            }
+            break;
+        case STRING:
+            copy->type = df->type;
+            copy->comps = calloc(df->length, sizeof(char **));
+            for (int i = 0; i < df->length; i++) {
+                copy->comps[i] = clone_string((char *)copy->comps[i], (char *)df->comps[i]);
+            }
+            break;
         case DATA_FRAME:
             copy->type = df->type;
             copy->comps = calloc(df->length, sizeof(struct DATA_FRAME_T *));
@@ -110,6 +125,15 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
             break;
     }
     return copy;
+}
+
+char * clone_string(char * src, char * dest) {
+    size_t len = strnlen(src, MAX_LEN);
+	dest = calloc(len + 1, sizeof(char));
+	for(int i = 0; i < strnlen(src, MAX_LEN) + 1; i++) {
+		*(dest + i) = *(src + i);
+	}
+	return dest;
 }
 
 /**
@@ -200,11 +224,32 @@ void print_data_frame(data_frame_t * df) {
             }
             printf("]");
             break;
+        case FLOAT:
+            printf("[");
+            for(int i = 0; i < df->length; i++) {
+                if(i == 0) {
+                    printf("%lf", *((double *)df->comps[i]));
+                } else {
+                    printf(" %lf", *((double *)df->comps[i]));
+                }
+            }
+            printf("]");
+            break;
+        case STRING:
+            printf("[");
+            for(int i = 0; i < df->length; i++) {
+                if(i == 0) {
+                    printf("%s", (char *)df->comps[i]);
+                } else {
+                    printf(" %s", (char *)df->comps[i]);
+                }
+            }
+            printf("]");
+            break;
         case DATA_FRAME:
             printf("[");
             for (int i = 0; i < df->length; i++) {
                 print_data_frame(((data_frame_t **)df->comps)[i]);
-                //tl_index += (((data_frame_t **)data_frame->comps)[i - 1])->length;
             }
             printf("]");
             break;

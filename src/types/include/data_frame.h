@@ -2,6 +2,7 @@
 #define DATF_H
 
 #include<stdlib.h>
+#include<string.h>
 #include"../../types/include/types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../tokenizer/include/token_types.h"
@@ -18,6 +19,7 @@ token_T *** initialize_potential_data_frames(int number_of_df);
 void free_potential_data_frames(token_T *** list_of_list, int number_of_data_frames);
 int get_list_size(token_T ** list);
 data_frame_t * clone_data_frame(data_frame_t * df);
+char * clone_string(char * src, char * dest);
 void print_data_frame(data_frame_t * df);
 void free_data_frame(data_frame_t * df);
 

@@ -12,6 +12,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"ops_integer.h"
+#include"ops_float.h"
 
 typedef enum {
     INTEGER,
