@@ -2,7 +2,10 @@
 
 data_frame_t * init_data_frame(token_T ** token_list) {
     data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
+    token_T *** p_df = NULL;
     data_frame->length = 0;
+    int flag = 0;
+    int tl_index = 0;
 
     while(token_list[data_frame->length]->type != TOKEN_R_BRACKET) {
         switch(token_list[data_frame->length]->type) {
@@ -19,7 +22,44 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                 return data_frame;
             case TOKEN_L_BRACKET:
                 data_frame->type = DATA_FRAME;
-                //(data_frame_t *)data_frame->comps
+                //---------------BEGIN GET LEN
+					for(int i = 0; i < get_list_size(token_list); i++) {
+						if(token_list[i]->type == TOKEN_L_BRACKET) {
+							flag++;
+                            if(flag == 1) {
+                                data_frame->length++;
+                            }
+						}
+						if(token_list[i]->type == TOKEN_R_BRACKET) {
+							flag--;
+						}
+						if(flag == -1) {
+                            break;
+						}
+					}
+
+                //---------------END GET LEN
+
+                //---------------CALLOC **
+                data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
+                p_df = initialize_potential_data_frames(data_frame->length);
+
+                //---------------CALLOC/ASSIGN *
+                for(int i = 0; i < data_frame->length; i++) {
+                    if(i == 0) {
+                        p_df[i] = get_sub_list(token_list, 1, get_list_size(token_list));
+                        data_frame->comps[i] = init_data_frame(p_df[i]);
+                    } else {
+                        tl_index += (((data_frame_t **)data_frame->comps)[i - 1])->length;
+                        tl_index += 3; // last element/']'/'['
+                        p_df[i] = get_sub_list(token_list, tl_index, get_list_size(token_list));
+                        data_frame->comps[i] = init_data_frame(p_df[i]);
+                    }
+                    //---------FINALLY ASSIGN
+                }
+
+                //--------------FREE SUB LIST
+                free_potential_data_frames(p_df, data_frame->length);
                 return data_frame;
             default:
                 fprintf(stderr, "[INIT DF]: RESERVED member\nExiting\n");
@@ -35,6 +75,7 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
     copy->length = df->length;
     switch (df->type) {
         case INTEGER:
+            copy->type = df->type;
             copy->comps = calloc(df->length, sizeof(int *));
             for(int i = 0; i < df->length; i++) {
                 copy->comps[i] = calloc(1, sizeof(int));
@@ -42,7 +83,8 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
             }
             break;
         case DATA_FRAME:
-            copy = calloc(df->length, sizeof(struct DATA_FRAME_T *));
+            copy->type = df->type;
+            copy->comps = calloc(df->length, sizeof(struct DATA_FRAME_T *));
             for(int i = 0; i < df->length; i++) {
                 copy->comps[i] = clone_data_frame((data_frame_t *)df->comps[i]);
             }
@@ -96,6 +138,26 @@ token_T ** get_sub_list(token_T ** list, int start, int end) {
     return sub_list;
 }
 
+token_T *** initialize_potential_data_frames(int number_of_df) {
+    token_T *** list_of_list = calloc(number_of_df,
+            sizeof(struct token_T **));
+    return list_of_list;
+}
+
+void free_potential_data_frames(token_T *** list_of_list, int number_of_data_frames) {
+    for (int i = 0; i < number_of_data_frames; i++) {
+        for (int j = 0; list_of_list[i][j]->type != TOKEN_EOL; j++) {
+            free_token(list_of_list[i][j]);
+            if(list_of_list[i][j + 1]->type == TOKEN_EOL) {
+                free_token(list_of_list[i][j + 1]);
+                break;
+            }
+        }
+        free(list_of_list[i]);
+    }
+    free(list_of_list);
+}
+
 /**
  * This function gets the size of a given token_list
  * @param the token list
@@ -125,7 +187,8 @@ void print_data_frame(data_frame_t * df) {
         case DATA_FRAME:
             printf("[");
             for (int i = 0; i < df->length; i++) {
-                print_data_frame((data_frame_t *)df->comps[i]);
+                print_data_frame(((data_frame_t **)df->comps)[i]);
+                //tl_index += (((data_frame_t **)data_frame->comps)[i - 1])->length;
             }
             printf("]");
             break;
@@ -142,6 +205,13 @@ void free_data_frame(data_frame_t * df) {
             free(((int **)df->comps)[i]);
         }
         free((int **)df->comps);
+        free(df);
+    }
+    if(df->type == DATA_FRAME) {
+        for(int i = 0; i < df->length; i++) {
+            free_data_frame(((data_frame_t **)df->comps)[i]);
+        }
+        free(df->comps);
         free(df);
     }
 }
