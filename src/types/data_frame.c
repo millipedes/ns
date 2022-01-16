@@ -196,7 +196,6 @@ void print_data_frame(data_frame_t * df) {
             fprintf(stderr, "[PRINT DATA FRAME]: RESERVED data frame type\nExiting\n");
             exit(1);
     }
-    printf("\n");
 }
 
 void free_data_frame(data_frame_t * df) {

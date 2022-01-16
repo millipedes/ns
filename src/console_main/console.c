@@ -44,6 +44,7 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
             break;
         case DATA_FRAME:
             print_data_frame((data_frame_t *)value->result);
+            printf("\n");
             free_data_frame((data_frame_t *)value->result);
             free(value);
             break;
