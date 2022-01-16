@@ -24,7 +24,7 @@ can be achieved via:
 
 ## :star2: Currently Offered Features
 This language uses [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
-notation calculator.
+notation.
 
 This language now has variable support for integers and the type known as a data
 frame.  I am writing a manual for the programming language, and when it is ready,
