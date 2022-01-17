@@ -54,10 +54,10 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                 //---------------CALLOC **
                 data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
                 p_df = initialize_potential_data_frames(data_frame->length);
-                flag = 0;
 
                 //---------------CALLOC/ASSIGN *
                 for(int i = 0; i < data_frame->length; i++) {
+                    flag = 0;
                     if(i == 0) {
                         p_df[i] = get_sub_list(token_list, 1, get_list_size(token_list));
                         data_frame->comps[i] = init_data_frame(p_df[i]);
@@ -78,7 +78,7 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                         /**================TODO==================
                          * Fix the whole bracket detection, tl_index doesn't work (i.e. [[1] [2] [1 2]])
                          */
-                        tl_index += 1; // to get from ']' to '['
+                        //tl_index += 1; // to get from ']' to '['
                         p_df[i] = get_sub_list(token_list, tl_index, get_list_size(token_list));
                         data_frame->comps[i] = init_data_frame(p_df[i]);
                     }
