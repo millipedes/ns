@@ -114,3 +114,14 @@ void free_token(token_T * token) {
         free(token);
     }
 }
+
+void free_token_list(token_T ** token_list) {
+	for (int i = 0; token_list[i]->type != TOKEN_EOL; i++) {
+		free_token(token_list[i]);
+		if(token_list[i + 1]->type == TOKEN_EOL) {
+			free_token(token_list[i + 1]);
+			break;
+		}
+	}
+	free(token_list);
+}

@@ -27,39 +27,29 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
         case INTEGER:
             printf("%d\n", *(int *)value->result);
             free(value->result);
-            free(value);
             break;
         case DATA_FRAME:
             print_data_frame((data_frame_t *)value->result);
             printf("\n");
             free_data_frame((data_frame_t *)value->result);
-            free(value);
             break;
         case STRING:
             printf("`%s`\n", (char *)value->result);
             free(value->result);
-            free(value);
             break;
         case FLOAT:
             printf("%lf\n", *(double *)value->result);
             free(value->result);
-            free(value);
             break;
         case RESERVED:
             free(value->result);
-            free(value);
             break;
     }
+    free(value);
+
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
-	for (int i = 0; token_list[i]->type != TOKEN_EOL; i++) {
-		free_token(token_list[i]);
-		if(token_list[i + 1]->type == TOKEN_EOL) {
-			free_token(token_list[i + 1]);
-			break;
-		}
-	}
-	free(token_list);
+    free_token_list(token_list);
     free_lexer(lexer);
 	free_tree(ast);
 }

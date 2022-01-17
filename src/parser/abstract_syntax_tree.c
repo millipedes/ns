@@ -378,14 +378,7 @@ token_T *** initialize_potential_operands(int number_of_operands) {
  */
 void free_potential_operands(token_T *** list_of_list, int number_of_operands) {
     for (int i = 0; i < number_of_operands; i++) {
-        for (int j = 0; list_of_list[i][j]->type != TOKEN_EOL; j++) {
-            free_token(list_of_list[i][j]);
-            if(list_of_list[i][j + 1]->type == TOKEN_EOL) {
-                free_token(list_of_list[i][j + 1]);
-                break;
-            }
-        }
-        free(list_of_list[i]);
+        free_token_list(list_of_lists[i]);
     }
     free(list_of_list);
 }
