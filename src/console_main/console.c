@@ -59,6 +59,8 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
             free(value);
             break;
         case RESERVED:
+            free(value->result);
+            free(value);
             break;
     }
 
