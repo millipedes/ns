@@ -26,7 +26,7 @@ memcheck:
 git-update:
 	git add Makefile README.md src/ LICENSE .gitignore
 	git commit -m "update commit"
-	git push code_refactor git@github.com:millipedes/rasberry.git
+	git push code_refactor
 
 install:
 	all
