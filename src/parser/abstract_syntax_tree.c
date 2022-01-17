@@ -56,20 +56,6 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
                         ast->children[0]);
                 free_potential_operands(potential_operands, operands);
                 return ast;
-			case TOKEN_INITIAL:
-			case TOKEN_WORD:
-            case TOKEN_FLOAT:
-            case TOKEN_STRING:
-			case TOKEN_R_PAREN:
-			case TOKEN_R_BRACKET:
-			case TOKEN_INT:
-			case TOKEN_EOL:
-			case TOKEN_SPACE:
-			case TOKEN_SEMICOLON:
-				printf("[ABSTRACT SYNTAX TREE]: Garbage Passed As AST NODE\n"
-                        "Exiting\n");
-				exit(1);
-				break;
 			case TOKEN_L_BRACKET:
                 ast->no_children++;
                 ast->children = calloc(ast->no_children, sizeof(struct ABSTRACT_SYNTAX_TREE *));
@@ -173,6 +159,10 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 					return ast;
                 }
 				break;
+            default:
+				printf("[ABSTRACT SYNTAX TREE]: Garbage Passed As AST NODE\n"
+                        "Exiting\n");
+				exit(1);
 		}
 	}
 	fprintf(stderr, "[ABSTRACT SYNTAX TREE]: Something went very wrong\n");

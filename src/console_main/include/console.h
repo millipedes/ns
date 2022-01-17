@@ -16,7 +16,6 @@
 #include"../../constants_macros/include/constants.h"
 #include"../../lexical_analyzer/include/lexer.h"
 #include"../../tokenizer/include/token.h"
-#include"../../tokenizer/include/token_stack.h"
 #include"../../symbol_table/include/symbol_table.h"
 #include"../../parser/include/abstract_syntax_tree.h"
 #include"../../symbol_table/include/symbol_table.h"
