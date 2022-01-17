@@ -212,7 +212,7 @@ void free_potential_data_frames(token_T *** list_of_list, int number_of_data_fra
 /**
  * This function gets the size of a given token_list
  * @param the token list
- * @return the size as an integer
+ * @return th size as an integer
  */
 int get_list_size(token_T ** list) {
 	int size = 0;
@@ -258,11 +258,11 @@ void print_data_frame(data_frame_t * df) {
             printf("]");
             break;
         case DATA_FRAME:
-            printf("[");
+            //printf("[");
             for (int i = 0; i < df->length; i++) {
                 print_data_frame(((data_frame_t **)df->comps)[i]);
             }
-            printf("]");
+            //printf("]");
             break;
         case RESERVED:
             fprintf(stderr, "[PRINT DATA FRAME]: RESERVED data frame type\nExiting\n");

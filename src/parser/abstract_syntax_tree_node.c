@@ -88,17 +88,17 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->value = init_operator((char *)">");
             return node;  
         case TOKEN_L_BRACKET:
-            sub_list = get_sub_list(token, 1, get_list_size(token));
+            //sub_list = get_sub_list(token, 1, get_list_size(token));
             node->type = NODE_DATA_FRAME;
-            node->value = init_data_frame(sub_list);
-            for(int i = 0; sub_list[i]->type != TOKEN_EOL; i++) {
-                free_token(sub_list[i]);
-                if(sub_list[i + 1]->type == TOKEN_EOL) {
-                    free_token(sub_list[i + 1]);
-                    break;
-                }
-            }
-            free(sub_list);
+            node->value = init_data_frame(token);
+            //for(int i = 0; sub_list[i]->type != TOKEN_EOL; i++) {
+            //    free_token(sub_list[i]);
+            //    if(sub_list[i + 1]->type == TOKEN_EOL) {
+            //        free_token(sub_list[i + 1]);
+            //        break;
+            //    }
+            //}
+            //free(sub_list);
             return node;  
         case TOKEN_R_BRACKET:
             node->type = NODE_R_BRACKET;
