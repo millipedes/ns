@@ -78,19 +78,16 @@ integer     -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Write integer data frame operators
-2) Reserve `exit`/remove console.c nonsense
-3) float type support
-4) float_matrix type support
-5) string type support
-6) string_matrix support
-7) matrx_matrix support
-8) Implement if, while, for
-8) Implement stack frames
-9) Implement functions
-10) Implement function entry point (i.e. make main reserved)
-11) Implment Module support
-12) Implement File I/O support
-13) Command Line Arguements/REPL UI improvement
-14) MAYBE Infix function notation
-15) MAYBE Assembly translation for GAS 
+1) Fix data frame bug for input `|> = a [[1 2] [1 2] [1 2]]`
+2) Fix data frames and strings
+3) Write stack frames
+4) Reserve `exit`/remove console.c nonsense
+5) Implement if, while, for
+6) Implement stack frames
+7) Implement functions
+8) Implement function entry point (i.e. make main reserved)
+9) Implment Module support
+10) Implement File I/O support
+11) Command Line Arguements/REPL UI improvement
+12) MAYBE Infix function notation
+13) MAYBE Assembly translation for GAS 
