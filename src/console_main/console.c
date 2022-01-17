@@ -10,19 +10,6 @@
 #include"include/console.h"
 
 /**
- * This function
- * @param user_input_buffer - the input buffer from the user
- * @return - 1 if the loop should exit, 0 if it should not exit
-*/
-int exit_check(char user_input_buffer[]) {
-    user_input_buffer[strnlen(user_input_buffer, MAX_LINE) - 1] = '\0';
-    if(strncmp(user_input_buffer, (const char *)"exit", MAX_LINE) == 0) {
-        return 0;
-    }
-    return 1;
-}
-
-/**
  * This function executes a line of code written by the user
  * @param the inputted line
  * @return N/a 
@@ -85,9 +72,10 @@ void console_start(symbol_table_t * st) {
     /*the buffer used to handle user input*/
 
     print_welcome_screen();
-    while(exit_check(user_input_buffer)) {
+    do {
         printf("|>");
         fgets(user_input_buffer, MAX_LINE, stdin);
         execute_line(user_input_buffer, st);
-    }
+        user_input_buffer[strnlen(user_input_buffer, MAX_LINE) - 1] = '\0';
+    } while(strncmp(user_input_buffer, (char *)"exit", MAX_LINE));
 }

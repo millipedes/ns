@@ -34,20 +34,22 @@ data_frame_t * init_data_frame(token_T ** token_list) {
             case TOKEN_L_BRACKET:
                 data_frame->type = DATA_FRAME;
                 //---------------BEGIN GET LEN
-					for(int i = 0; i < get_list_size(token_list); i++) {
-						if(token_list[i]->type == TOKEN_L_BRACKET) {
-							flag++;
-                            if(flag == 1) {
-                                data_frame->length++;
-                            }
-						}
-						if(token_list[i]->type == TOKEN_R_BRACKET) {
-							flag--;
-						}
-						if(flag == -1) {
-                            break;
-						}
-					}
+                    do {
+                        switch (token_list[tl_index]->type) {
+                            case TOKEN_R_BRACKET:
+                                flag--;
+                                break;
+                            case TOKEN_L_BRACKET:
+                                flag++;
+                                if(flag == 1) {
+                                    data_frame->length++;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        tl_index++;
+                    } while(flag != -1);
 
                 //---------------END GET LEN
 
