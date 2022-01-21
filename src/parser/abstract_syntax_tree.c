@@ -32,7 +32,11 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
      * exits
      */
 
-	if(token_list[0]->type == TOKEN_INT || token_list[0]->type == TOKEN_WORD || token_list[0]->type == TOKEN_STRING || token_list[0]->type == TOKEN_FLOAT || token_list[0]->type == TOKEN_L_BRACKET) {
+	if(token_list[0]->type == TOKEN_INT
+            || token_list[0]->type == TOKEN_WORD
+            || token_list[0]->type == TOKEN_STRING
+            || token_list[0]->type == TOKEN_FLOAT
+            || token_list[0]->type == TOKEN_L_BRACKET) {
 		ast->node = init_node(token_list, st);
 		ast->children = NULL;
 		ast->no_children = 0;
@@ -154,7 +158,11 @@ ast_t * generate_binary_op_tree(token_T ** token_list, symbol_table_t * st, ast_
                 return ast;
             }
         }
-    } else if(token_list[1]->type == TOKEN_WORD && token_list[2]->type == TOKEN_L_BRACKET) {
+    } else if(token_list[1]->type == TOKEN_WORD &&
+            (token_list[2]->type == TOKEN_L_BRACKET
+             || token_list[2]->type == TOKEN_INT
+             || token_list[2]->type == TOKEN_STRING
+             || token_list[2]->type == TOKEN_FLOAT)) {
         operands = 2;
         potential_operands = initialize_potential_operands(operands);
         potential_operands[0] = get_sub_list(token_list, 1, 1);
