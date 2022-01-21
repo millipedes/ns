@@ -33,6 +33,7 @@ typedef struct TER_T {
 
 ast_t * init_ast(void);
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
+ast_t * generate_data_frame_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 ast_t * generate_binary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 ast_t * generate_unary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 void * evaluate_tree(ast_t * ast, symbol_table_t * st);

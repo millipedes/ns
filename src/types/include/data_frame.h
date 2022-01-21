@@ -3,6 +3,7 @@
 
 #include<stdlib.h>
 #include<string.h>
+#include"../../symbol_table/include/symbol_table.h"
 #include"../../types/include/types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../tokenizer/include/token_types.h"

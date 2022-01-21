@@ -38,7 +38,15 @@ data_frame_t * init_data_frame(token_T ** token_list) {
         }
 
     } else if(token_list[tl_index]->type == TOKEN_STRING) {
-
+        while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
+            tl_index++;
+            data_frame->length++;
+        }
+        data_frame->comps = calloc(data_frame->length, sizeof(char *));
+        data_frame->type = STRING;
+        for (int i = 0; i < data_frame->length; i++) {
+            data_frame->comps[i] = deep_copy_string(((char **)data_frame->comps)[i], token_list[i + 1]->id);
+        }
     } else if(token_list[tl_index]->type == TOKEN_FLOAT) {
         while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
             tl_index++;
@@ -175,7 +183,7 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
             copy->type = df->type;
             copy->comps = calloc(df->length, sizeof(char **));
             for (int i = 0; i < df->length; i++) {
-                copy->comps[i] = clone_string((char *)copy->comps[i], (char *)df->comps[i]);
+                copy->comps[i] = deep_copy_string(((char **)copy->comps)[i], ((char **)df->comps)[i]);
             }
             break;
         case DATA_FRAME:

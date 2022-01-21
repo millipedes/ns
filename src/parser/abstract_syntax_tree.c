@@ -35,8 +35,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	if(token_list[0]->type == TOKEN_INT
             || token_list[0]->type == TOKEN_WORD
             || token_list[0]->type == TOKEN_STRING
-            || token_list[0]->type == TOKEN_FLOAT
-            || token_list[0]->type == TOKEN_L_BRACKET) {
+            || token_list[0]->type == TOKEN_FLOAT) {
 		ast->node = init_node(token_list, st);
 		ast->children = NULL;
 		ast->no_children = 0;
@@ -45,6 +44,8 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 		switch(token_list[0]->type) {
 			case TOKEN_L_PAREN:
                 return generate_unary_op_tree(token_list, st, ast);
+            case TOKEN_L_BRACKET:
+                return generate_data_frame_tree(token_list, st, ast);
             case TOKEN_ASSIGN:
 			case TOKEN_PLUS:
 			case TOKEN_MINUS:
@@ -66,6 +67,15 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 	}
 	fprintf(stderr, "[ABSTRACT SYNTAX TREE]: Something went very wrong\n");
 	return NULL;
+}
+
+ast_t * generate_data_frame_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
+    //token_T *** potential_operands;
+    //int operands = 1;
+    ast->children = NULL;
+    ast->no_children = 0;
+    ast->node = init_node(token_list, st);
+    return ast;
 }
 
 ast_t * generate_unary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
