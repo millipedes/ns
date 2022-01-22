@@ -2,98 +2,90 @@
 
 data_frame_t * init_data_frame(token_T ** token_list) {
     data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
-    token_T *** p_df = NULL;
     data_frame->length = 0;
+    token_T *** p_df = NULL;
+    p_df_index_t * pdfi = init_p_df_index_t();
+    int tl_index = 1;
+    /*Starts at 1 because the first index will be L_BRACKET*/
     int flag = 0;
-    int tl_index = 0;
-
-    while(token_list[data_frame->length]->type != TOKEN_R_BRACKET) {
-        switch(token_list[data_frame->length]->type) {
-            case TOKEN_INT:
-                data_frame->type = INTEGER;
-                while(token_list[data_frame->length]->type == TOKEN_INT) {
-                    data_frame->length++;
-                }
-                data_frame->comps = calloc(data_frame->length, sizeof(int *));
-                for (int i = 0; i < data_frame->length; i++) {
-                    ((int **)data_frame->comps)[i] = calloc(1, sizeof(int));
-                    *((int **)data_frame->comps)[i] = atoi(token_list[i]->id);
-                }
-                return data_frame;
-            case TOKEN_FLOAT:
-                data_frame->type = FLOAT;
-                while(token_list[data_frame->length]->type == TOKEN_FLOAT) {
-                    data_frame->length++;
-                }
-                data_frame->comps = calloc(data_frame->length, sizeof(double *));
-                for (int i = 0; i < data_frame->length; i++) {
-                    ((double **)data_frame->comps)[i] = calloc(1, sizeof(double));
-                    *((double **)data_frame->comps)[i] = atof(token_list[i]->id);
-                }
-                return data_frame;
-            case TOKEN_L_BRACKET:
-                data_frame->type = DATA_FRAME;
-                //---------------BEGIN GET LEN
-					for(int i = 0; i < get_list_size(token_list); i++) {
-						if(token_list[i]->type == TOKEN_L_BRACKET) {
-							flag++;
-                            if(flag == 1) {
-                                data_frame->length++;
-                            }
-						}
-						if(token_list[i]->type == TOKEN_R_BRACKET) {
-							flag--;
-						}
-						if(flag == -1) {
-                            break;
-						}
-					}
-
-                //---------------END GET LEN
-
-                //---------------CALLOC **
-                data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
-                p_df = initialize_potential_data_frames(data_frame->length);
-
-                //---------------CALLOC/ASSIGN *
-                for(int i = 0; i < data_frame->length; i++) {
-                    flag = 0;
-                    if(i == 0) {
-                        p_df[i] = get_sub_list(token_list, 1, get_list_size(token_list));
-                        data_frame->comps[i] = init_data_frame(p_df[i]);
-                    } else {
-                        do {
-                            switch (token_list[tl_index]->type) {
-                                case TOKEN_R_BRACKET:
-                                    flag--;
-                                    break;
-                                case TOKEN_L_BRACKET:
-                                    flag++;
-                                    break;
-                                default:
-                                    break;
-                            }
-                            tl_index++;
-                        } while(flag != 0);
-                        /**================TODO==================
-                         * Fix the whole bracket detection, tl_index doesn't work (i.e. [[1] [2] [1 2]])
-                         */
-                        //tl_index += 1; // to get from ']' to '['
-                        p_df[i] = get_sub_list(token_list, tl_index, get_list_size(token_list));
-                        data_frame->comps[i] = init_data_frame(p_df[i]);
+    
+    if(token_list[tl_index]->type == TOKEN_L_BRACKET) {
+        do {
+            switch (token_list[tl_index]->type) {
+                case TOKEN_R_BRACKET:
+                    flag--;
+                    if(flag == 0) {
+                        if(pdfi->size == 0) {
+                            pdfi->bracs[0] = tl_index;
+                            pdfi->size++;
+                        } else {
+                            pdfi->size++;
+                            pdfi->bracs = realloc(pdfi->bracs, pdfi->size * sizeof(int));
+                            pdfi->bracs[pdfi->size - 1] = tl_index;
+                        }
                     }
-                    //---------FINALLY ASSIGN
-                }
+                    break;
+                case TOKEN_L_BRACKET:
+                    flag++;
+                    if(flag == 1) {
+                        data_frame->length++;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            tl_index++;
+        } while(flag != -1);
 
-                //--------------FREE SUB LIST
-                free_potential_data_frames(p_df, data_frame->length);
-                return data_frame;
-            default:
-                fprintf(stderr, "[INIT DF]: RESERVED member\nExiting\n");
-                exit(1);
+        data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
+        data_frame->type = DATA_FRAME;
+        p_df = initialize_potential_data_frames(data_frame->length);
+        int j = 1;
+        for(int i = 0; i < data_frame->length; i++) {
+            p_df[i] = get_sub_list(token_list, j, pdfi->bracs[i]);
+            data_frame->comps[i] = init_data_frame(p_df[i]);
+            j += ((data_frame_t **)data_frame->comps)[i]->length;
+            j += 2;
+        }
+
+    } else if(token_list[tl_index]->type == TOKEN_INT) {
+        while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
+            tl_index++;
+            data_frame->length++;
+        }
+        data_frame->comps = calloc(data_frame->length, sizeof(int *));
+        data_frame->type = INTEGER;
+        for (int i = 0; i < data_frame->length; i++) {
+            ((int **)data_frame->comps)[i] = calloc(1, sizeof(int));
+            *((int **)data_frame->comps)[i] = atoi(token_list[i + 1]->id);
+        }
+    } else if(token_list[tl_index]->type == TOKEN_STRING) {
+        while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
+            tl_index++;
+            data_frame->length++;
+        }
+        data_frame->comps = calloc(data_frame->length, sizeof(char *));
+        data_frame->type = STRING;
+        for (int i = 0; i < data_frame->length; i++) {
+            data_frame->comps[i] = deep_copy_string(((char **)data_frame->comps)[i], token_list[i + 1]->id);
+        }
+    } else if(token_list[tl_index]->type == TOKEN_FLOAT) {
+        while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
+            tl_index++;
+            data_frame->length++;
+        }
+        data_frame->comps = calloc(data_frame->length, sizeof(double *));
+        data_frame->type = FLOAT;
+        for (int i = 0; i < data_frame->length; i++) {
+            ((double **)data_frame->comps)[i] = calloc(1, sizeof(double));
+            *((double **)data_frame->comps)[i] = atof(token_list[i + 1]->id);
         }
     }
 
+    if(p_df) {
+        free_potential_data_frames(p_df, data_frame->length);
+    }
+    free_p_df_index_t(pdfi);
     return data_frame;
 }
 
@@ -121,7 +113,7 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
             copy->type = df->type;
             copy->comps = calloc(df->length, sizeof(char **));
             for (int i = 0; i < df->length; i++) {
-                copy->comps[i] = clone_string((char *)copy->comps[i], (char *)df->comps[i]);
+                copy->comps[i] = deep_copy_string(((char **)copy->comps)[i], ((char **)df->comps)[i]);
             }
             break;
         case DATA_FRAME:
@@ -212,7 +204,7 @@ void free_potential_data_frames(token_T *** list_of_list, int number_of_data_fra
 /**
  * This function gets the size of a given token_list
  * @param the token list
- * @return the size as an integer
+ * @return th size as an integer
  */
 int get_list_size(token_T ** list) {
 	int size = 0;
@@ -275,6 +267,9 @@ void free_data_frame(data_frame_t * df) {
         for(int i = 0; i < df->length; i++) {
             free(((int **)df->comps)[i]);
         }
+        if(df->comps) {
+            free(df->comps);
+        }
         if(df) {
             free(df);
         }
@@ -282,7 +277,47 @@ void free_data_frame(data_frame_t * df) {
         for(int i = 0; i < df->length; i++) {
             free_data_frame(((data_frame_t **)df->comps)[i]);
         }
-        free(df->comps);
-        free(df);
+        if(df->comps) {
+            free(df->comps);
+        }
+        if(df) {
+            free(df);
+        }
+    } else if(df->type == FLOAT) {
+        for(int i = 0; i < df->length; i++) {
+            free(((double **)df->comps)[i]);
+        }
+        if(df->comps) {
+            free(df->comps);
+        }
+        if(df) {
+            free(df);
+        }
+    } else if(df->type == STRING) {
+        for(int i = 0; i < df->length; i++) {
+            free(((char **)df->comps)[i]);
+        }
+        if(df->comps) {
+            free(df->comps);
+        }
+        if(df) {
+            free(df);
+        }
+    }
+}
+
+p_df_index_t * init_p_df_index_t(void) {
+    p_df_index_t * pdfi = calloc(1, sizeof(struct P_DF_INDEX_T));
+    pdfi->bracs = calloc(1, sizeof(int));
+    pdfi->size = 0;
+    return pdfi;
+}
+
+void free_p_df_index_t(p_df_index_t * pdfi) {
+    if(pdfi->bracs) {
+        free(pdfi->bracs);
+    }
+    if(pdfi) {
+        free(pdfi);
     }
 }

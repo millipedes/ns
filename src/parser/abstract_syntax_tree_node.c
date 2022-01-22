@@ -17,13 +17,6 @@
 ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
     node->name = deep_copy_string(node->name, token[0]->id);
-    token_T ** sub_list = NULL;
-
-	if(is_operator(token[0])) {
-		node->is_op = 1;
-	} else {
-		node->is_op = 0;
-	}
 
     switch(token[0]->type) {
         case TOKEN_INITIAL:
@@ -88,17 +81,8 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->value = init_operator((char *)">");
             return node;  
         case TOKEN_L_BRACKET:
-            sub_list = get_sub_list(token, 1, get_list_size(token));
             node->type = NODE_DATA_FRAME;
-            node->value = init_data_frame(sub_list);
-            for(int i = 0; sub_list[i]->type != TOKEN_EOL; i++) {
-                free_token(sub_list[i]);
-                if(sub_list[i + 1]->type == TOKEN_EOL) {
-                    free_token(sub_list[i + 1]);
-                    break;
-                }
-            }
-            free(sub_list);
+            node->value = init_data_frame(token);
             return node;  
         case TOKEN_R_BRACKET:
             node->type = NODE_R_BRACKET;
@@ -134,16 +118,6 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             return node;
     }
 	return node;
-}
-
-/**
- * This function prints the name of a node and whether it is an operator
- * @param The node
- * @return N/a
- */
-void print_node(ast_node_t * node) {
-	printf("[NODE NAME]: %s\t[IS_OP]: %s\n", node->name,
-            (node->is_op == 1 ? "TRUE" : "FALSE"));
 }
 
 /**

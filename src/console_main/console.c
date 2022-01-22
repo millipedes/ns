@@ -10,19 +10,6 @@
 #include"include/console.h"
 
 /**
- * This function
- * @param user_input_buffer - the input buffer from the user
- * @return - 1 if the loop should exit, 0 if it should not exit
-*/
-int exit_check(char user_input_buffer[]) {
-    user_input_buffer[strnlen(user_input_buffer, MAX_LINE) - 1] = '\0';
-    if(strncmp(user_input_buffer, (const char *)"exit", MAX_LINE) == 0) {
-        return 0;
-    }
-    return 1;
-}
-
-/**
  * This function executes a line of code written by the user
  * @param the inputted line
  * @return N/a 
@@ -40,39 +27,29 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
         case INTEGER:
             printf("%d\n", *(int *)value->result);
             free(value->result);
-            free(value);
             break;
         case DATA_FRAME:
             print_data_frame((data_frame_t *)value->result);
             printf("\n");
             free_data_frame((data_frame_t *)value->result);
-            free(value);
             break;
         case STRING:
             printf("`%s`\n", (char *)value->result);
             free(value->result);
-            free(value);
             break;
         case FLOAT:
             printf("%lf\n", *(double *)value->result);
             free(value->result);
-            free(value);
             break;
         case RESERVED:
             free(value->result);
-            free(value);
             break;
     }
+    free(value);
+
 
 	// Free token list, maybe make unique function (looping headers lexer.c)
-	for (int i = 0; token_list[i]->type != TOKEN_EOL; i++) {
-		free_token(token_list[i]);
-		if(token_list[i + 1]->type == TOKEN_EOL) {
-			free_token(token_list[i + 1]);
-			break;
-		}
-	}
-	free(token_list);
+    free_token_list(token_list);
     free_lexer(lexer);
 	free_tree(ast);
 }
@@ -85,9 +62,10 @@ void console_start(symbol_table_t * st) {
     /*the buffer used to handle user input*/
 
     print_welcome_screen();
-    while(exit_check(user_input_buffer)) {
+    do {
         printf("|>");
         fgets(user_input_buffer, MAX_LINE, stdin);
         execute_line(user_input_buffer, st);
-    }
+        user_input_buffer[strnlen(user_input_buffer, MAX_LINE) - 1] = '\0';
+    } while(strncmp(user_input_buffer, (char *)"exit", MAX_LINE));
 }
