@@ -351,11 +351,11 @@ void print_data_frame(data_frame_t * df) {
             printf("]");
             break;
         case DATA_FRAME:
-            //printf("[");
+            printf("[");
             for (int i = 0; i < df->length; i++) {
                 print_data_frame(((data_frame_t **)df->comps)[i]);
             }
-            //printf("]");
+            printf("]");
             break;
         case RESERVED:
             fprintf(stderr, "[PRINT DATA FRAME]: RESERVED data frame type\nExiting\n");
@@ -368,6 +368,7 @@ void free_data_frame(data_frame_t * df) {
         for(int i = 0; i < df->length; i++) {
             free(((int **)df->comps)[i]);
         }
+        free(df->comps);
         if(df) {
             free(df);
         }
