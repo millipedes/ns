@@ -283,6 +283,26 @@ void free_data_frame(data_frame_t * df) {
         if(df) {
             free(df);
         }
+    } else if(df->type == FLOAT) {
+        for(int i = 0; i < df->length; i++) {
+            free(((double **)df->comps)[i]);
+        }
+        if(df->comps) {
+            free(df->comps);
+        }
+        if(df) {
+            free(df);
+        }
+    } else if(df->type == STRING) {
+        for(int i = 0; i < df->length; i++) {
+            free(((char **)df->comps)[i]);
+        }
+        if(df->comps) {
+            free(df->comps);
+        }
+        if(df) {
+            free(df);
+        }
     }
 }
 
