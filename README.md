@@ -78,8 +78,8 @@ integer     -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Fix data frame bug for input `|> = a [[1 2] [1 2] [1 2]]`
-2) Fix data frames and strings
+1) Write string ops
+2) write data frame ops
 3) Write stack frames
 4) Reserve `exit`/remove console.c nonsense
 5) Implement if, while, for
