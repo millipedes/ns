@@ -33,6 +33,7 @@ typedef enum {
     TOKEN_GTE,
     TOKEN_NE,
     TOKEN_ASSIGN,
+    //TOKEN_PIPE,
     TOKEN_EOL
 } token_type;
 #endif
