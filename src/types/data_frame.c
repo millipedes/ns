@@ -19,9 +19,9 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                             pdfi->bracs[0] = tl_index;
                             pdfi->size++;
                         } else {
-                            pdfi->bracs = realloc(pdfi->bracs, pdfi->size * sizeof(int));
-                            pdfi->bracs[pdfi->size] = tl_index;
                             pdfi->size++;
+                            pdfi->bracs = realloc(pdfi->bracs, pdfi->size * sizeof(int));
+                            pdfi->bracs[pdfi->size - 1] = tl_index;
                         }
                     }
                     break;
@@ -82,6 +82,9 @@ data_frame_t * init_data_frame(token_T ** token_list) {
         }
     }
 
+    if(p_df) {
+        free_potential_data_frames(p_df, data_frame->length);
+    }
     free_p_df_index_t(pdfi);
     return data_frame;
 }
@@ -264,7 +267,9 @@ void free_data_frame(data_frame_t * df) {
         for(int i = 0; i < df->length; i++) {
             free(((int **)df->comps)[i]);
         }
-        free(df->comps);
+        if(df->comps) {
+            free(df->comps);
+        }
         if(df) {
             free(df);
         }
@@ -272,8 +277,12 @@ void free_data_frame(data_frame_t * df) {
         for(int i = 0; i < df->length; i++) {
             free_data_frame(((data_frame_t **)df->comps)[i]);
         }
-        free(df->comps);
-        free(df);
+        if(df->comps) {
+            free(df->comps);
+        }
+        if(df) {
+            free(df);
+        }
     }
 }
 
