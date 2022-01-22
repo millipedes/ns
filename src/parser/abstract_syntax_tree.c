@@ -326,7 +326,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             ter->result = calloc(1, sizeof(char *));
             tmp = evaluate_tree(ast->children[1], st);
             ter->type = RESERVED;
-            if(make_entry(st, ast->children[0]->node->name, tmp->result, ast->children[1]->node->type)) {
+            if(make_entry(st, ast->children[0]->node->name, tmp->result, tmp->type)) {//ast->children[1]->node->type)) {
                 *((char *)ter->result + 0) = 't';
             } else {
                 *((char *)ter->result + 0) = 'f';

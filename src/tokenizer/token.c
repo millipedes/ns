@@ -56,8 +56,8 @@ char * token_to_str(token_T * token) {
             return (char *) "TOKEN_STRING";
         case TOKEN_FLOAT:
             return (char *) "TOKEN_FLOAT";
-        //case TOKEN_PIPE:
-        //    return (char *) "TOKEN_PIPE";
+        case TOKEN_PIPE:
+            return (char *) "TOKEN_PIPE";
         case TOKEN_L_PAREN:
             return (char *) "TOKEN_L_PAREN";
         case TOKEN_R_PAREN:

@@ -17,6 +17,7 @@
 ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
 	ast_node_t * node = calloc(1, sizeof(struct AST_NODE_T));
     node->name = deep_copy_string(node->name, token[0]->id);
+    //int st_index = 0;
 
     switch(token[0]->type) {
         case TOKEN_INITIAL:
@@ -28,8 +29,21 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->type = NODE_INT;
             return node; 
         case TOKEN_WORD:
-            node->value = deep_copy_string(node->value, token[0]->id);
-            node->type = NODE_WORD;
+            // seg faults on just variable w/o access moidifier otherwise
+            //if(token[1] && token[1]->type != TOKEN_EOL) {
+            //    if(token[1]->type == TOKEN_PIPE) {
+            //        st_index = find_symbol(st, token[0]->id);
+            //        if(st_index) {
+            //            //access_modifier(token, st, node, st_index);
+            //        } else {
+            //            fprintf(stderr, "[AST NODE]: lexeme `%s` doesn't exist"
+            //                    "in the symbol table!\nExiting\n", token[0]->id);
+            //        }
+            //    } 
+            //} else {
+                node->value = deep_copy_string(node->value, token[0]->id);
+                node->type = NODE_WORD;
+            //}
             return node; 
         case TOKEN_STRING:
             node->value = deep_copy_string(node->value, token[0]->id);
@@ -112,6 +126,7 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->type = NODE_ASSIGN;
             node->value = init_operator((char *)"=");
             return node;
+        case TOKEN_PIPE:
         case TOKEN_EOL:
             fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
             exit(1);
@@ -119,6 +134,32 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
     }
 	return node;
 }
+
+//void * access_modifer(token_T ** token_list, symbol_table_t * st, ast_node_t * node, int st_index) {
+//    int tl_index = 0;
+//    p_df_index_t * pdfi = init_p_df_index_t();
+//    
+//    while(token_list[tl_index]->type != TOKEN_EOL) {
+//        if(token_list[tl_index]->type == TOKEN_WORD) {
+//            tl_index++;
+//        } else if(token_list[tl_index]->type == TOKEN_PIPE) {
+//            if(pdfi->size == 0) {
+//                pdfi->bracs[pdfi->size] = atoi(token_list[tl_index + 1]->id);
+//                pdfi->size++;
+//            } else {
+//                pdfi->bracs = realloc(pdfi->bracs, (pdfi->size + 1) * sizeof(int));
+//                pdfi->bracs[pdfi->size] = atoi(token_list[tl_index + 1]->id);
+//                pdfi->size++;
+//            }
+//            tl_index++;
+//            tl_index++;
+//        }
+//    }
+//
+//    if(pdfi) {
+//        free_p_df_index_t(pdfi);
+//    }
+//}
 
 /**
  * This function frees a node

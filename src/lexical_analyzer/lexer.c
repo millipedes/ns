@@ -63,9 +63,9 @@ token_T * lexer_next_token(lexer_T * lexer) {
             case '*':
                 lexer_advance(lexer);
                 return init_token((char *)"*", TOKEN_STAR_MULT);
-            //case '|':
-            //    lexer_advance(lexer);
-            //    return init_token((char *)"|", TOKEN_PIPE);
+            case '|':
+                lexer_advance(lexer);
+                return init_token((char *)"|", TOKEN_PIPE);
             case '/':
                 lexer_advance(lexer);
                 return init_token((char *)"/", TOKEN_FS_DIVIDE);

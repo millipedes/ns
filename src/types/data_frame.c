@@ -306,8 +306,27 @@ void free_data_frame(data_frame_t * df) {
     }
 }
 
+//void * access_data_frame_element(data_frame_t * df, p_df_index_t * pdfi, int ci) {
+//    if(ci == (pdfi->size - 1)) {
+//        switch(df->type) {
+//            case DATA_FRAME:
+//                return ((data_frame_t *)df->comps)[pdfi->bracs[ci]];
+//            case INTEGER:
+//                return ((int *)df->comps)[pdfi->bracs[ci]];
+//            case FLOAT:
+//                return ((double *)df->comps)[pdfi->bracs[ci]];
+//            case STRING:
+//                return ((char *)df->comps)[pdfi->bracs[ci]];
+//        }
+//        return df->comps[pdfi[ci]->bracs];
+//    } else {
+//        
+//    }
+//}
+
 p_df_index_t * init_p_df_index_t(void) {
     p_df_index_t * pdfi = calloc(1, sizeof(struct P_DF_INDEX_T));
+    pdfi->dfe_type = RESERVED;
     pdfi->bracs = calloc(1, sizeof(int));
     pdfi->size = 0;
     return pdfi;
