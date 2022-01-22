@@ -78,16 +78,17 @@ integer     -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Write string ops
-2) write data frame ops
-3) Write stack frames
-4) Reserve `exit`/remove console.c nonsense
-5) Implement if, while, for
-6) Implement stack frames
-7) Implement functions
-8) Implement function entry point (i.e. make main reserved)
-9) Implment Module support
-10) Implement File I/O support
-11) Command Line Arguements/REPL UI improvement
-12) MAYBE Infix function notation
-13) MAYBE Assembly translation for GAS 
+1) Access modifier support for data frames
+2) Write string ops
+3) write data frame ops
+4) Write stack frames
+5) Reserve `exit`/remove console.c nonsense
+6) Implement if, while, for
+7) Implement stack frames
+8) Implement functions
+9) Implement function entry point (i.e. make main reserved)
+10) Implment Module support
+11) Implement File I/O support
+12) Command Line Arguements/REPL UI improvement
+13) MAYBE Infix function notation
+14) MAYBE Assembly translation for GAS 
