@@ -14,6 +14,11 @@ typedef struct DATA_FRAME_T {
     types type;
 }data_frame_t;
 
+typedef struct P_DF_INDEX_T {
+    int * bracs;
+    int size;
+}p_df_index_t;
+
 data_frame_t * init_data_frame(token_T ** token_list);
 token_T ** get_sub_list(token_T ** list, int start, int end);
 token_T *** initialize_potential_data_frames(int number_of_df);
@@ -23,5 +28,7 @@ data_frame_t * clone_data_frame(data_frame_t * df);
 char * clone_string(char * src, char * dest);
 void print_data_frame(data_frame_t * df);
 void free_data_frame(data_frame_t * df);
+p_df_index_t * init_p_df_index_t(void);
+void free_p_df_index_t(p_df_index_t * pdfi);
 
 #endif

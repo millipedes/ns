@@ -4,6 +4,7 @@ data_frame_t * init_data_frame(token_T ** token_list) {
     data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
     data_frame->length = 0;
     token_T *** p_df = NULL;
+    p_df_index_t * pdfi = init_p_df_index_t();
     int tl_index = 1;
     /*Starts at 1 because the first index will be L_BRACKET*/
     int flag = 0;
@@ -13,11 +14,29 @@ data_frame_t * init_data_frame(token_T ** token_list) {
             switch (token_list[tl_index]->type) {
                 case TOKEN_R_BRACKET:
                     flag--;
+                    if(flag == 0) {
+                        if(pdfi->size == 0) {
+                            pdfi->bracs[0] = tl_index;
+                            pdfi->size++;
+                        } else {
+                            pdfi->bracs = realloc(pdfi->bracs, pdfi->size * sizeof(int));
+                            pdfi->bracs[pdfi->size] = tl_index;
+                            pdfi->size++;
+                        }
+                    }
                     break;
                 case TOKEN_L_BRACKET:
                     flag++;
                     if(flag == 1) {
                         data_frame->length++;
+                        //if(pdfi->size == 0) {
+                        //    pdfi->bracs[0] = tl_index;
+                        //    pdfi->size++;
+                        //} else {
+                        //    pdfi->bracs = realloc(pdfi->bracs, sizeof(int));
+                        //    pdfi->bracs[pdfi->size] = tl_index;
+                        //    pdfi->size++;
+                        //}
                     }
                     break;
                 default:
@@ -25,6 +44,18 @@ data_frame_t * init_data_frame(token_T ** token_list) {
             }
             tl_index++;
         } while(flag != -1);
+
+        data_frame->comps = calloc(data_frame->length, sizeof(struct DATA_FRAME_T *));
+        data_frame->type = DATA_FRAME;
+        p_df = initialize_potential_data_frames(data_frame->length);
+        int j = 1;
+        for(int i = 0; i < data_frame->length; i++) {
+            p_df[i] = get_sub_list(token_list, j, pdfi->bracs[i]);
+            data_frame->comps[i] = init_data_frame(p_df[i]);
+            j += ((data_frame_t **)data_frame->comps)[i]->length;
+            j += 2;
+        }
+
     } else if(token_list[tl_index]->type == TOKEN_INT) {
         while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
             tl_index++;
@@ -36,7 +67,6 @@ data_frame_t * init_data_frame(token_T ** token_list) {
             ((int **)data_frame->comps)[i] = calloc(1, sizeof(int));
             *((int **)data_frame->comps)[i] = atoi(token_list[i + 1]->id);
         }
-
     } else if(token_list[tl_index]->type == TOKEN_STRING) {
         while(token_list[tl_index]->type != TOKEN_R_BRACKET) {
             tl_index++;
@@ -60,6 +90,7 @@ data_frame_t * init_data_frame(token_T ** token_list) {
         }
     }
 
+    free_p_df_index_t(pdfi);
     return data_frame;
     //data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
     //token_T *** p_df = NULL;
@@ -346,5 +377,21 @@ void free_data_frame(data_frame_t * df) {
         }
         free(df->comps);
         free(df);
+    }
+}
+
+p_df_index_t * init_p_df_index_t(void) {
+    p_df_index_t * pdfi = calloc(1, sizeof(struct P_DF_INDEX_T));
+    pdfi->bracs = calloc(1, sizeof(int));
+    pdfi->size = 0;
+    return pdfi;
+}
+
+void free_p_df_index_t(p_df_index_t * pdfi) {
+    if(pdfi->bracs) {
+        free(pdfi->bracs);
+    }
+    if(pdfi) {
+        free(pdfi);
     }
 }
