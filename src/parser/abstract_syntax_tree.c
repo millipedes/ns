@@ -70,8 +70,6 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
 }
 
 ast_t * generate_data_frame_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
-    //token_T *** potential_operands;
-    //int operands = 1;
     ast->children = NULL;
     ast->no_children = 0;
     ast->node = init_node(token_list, st);
@@ -114,8 +112,6 @@ ast_t * generate_binary_op_tree(token_T ** token_list, symbol_table_t * st, ast_
                 || token_list[1]->type == TOKEN_FLOAT
                 || token_list[1]->type == TOKEN_STRING)
             && (token_list[1]->type == token_list[2]->type)) {
-               // || (token_list[1]->type == TOKEN_WORD
-               //     && token_list[0]->type == TOKEN_ASSIGN))) {
         operands = 2;
         potential_operands = initialize_potential_operands(operands);
         potential_operands[0] = get_sub_list(token_list, 1, 1);
