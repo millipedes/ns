@@ -458,23 +458,31 @@ p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi) {
 }
 
 void * access_modifier(data_frame_t * df, p_df_index_t * pdfi, int ci) {
+    void * df_elem = NULL;
     if((pdfi->size - 1) != ci) {
         pdfi->dfe_type = df->type;
-        return access_modifier(((data_frame_t **)df->comps)[ci]->comps[pdfi->bracs[ci]], pdfi, ci + 1);
+        return access_modifier(((data_frame_t **)df->comps)[pdfi->bracs[ci]], pdfi, ci + 1);
     } else {
         pdfi->dfe_type = df->type;
-        //switch(pdfi->dfe_type) {
-        //    case INTEGER:
-        //    case STRING:
-        //    case FLOAT:
-        //    case DATA_FRAME:
-        //    default:
-        //        fprintf(stderr, "[ACCESS MODIFIER]: YAY VERY BIG BUG TO TRACK DOWN\nOr user error...\nExiting\n");
-        //        exit(1);
-        //        break;
-        //}
-        return ((data_frame_t **)df->comps)[pdfi->bracs[ci]];
-        // swuitch based off pdfi type
+        switch(df->type) {
+            case INTEGER:
+                df_elem = calloc(1, sizeof(int));
+                *(int *)df_elem = *((int **)df->comps)[pdfi->bracs[ci]];
+                return df_elem;
+            case STRING:
+                df_elem = deep_copy_string(df_elem, ((char **)df->comps)[pdfi->bracs[ci]]);
+                return df_elem;
+            case FLOAT:
+                df_elem = calloc(1, sizeof(double));
+                *(double *)df_elem = *((double **)df->comps)[pdfi->bracs[ci]];
+                return df_elem;
+            case DATA_FRAME:
+                df_elem = clone_data_frame(((data_frame_t **)df->comps)[pdfi->bracs[ci]]);
+                return df_elem;
+            default:
+                fprintf(stderr, "[ACCESS MODIFIER]: ???\nExiting\n");
+                exit(1);
+        }
     }
 }
 

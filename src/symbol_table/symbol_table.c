@@ -166,7 +166,7 @@ void free_symbol_table(symbol_table_t * st) {
 	for(int i = 0; i < st->no_symbols; i++) {
         switch(st->types[i]) {
             case DATA_FRAME:
-                free_data_frame((data_frame_t *)(st->values[i]));
+                free_data_frame(((data_frame_t *)(st->values[i])));
                 break;
             case INTEGER:
                 free((int *)st->values[i]);
