@@ -31,7 +31,6 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
     if(token_list[0]->type == TOKEN_WORD) {
 		ast->node = init_node(token_list, st);
         if(token_list[1]->type == TOKEN_EOL) {
-            ast->node = init_node(token_list, st);
             ast->children = NULL;
             ast->no_children = 0;
             return ast;
