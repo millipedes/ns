@@ -28,12 +28,20 @@ ast_t * init_ast(void) {
  * @return The ast
  */
 ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
-    /* See initialize_potential_operands for better description of why this
-     * exits
-     */
-
-	if(token_list[0]->type == TOKEN_INT
-            || token_list[0]->type == TOKEN_WORD
+    if(token_list[0]->type == TOKEN_WORD) {
+		ast->node = init_node(token_list, st);
+        if(token_list[1]->type == TOKEN_EOL) {
+            ast->node = init_node(token_list, st);
+            ast->children = NULL;
+            ast->no_children = 0;
+            return ast;
+        } else if(token_list[1]->type == TOKEN_PIPE) {
+            ast->children = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE *));
+            ast->children[0] = get_pipe_sub_tree(ast->children[0], token_list, st);
+            ast->no_children = 0;
+		    return ast;
+        }
+    } else if(token_list[0]->type == TOKEN_INT
             || token_list[0]->type == TOKEN_STRING
             || token_list[0]->type == TOKEN_FLOAT) {
 		ast->node = init_node(token_list, st);
@@ -196,6 +204,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     ter_t ** potential_values;
     ter_t * ter = calloc(1, sizeof(struct TER_T));
     ter_t * ter2 = NULL;
+    p_df_index_t * pdfi;
     //TODO fix this code
     // ter never gets freed for '('
     ter_t * tmp;
@@ -229,9 +238,18 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                         ter->type = FLOAT;
                         return ter;
                     case DATA_FRAME:
-                        ter->result = clone_data_frame((data_frame_t *)get_st_value(st, sym_index));
-                        ter->type = DATA_FRAME;
-                        return ter;
+                        if(ast->children) {
+                            pdfi = init_p_df_index_t();
+                            pdfi = pdfi_pipes(ast->children[0], pdfi);
+                            ter->result = access_modifier((data_frame_t *)get_st_value(st, sym_index), pdfi, 0);
+                            ter->type = pdfi->dfe_type;
+                            free_p_df_index_t(pdfi);
+                            return ter;
+                        } else {
+                            ter->result = clone_data_frame((data_frame_t *)get_st_value(st, sym_index));
+                            ter->type = DATA_FRAME;
+                            return ter;
+                        }
                     case RESERVED:
                         fprintf(stderr, "TMP DEV FLAG, SOMETHING WENT WRONG, RESERVED EVALED\n");
                         exit(1);
@@ -364,6 +382,88 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
     }
     fprintf(stderr, "[ABSTRACT SYNTAX TREE]: evaluate_tree function crashed\n");
     exit(1);
+}
+
+ast_t * get_pipe_sub_tree(ast_t * ast, token_T ** token_list, symbol_table_t * st) {
+    token_T *** potential_operands;
+    int operands = 0;
+    if(token_list[0]->type == TOKEN_WORD && token_list[1]->type == TOKEN_EOL) {
+        return NULL;
+    } else if(token_list[0]->type == TOKEN_WORD
+             && token_list[1]->type == TOKEN_PIPE) {
+        if(!ast) {
+            ast = init_ast();
+        }
+        operands = 2;
+        potential_operands = initialize_potential_operands(operands);
+        potential_operands[0] = get_sub_list(token_list, 1, 1);
+        potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
+        ast->no_children++;
+        ast->children = calloc(ast->no_children, 
+                sizeof(struct ABSTRACT_SYNTAX_TREE *));
+        ast->node = init_node(potential_operands[0], st);
+        ast->children[0] = init_ast();
+        ast->children[0] = get_pipe_sub_tree(ast->children[0], potential_operands[1], st);
+        free_potential_operands(potential_operands, operands);
+        return ast;
+    } else if(token_list[0]->type == TOKEN_INT) {
+        if(token_list[1]->type == TOKEN_EOL) {
+            if(!ast) {
+                ast = init_ast();
+            }
+            ast->node = init_node(token_list, st);
+            return ast;
+        } else if(token_list[1]->type == TOKEN_PIPE) {
+            if(!ast) {
+                ast = init_ast();
+            }
+            operands = 2;
+            potential_operands = initialize_potential_operands(operands);
+            potential_operands[0] = get_sub_list(token_list, 1, 1);
+            potential_operands[1] = get_sub_list(token_list, 2, get_list_size(token_list));
+            ast->no_children++;
+            ast->children = calloc(ast->no_children, 
+                    sizeof(struct ABSTRACT_SYNTAX_TREE *));
+            ast->node = init_node(potential_operands[0], st);
+            ast->children[0] = init_ast();
+            ast->children[0] = get_pipe_sub_tree(ast->children[0], potential_operands[1], st);
+            free_potential_operands(potential_operands, operands);
+            return ast;
+        }
+    }
+    return NULL;
+}
+
+p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi) {
+    if(ast->node->type == NODE_PIPE) {
+        pdfi = pdfi_pipes(ast->children[0], pdfi);
+        return pdfi;
+    } else if(ast->node->type == NODE_INT) {
+        if(pdfi->size == 0) {
+            pdfi->bracs[0] = *(int *)ast->node->value;
+            pdfi->size++;
+        } else {
+            pdfi->bracs = realloc(pdfi->bracs, pdfi->size * sizeof(int));
+            pdfi->bracs[pdfi->size - 1] = *(int *)ast->node->value;
+        }
+        if(ast->children) {
+            pdfi = pdfi_pipes(ast->children[0], pdfi);
+            return pdfi;
+        } else {
+            return pdfi;
+        }
+    }
+    fprintf(stderr, "[PDFI PIPES]: YAY TIME TO FIND A NEW BUG\nExiting\n");
+    exit(1);
+}
+
+void * access_modifier(data_frame_t * df, p_df_index_t * pdfi, int ci) {
+    if((pdfi->size - 1) != ci) {
+        return access_modifier(((data_frame_t **)df->comps)[ci]->comps[pdfi->bracs[ci]], pdfi, ci + 1);
+    } else {
+        pdfi->dfe_type = ((data_frame_t **)df->comps)[ci]->type;
+        return ((data_frame_t **)df->comps)[pdfi->bracs[ci]];
+    }
 }
 
 /** This function requires some explaining in my opinion, so here we go :|

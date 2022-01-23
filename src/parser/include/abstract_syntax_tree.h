@@ -37,11 +37,15 @@ ast_t * generate_data_frame_tree(token_T ** token_list, symbol_table_t * st, ast
 ast_t * generate_binary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 ast_t * generate_unary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast);
 void * evaluate_tree(ast_t * ast, symbol_table_t * st);
+ast_t * get_pipe_sub_tree(ast_t * ast, token_T ** token_list, symbol_table_t * st);
+p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi);
+void * access_modifier(data_frame_t * df, p_df_index_t * pdfi, int ci);
 token_T *** initialize_potential_operands(int number_of_operands);
 void free_potential_operands(token_T *** list_of_list, int number_of_operands);
 ter_t ** initialize_potential_values(ast_t * ast, symbol_table_t * st);
 void free_potential_values(ter_t ** values, ast_t * ast);
 void print_tree(ast_t * ast);
 void free_tree(ast_t * ast);
+
 
 #endif

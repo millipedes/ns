@@ -29,21 +29,8 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->type = NODE_INT;
             return node; 
         case TOKEN_WORD:
-            // seg faults on just variable w/o access moidifier otherwise
-            //if(token[1] && token[1]->type != TOKEN_EOL) {
-            //    if(token[1]->type == TOKEN_PIPE) {
-            //        st_index = find_symbol(st, token[0]->id);
-            //        if(st_index) {
-            //            //access_modifier(token, st, node, st_index);
-            //        } else {
-            //            fprintf(stderr, "[AST NODE]: lexeme `%s` doesn't exist"
-            //                    "in the symbol table!\nExiting\n", token[0]->id);
-            //        }
-            //    } 
-            //} else {
-                node->value = deep_copy_string(node->value, token[0]->id);
-                node->type = NODE_WORD;
-            //}
+            node->value = deep_copy_string(node->value, token[0]->id);
+            node->type = NODE_WORD;
             return node; 
         case TOKEN_STRING:
             node->value = deep_copy_string(node->value, token[0]->id);
@@ -127,6 +114,9 @@ ast_node_t * init_node(token_T ** token, symbol_table_t * st) {
             node->value = init_operator((char *)"=");
             return node;
         case TOKEN_PIPE:
+            node->type = NODE_PIPE;
+            node->value = init_operator((char *)"|");
+            return node;
         case TOKEN_EOL:
             fprintf(stderr, "[ERROR]: TOKEN_EOL passed to parse tree!");
             exit(1);
@@ -239,6 +229,9 @@ void free_node(ast_node_t * node) {
         case NODE_ASSIGN:
             free_operator((operator_t *)node->value);
             break;             
+        case NODE_PIPE:
+            free_operator((operator_t *)node->value);
+            break;
     }
 	free(node);
 }	

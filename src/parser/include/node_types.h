@@ -31,6 +31,7 @@ typedef enum {
     NODE_LTE,
     NODE_GTE,
     NODE_NE,
-    NODE_ASSIGN
+    NODE_ASSIGN,
+    NODE_PIPE
 } node_type;
 #endif
