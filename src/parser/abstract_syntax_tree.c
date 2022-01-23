@@ -257,6 +257,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             } else {
                 ter->result = calloc(1, sizeof(int));
                 *(int *)ter->result = st->no_symbols;
+                ter->type = INTEGER;
                 return ter;
             }
             return ter;

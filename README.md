@@ -1,7 +1,6 @@
 # :strawberry: rasberry Programming Language
 ## :dart: Project Description/Goal
-rasberry is meant to be a fast relatively powerful programming language.  By
-May 2022 it should have a fully functional stocastic process library natively.
+rasberry is meant to be a fast relatively powerful programming language.
 Currently it is interpreted, but soon I will likely write an assembly
 translation for GNU assembler.
 
@@ -26,18 +25,19 @@ can be achieved via:
 This language uses [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
 notation.
 
-This language now has variable support for integers and the type known as a data
-frame.  I am writing a manual for the programming language, and when it is ready,
-I will link it here for a better description of language features such as the data
-frame.
+This language now has variable support for integers, floats (double precision
+floating point numers), strings, and the type known as a data frame.  I am
+writing a manual for the programming language, and when it is ready, I will link
+it here for a better description of language features such as the data frame.
 
 The entire code base is memory leakless and error free for the grammar defined
-below.  Many more features are coming quickly as the basic infrastructure of 
+below (not at this exact moment, between today and tomorrow I should find the
+rest).  Many more features are coming quickly as the basic infrastructure of
 the language is now written.
 
 The programming language has a working symbol table (i.e. complete stack frame
-functionality for integers, and data frames but no entry point to making new
-stack frames yet).
+functionality for all supported types, and data frames but no entry point to
+making new stack frames yet).
 
 As it currently stands, the language will very likely have lazy evaluation.
 
@@ -78,7 +78,8 @@ integer     -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Access modifier support for data frames
+1) Complete Access modifier support for data frames (can currently only access
+one layer deep).
 2) Write string ops
 3) write data frame ops
 4) Write stack frames
