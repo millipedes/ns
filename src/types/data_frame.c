@@ -111,6 +111,7 @@ data_frame_t * clone_data_frame(data_frame_t * df) {
             }
             break;
         case STRING:
+            //printf("TYPE: %d\n", df->type);
             copy->type = df->type;
             copy->comps = calloc(df->length, sizeof(char **));
             for (int i = 0; i < df->length; i++) {

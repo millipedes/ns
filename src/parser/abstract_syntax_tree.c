@@ -241,7 +241,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                         if(ast->children) {
                             pdfi = init_p_df_index_t();
                             pdfi = pdfi_pipes(ast->children[0], pdfi);
-                            ter->result = access_modifier((data_frame_t *)get_st_value(st, sym_index), pdfi, 0);
+                            ter->result = access_modifier(((data_frame_t *)get_st_value(st, sym_index)), pdfi, 0);
                             ter->type = pdfi->dfe_type;
                             free_p_df_index_t(pdfi);
                             return ter;
@@ -344,7 +344,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
             ter->result = calloc(1, sizeof(char *));
             tmp = evaluate_tree(ast->children[1], st);
             ter->type = RESERVED;
-            if(make_entry(st, ast->children[0]->node->name, tmp->result, tmp->type)) {//ast->children[1]->node->type)) {
+            if(make_entry(st, ast->children[0]->node->name, tmp->result, tmp->type)) {
                 *((char *)ter->result + 0) = 't';
             } else {
                 *((char *)ter->result + 0) = 'f';
@@ -459,10 +459,22 @@ p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi) {
 
 void * access_modifier(data_frame_t * df, p_df_index_t * pdfi, int ci) {
     if((pdfi->size - 1) != ci) {
+        pdfi->dfe_type = df->type;
         return access_modifier(((data_frame_t **)df->comps)[ci]->comps[pdfi->bracs[ci]], pdfi, ci + 1);
     } else {
-        pdfi->dfe_type = ((data_frame_t **)df->comps)[ci]->type;
+        pdfi->dfe_type = df->type;
+        //switch(pdfi->dfe_type) {
+        //    case INTEGER:
+        //    case STRING:
+        //    case FLOAT:
+        //    case DATA_FRAME:
+        //    default:
+        //        fprintf(stderr, "[ACCESS MODIFIER]: YAY VERY BIG BUG TO TRACK DOWN\nOr user error...\nExiting\n");
+        //        exit(1);
+        //        break;
+        //}
         return ((data_frame_t **)df->comps)[pdfi->bracs[ci]];
+        // swuitch based off pdfi type
     }
 }
 
