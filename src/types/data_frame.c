@@ -45,6 +45,7 @@ data_frame_t * init_data_frame(token_T ** token_list) {
             p_df[i] = get_sub_list(token_list, j, pdfi->bracs[i]);
             data_frame->comps[i] = init_data_frame(p_df[i]);
             j += ((data_frame_t **)data_frame->comps)[i]->length;
+            //TODO fix this increment, this doesnt work for 2+ ']'s
             j += 2;
         }
 
