@@ -47,7 +47,7 @@ char * deep_copy_string(char * dest, char * src) {
 	return dest;
 }
 
-int make_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
+int make_entry(symbol_table_t * st, char * name, void * value, types nt) {
     if(is_reserved(st, name)) {
         fprintf(stderr, "[SYMBOL TABLE] : `%s` is a reserved word!\n", name);
         return 0;
@@ -55,7 +55,7 @@ int make_entry(symbol_table_t * st, char * name, void * value, node_type nt) {
 
     // Index will never be 0 (i.e. 0 will only be if not found), "if" is reserved
     if(!find_symbol(st, name)) {
-        add_st_entry(st, name, value, node_type_to_st_type(st, name, nt));
+        add_st_entry(st, name, value, nt);//node_type_to_st_type(st, name, nt));
         return 1;
     } else {
         write_st_entry(st, name, value, nt);
@@ -83,43 +83,16 @@ int find_symbol(symbol_table_t * st, char * key_to_check) {
 	return 0;
 }
 
-types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt) {
-    int key_index;
-    switch(nt) {
-        case NODE_L_PAREN:
-            fprintf(stderr, "[ST]: why on earth are you trying to write an '(' to the st?!?\n");
-            exit(1);
-        case NODE_INT:
-            return INTEGER;
-        case NODE_FLOAT:
-            return FLOAT;
-        case NODE_STRING:
-            return STRING;
-        case NODE_DATA_FRAME:
-            return DATA_FRAME;
-        case NODE_WORD:
-            key_index = find_symbol(st, key);
-            if(key_index) {
-                return st->types[key_index];
-            }
-            return -1;
-        default:
-            fprintf(stderr, "[SYMBOL TABLE]: node_type_to_st_type error!\n"
-                    "Exiting\n");
-            exit(1);
-    }
-}
-
 //TODO write in variable_t * as it stands there is a weird memory problem fix this and that problem is fixed too 
-void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt) {
+void write_st_entry(symbol_table_t * st, char * key, void * value, types nt) {
     void * tmp;
     int key_index = find_symbol(st, key);
-    if(st->types[key_index] != node_type_to_st_type(st, key, nt)) {
+    if(st->types[key_index] != nt) {
         fprintf(stderr, "[SYMBOL TABLE]: cannot assign `%s` wrong type!\n", key);
         exit(1);
     }
     tmp = st->values[key_index];
-    switch(node_type_to_st_type(st, key, nt)) {
+    switch(nt) {
         case INTEGER:
             st->values[key_index] = calloc(1, sizeof(int));
             *((int *)st->values[key_index]) = *(int *)value;

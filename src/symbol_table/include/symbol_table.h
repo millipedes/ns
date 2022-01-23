@@ -34,11 +34,11 @@ typedef struct SYMBOL_TABLE_T {
 symbol_table_t * init_symbol_table(void);
 void init_null_st_entry(symbol_table_t * st, char * entry);
 char * deep_copy_string(char * dest, char * str);
-int make_entry(symbol_table_t * st, char * name, void * value, node_type nt);
+int make_entry(symbol_table_t * st, char * name, void * value, types nt);
 int is_reserved(symbol_table_t * st, char * name);
 int find_symbol(symbol_table_t * st, char * key_to_check);
-types node_type_to_st_type(symbol_table_t * st, char * key, node_type nt);
-void write_st_entry(symbol_table_t * st, char * key, void * value, node_type nt);
+types node_type_to_st_type(symbol_table_t * st, char * key, types nt);
+void write_st_entry(symbol_table_t * st, char * key, void * value, types nt);
 void add_st_entry(symbol_table_t * st, char * key, void * value, types type);
 void * get_st_value(symbol_table_t * st, int sym_index);
 void free_symbol_table(symbol_table_t * st);
