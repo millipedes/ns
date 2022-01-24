@@ -39,7 +39,6 @@ ast_t * generate_unary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t
 void * evaluate_tree(ast_t * ast, symbol_table_t * st);
 ast_t * get_pipe_sub_tree(ast_t * ast, token_T ** token_list, symbol_table_t * st);
 p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi);
-p_df_index_t * pdfi_reverse(p_df_index_t * pdfi);
 void * access_modifier(data_frame_t * df, p_df_index_t * pdfi, int ci);
 token_T *** initialize_potential_operands(int number_of_operands);
 void free_potential_operands(token_T *** list_of_list, int number_of_operands);

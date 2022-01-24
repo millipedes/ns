@@ -240,7 +240,6 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                         if(ast->children) {
                             pdfi = init_p_df_index_t();
                             pdfi = pdfi_pipes(ast->children[0], pdfi);
-                            pdfi = pdfi_reverse(pdfi);
                             ter->result = access_modifier(((data_frame_t *)get_st_value(st, sym_index)), pdfi, 0);
                             ter->type = pdfi->dfe_type;
                             free_p_df_index_t(pdfi);
@@ -462,8 +461,8 @@ p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi) {
             pdfi->bracs[0] = *(int *)ast->node->value;
             pdfi->size++;
         } else {
-            pdfi->bracs = realloc(pdfi->bracs, pdfi->size * sizeof(int));
-            pdfi->bracs[pdfi->size - 1] = *(int *)ast->node->value;
+            pdfi->bracs = realloc(pdfi->bracs, (pdfi->size + 1) * sizeof(int));
+            pdfi->bracs[pdfi->size] = *(int *)ast->node->value;
             pdfi->size++;
         }
         if(ast->children) {
@@ -475,25 +474,6 @@ p_df_index_t * pdfi_pipes(ast_t * ast, p_df_index_t * pdfi) {
     }
     fprintf(stderr, "[PDFI PIPES]: YAY TIME TO FIND A NEW BUG\nExiting\n");
     exit(1);
-}
-
-p_df_index_t * pdfi_reverse(p_df_index_t * pdfi) {
-    int tmp = 0;
-    if(pdfi->size >= 3) {
-        for(int i = 0; i < (pdfi->size - 1)/2; i++) {
-            tmp = pdfi->bracs[i];
-            pdfi->bracs[i] = pdfi->bracs[pdfi->size - 1 - i];
-            pdfi->bracs[pdfi->size - 1 - i] = tmp;
-        }
-        return pdfi;
-    } else if(pdfi->size == 2) {
-        tmp = pdfi->bracs[0];
-        pdfi->bracs[0] = pdfi->bracs[1];
-        pdfi->bracs[1] = tmp;
-        return pdfi;
-    } else {
-        return pdfi;
-    }
 }
 
 void * access_modifier(data_frame_t * df, p_df_index_t * pdfi, int ci) {
