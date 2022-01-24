@@ -37,7 +37,7 @@ ast_t * generate_tree(token_T ** token_list, symbol_table_t * st, ast_t * ast) {
         } else if(token_list[1]->type == TOKEN_PIPE) {
             ast->children = calloc(1, sizeof(struct ABSTRACT_SYNTAX_TREE *));
             ast->children[0] = get_pipe_sub_tree(ast->children[0], token_list, st);
-            ast->no_children = 0;
+            ast->no_children = 1;
 		    return ast;
         }
     } else if(token_list[0]->type == TOKEN_INT
@@ -412,6 +412,7 @@ ast_t * get_pipe_sub_tree(ast_t * ast, token_T ** token_list, symbol_table_t * s
                 ast = init_ast();
             }
             ast->node = init_node(token_list, st);
+            ast->children = NULL;
             return ast;
         } else if(token_list[1]->type == TOKEN_PIPE) {
             if(!ast) {
