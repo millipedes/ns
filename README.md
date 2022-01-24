@@ -29,7 +29,7 @@ This language now has variable support for integers, floats (double precision
 floating point numers), strings, and the type known as a data frame.  I am
 writing a manual for the programming language, and when it is ready, I will link
 it here for a better description of language features such as the data frame.
-Data frames can now access elements via `df element` now being deined in the CFG.
+Data frames can now access elements via `df element` now being defined in the CFG.
 
 The entire code base is memory leakless and error free for the grammar defined
 below.  Many more features are coming quickly as the basic infrastructure of
@@ -86,8 +86,7 @@ integer                 -> x such that x is an element of integers (32 bit signe
 ```
 
 ## :scroll: Immediately on the List to be Implemented
-1) Complete Access modifier support for data frames (can currently only access
-one layer deep).
+1) Make acess modifier play nicer with other operations.
 2) Write string ops
 3) write data frame ops
 4) Write stack frames
