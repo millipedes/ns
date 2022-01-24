@@ -29,6 +29,7 @@ This language now has variable support for integers, floats (double precision
 floating point numers), strings, and the type known as a data frame.  I am
 writing a manual for the programming language, and when it is ready, I will link
 it here for a better description of language features such as the data frame.
+Data frames can now access elements via `df element` now being deined in the CFG.
 
 The entire code base is memory leakless and error free for the grammar defined
 below.  Many more features are coming quickly as the basic infrastructure of
@@ -43,37 +44,45 @@ As it currently stands, the language will very likely have lazy evaluation.
 As it is currently written, this language supports the following context free
 grammar (BNF-like notation) for which all operators only perform on like expr's:
 ```
-expr        -> + expr expr
-             | - expr expr
-             | * expr expr
-             | / expr expr
-             | ^ expr expr
-             | (expr)
-             | > expr expr
-             | < expr expr
-             | >= expr expr
-             | <= expr expr
-             | == expr expr
-             | != expr expr
-             | = var expr
-             | var
-             | integer
-             | data_frame
-             | string
-             | float
+expr                    -> + expr expr
+                         | - expr expr
+                         | * expr expr
+                         | / expr expr
+                         | ^ expr expr
+                         | (expr)
+                         | > expr expr
+                         | < expr expr
+                         | >= expr expr
+                         | <= expr expr
+                         | == expr expr
+                         | != expr expr
+                         | = var expr
+                         | var
+                         | integer
+                         | data_frame
+                         | string
+                         | float
+                         | (data_frame)|(index_of_df_element)
 
-var         -> integer
-             | float
-             | string
-             | data frame
+var                     -> integer
+                         | float
+                         | string
+                         | data frame
 
-string      -> "(a-z || A-Z || 0-9 || symbol)*"
+df element              -> integer
+                         | float
+                         | string
+                         | data frame
 
-data frame  -> [(var)*]
+(data frame)|(integer)  -> df element
 
-float       -> x such that x is a signed 32 bit double precision floating point number
+string                  -> "(a-z || A-Z || 0-9 || symbol)*"
 
-integer     -> x such that x is an element of integers (32 bit signed)
+data frame              -> [(var)*]
+
+float                   -> x such that x is a signed 32 bit double precision floating point number
+
+integer                 -> x such that x is an element of integers (32 bit signed)
 ```
 
 ## :scroll: Immediately on the List to be Implemented
