@@ -48,7 +48,6 @@ data_frame_t * init_data_frame(token_T ** token_list) {
                 j++;
             }
             j += ((data_frame_t **)data_frame->comps)[i]->length + 1;
-            //TODO fix this increment, this doesnt work for 2+ ']'s
             while(token_list[j]->type == TOKEN_R_BRACKET) {
                 j++;
             }
