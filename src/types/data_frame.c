@@ -44,10 +44,15 @@ data_frame_t * init_data_frame(token_T ** token_list) {
         for(int i = 0; i < data_frame->length; i++) {
             p_df[i] = get_sub_list(token_list, j, pdfi->bracs[i]);
             data_frame->comps[i] = init_data_frame(p_df[i]);
-            j += ((data_frame_t **)data_frame->comps)[i]->length;
+            while(token_list[j]->type == TOKEN_L_BRACKET) {
+                j++;
+            }
+            j += ((data_frame_t **)data_frame->comps)[i]->length + 1;
             //TODO fix this increment, this doesnt work for 2+ ']'s
-            //j += 2;
             while(token_list[j]->type == TOKEN_R_BRACKET) {
+                j++;
+            }
+            if(token_list[j]->type == TOKEN_R_BRACKET) {
                 j++;
             }
         }
