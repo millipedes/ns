@@ -230,7 +230,7 @@ void * evaluate_tree(ast_t * ast, symbol_table_t * st) {
                     case STRING:
                         ter->result = deep_copy_string((char *)ter->result, (char *)get_st_value(st, sym_index));
                         ter->type = STRING;
-                        break;
+                        return ter;
                     case FLOAT:
                         ter->result = calloc(1, sizeof(double));
                         *((double *)ter->result) = *((double *)get_st_value(st, sym_index));
