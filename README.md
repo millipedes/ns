@@ -59,10 +59,10 @@ expr                    -> + expr expr
                          | = var expr
                          | var
                          | integer
-                         | data_frame
+                         | data frame
                          | string
                          | float
-                         | (data_frame)|(index_of_df_element)
+                         | df element
 
 var                     -> integer
                          | float
@@ -74,7 +74,7 @@ df element              -> integer
                          | string
                          | data frame
 
-(data frame)|(integer)  -> df element
+(data frame)|(integer)  -> df element (at index)
 
 string                  -> "(a-z || A-Z || 0-9 || symbol)*"
 
