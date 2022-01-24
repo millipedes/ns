@@ -31,8 +31,7 @@ writing a manual for the programming language, and when it is ready, I will link
 it here for a better description of language features such as the data frame.
 
 The entire code base is memory leakless and error free for the grammar defined
-below (not at this exact moment, between today and tomorrow I should find the
-rest).  Many more features are coming quickly as the basic infrastructure of
+below.  Many more features are coming quickly as the basic infrastructure of
 the language is now written.
 
 The programming language has a working symbol table (i.e. complete stack frame
