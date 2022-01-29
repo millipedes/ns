@@ -89,14 +89,12 @@ ast_t * generate_unary_op_tree(token_T ** token_list, symbol_table_t * st, ast_t
     potential_operands = initialize_potential_operands(operands);
     potential_operands[0] = get_sub_list(token_list, 1, 
             get_list_size(token_list));
+    ast->node = init_node(token_list, st);
     ast->no_children++;
     ast->children = calloc(ast->no_children, 
             sizeof(struct ABSTRACT_SYNTAX_TREE *));
-    ast->node = init_node(token_list, st);
     ast->children[0] = init_ast();
-    ast->children[0] = generate_tree(potential_operands[0], st,
-            ast->children[0]);
-    free_potential_operands(potential_operands, operands);
+    ast->children[0] = generate_tree(potential_operands[0], st, ast->children[0]);
     return ast;
 }
 
@@ -407,7 +405,7 @@ ast_t * get_pipe_sub_tree(ast_t * ast, token_T ** token_list, symbol_table_t * s
         free_potential_operands(potential_operands, operands);
         return ast;
     } else if(token_list[0]->type == TOKEN_INT) {
-        if(token_list[1]->type == TOKEN_EOL) {
+        if(token_list[1]->type == TOKEN_EOL || token_list[1]->type == TOKEN_R_PAREN) {
             if(!ast) {
                 ast = init_ast();
             }
