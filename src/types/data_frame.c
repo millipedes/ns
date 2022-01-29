@@ -1,5 +1,18 @@
+/**
+* @file data_frame.c
+* @brief This file contains the functions relating to the data_frame type
+* @author Matthew C. Lindeman
+* @date
+* @bug None Currently
+* @todo Nothing Currently
+*/
 #include"include/data_frame.h"
 
+/**
+ * This function initializes a data frame from a token list.
+ * @param The token list
+ * @return the data frame
+ */
 data_frame_t * init_data_frame(token_T ** token_list) {
     data_frame_t * data_frame = calloc(1, sizeof(struct DATA_FRAME_T));
     data_frame->length = 0;
@@ -44,16 +57,6 @@ data_frame_t * init_data_frame(token_T ** token_list) {
         for(int i = 0; i < data_frame->length; i++) {
             p_df[i] = get_sub_list(token_list, j, pdfi->bracs[i]);
             data_frame->comps[i] = init_data_frame(p_df[i]);
-            //while(token_list[j]->type == TOKEN_L_BRACKET) {
-            //    j++;
-            //}
-            //j += ((data_frame_t **)data_frame->comps)[i]->length + 1;
-            //while(token_list[j]->type == TOKEN_R_BRACKET) {
-            //    j++;
-            //}
-            //if(token_list[j]->type == TOKEN_R_BRACKET) {
-            //    j++;
-            //}
             j = pdfi->bracs[i];
             j++;
         }
@@ -317,24 +320,6 @@ void free_data_frame(data_frame_t * df) {
     }
 }
 
-//void * access_data_frame_element(data_frame_t * df, p_df_index_t * pdfi, int ci) {
-//    if(ci == (pdfi->size - 1)) {
-//        switch(df->type) {
-//            case DATA_FRAME:
-//                return ((data_frame_t *)df->comps)[pdfi->bracs[ci]];
-//            case INTEGER:
-//                return ((int *)df->comps)[pdfi->bracs[ci]];
-//            case FLOAT:
-//                return ((double *)df->comps)[pdfi->bracs[ci]];
-//            case STRING:
-//                return ((char *)df->comps)[pdfi->bracs[ci]];
-//        }
-//        return df->comps[pdfi[ci]->bracs];
-//    } else {
-//        
-//    }
-//}
-
 p_df_index_t * init_p_df_index_t(void) {
     p_df_index_t * pdfi = calloc(1, sizeof(struct P_DF_INDEX_T));
     pdfi->dfe_type = RESERVED;
@@ -351,3 +336,49 @@ void free_p_df_index_t(p_df_index_t * pdfi) {
         free(pdfi);
     }
 }
+
+
+void * df_addition_operator(void * value_one, void * value_two) {
+    return NULL; 
+}
+
+void * df_subtraction_operator(void * value_one, void * value_two) {
+   return NULL; 
+}
+
+void * df_division_operator(void * value_one, void * value_two) {
+   return NULL; 
+}
+
+void * df_multiplication_operator(void * value_one, void * value_two) {
+   return NULL; 
+}
+
+void * df_power_operator(void * value_one, void * value_two) {
+   return NULL; 
+}
+
+void * df_less_than_operator(void * value_one, void * value_two) {
+   return NULL; 
+}
+
+void * df_greater_than_operator(void * value_one, void * value_two) {
+   return NULL; 
+}
+
+void * df_equal_test_operator(void * value_one, void * value_two) {
+    return NULL;
+}
+
+void * df_less_than_equal_to_operator(void * value_one, void * value_two) {
+    return NULL;
+}
+
+void * df_greater_than_equal_to_operator(void * value_one, void * value_two) {
+    return NULL;
+}
+
+void * df_not_equal_operator(void * value_one, void * value_two) {
+    return NULL;
+}
+

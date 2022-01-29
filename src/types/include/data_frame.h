@@ -1,3 +1,11 @@
+/**
+* @file data_frame.h
+* @brief This file contains the functions definitions for those in data_frame.c
+* @author Matthew C. Lindeman
+* @date
+* @bug None Currently
+* @todo Nothing Currently
+*/
 #ifndef DATF_H
 #define DATF_H
 
@@ -7,6 +15,8 @@
 #include"../../types/include/types.h"
 #include"../../tokenizer/include/token.h"
 #include"../../tokenizer/include/token_types.h"
+#include"../../types/include/ops_integer.h"
+#include"../../types/include/ops_float.h"
 
 typedef struct DATA_FRAME_T {
     void ** comps;
@@ -32,5 +42,17 @@ void free_data_frame(data_frame_t * df);
 //void * access_data_frame_element(data_frame_t * df, p_df_index_t * pdfi, int ci);
 p_df_index_t * init_p_df_index_t(void);
 void free_p_df_index_t(p_df_index_t * pdfi);
+
+void * df_addition_operator(void * value_one, void * value_two);
+void * df_subtraction_operator(void * value_one, void * value_two);
+void * df_division_operator(void * value_one, void * value_two);
+void * df_multiplication_operator(void * value_one, void * value_two);
+void * df_power_operator(void * value_one, void * value_two);
+void * df_less_than_operator(void * value_one, void * value_two);
+void * df_greater_than_operator(void * value_one, void * value_two);
+void * df_equal_test_operator(void * value_one, void * value_two);
+void * df_less_than_equal_to_operator(void * value_one, void * value_two);
+void * df_greater_than_equal_to_operator(void * value_one, void * value_two);
+void * df_not_equal_operator(void * value_one, void * value_two);
 
 #endif

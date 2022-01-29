@@ -14,6 +14,9 @@ all:$(OBJFILES)
 vim:
 	nvim $(CFILES) 
 
+vimh:
+	nvim $(HFILES) 
+
 run:
 	$(EXEFILE)
 
