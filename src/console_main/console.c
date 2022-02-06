@@ -48,7 +48,6 @@ void execute_line(char user_input_buffer[], symbol_table_t * st) {
     free(value);
 
 
-	// Free token list, maybe make unique function (looping headers lexer.c)
     free_token_list(token_list);
     free_lexer(lexer);
 	free_tree(ast);

@@ -39,7 +39,6 @@ data_frame_t * clone_data_frame(data_frame_t * df);
 char * clone_string(char * src, char * dest);
 void print_data_frame(data_frame_t * df);
 void free_data_frame(data_frame_t * df);
-//void * access_data_frame_element(data_frame_t * df, p_df_index_t * pdfi, int ci);
 p_df_index_t * init_p_df_index_t(void);
 void free_p_df_index_t(p_df_index_t * pdfi);
 
