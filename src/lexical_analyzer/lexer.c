@@ -104,7 +104,7 @@ token_T * lexer_next_token(lexer_T * lexer) {
                     lexer_advance(lexer);
                     return init_token((char *)"!=", TOKEN_NE);
                 } else {
-                    printf("[Error Generated from Lexer]: Unexpected Character `%c`"
+                    fprintf(stderr, "[LEXER_NEXT_TOKEN]: Unexpected Character `%c`"
                             "\n", lexer->c);
                     exit(1);
                     break;
@@ -119,7 +119,7 @@ token_T * lexer_next_token(lexer_T * lexer) {
                 lexer_advance(lexer);
                 return init_token((char *)";", TOKEN_SEMICOLON);
             default:
-                printf("[Error Generated from Lexer]: Unexpected Character `%c`"
+                fprintf(stderr, "[LEXER_NEXT_TOKEN]: Unexpected Character `%c`"
                         "\n", lexer->c);
                 exit(1);
                 break;

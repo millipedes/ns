@@ -17,7 +17,6 @@
 #include"../../lexical_analyzer/include/lexer.h"
 #include"../../parser/include/abstract_syntax_tree.h"
 #include"../../symbol_table/include/symbol_table.h"
-#include"../../symbol_table/include/operator.h"
 #include"../../tokenizer/include/token.h"
 
 void execute_line(char user_input_buffer[], symbol_table_t * st);
